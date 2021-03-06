@@ -59,6 +59,8 @@ services:
       - project
     networks:
       - db-net
+    volumes: 
+      - ./IntramuralsSite/reactapp/src:/app/frontend/src
 
 networks:
   db-net:
