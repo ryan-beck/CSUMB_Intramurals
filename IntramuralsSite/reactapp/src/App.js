@@ -1,14 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react';
+import {
+	BrowserRouter as Router,
+	Route,
+	Switch,
+} from "react-router-dom"
 
-function App() {
-  return (
-    <div className="App">
 
-    <h1> I made a react thing with snek and whale</h1>
+import Header from './Header';
+import MainPage from "./pages";
+import SportsPage from "./pages/sports";
 
-    </div>
-  );
+class App extends Component {
+  render() {
+	    return (
+		    <Router>
+			    <Header/>
+			    <Switch>
+			    <Route exact path="/" component={MainPage} />
+			    <Route exact path="/sports" component={SportsPage} />
+			    </Switch>
+		    </Router>
+		);
+	}
 }
 
 export default App;
