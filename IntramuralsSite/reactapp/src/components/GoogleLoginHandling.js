@@ -21,7 +21,7 @@ class GoogleBtn extends Component {
 
   login (response) {
     if(response.accessToken){
-      alert(`Logged in successfully welcome ${response.profileObj.imageUrl}.`);
+      alert(`Logged in successfully welcome ${response.profileObj.name}.`);
       this.setState(state => ({
         isLogined: true,
         accessToken: response.accessToken
