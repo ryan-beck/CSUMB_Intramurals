@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 
 import "./App.css"
-import GoogleBtnHook from './components/GoogleLoginHandling';
+import GoogleLogoutBtn from './components/GoogleLogoutHandling';
 
 const Header = () => {
   return (
@@ -9,7 +9,7 @@ const Header = () => {
       <div class="header">
       	<div>
       	<span class="header-text">CSUMB Intramurals</span>
-		  <GoogleBtnHook/>
+		  <GoogleLogoutBtn/>
 		</div>
 	  	<div class="navigation">
 	  		<a class="navigation-button" href="/">Home</a>

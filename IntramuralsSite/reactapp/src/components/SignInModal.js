@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Alert, Modal, Text, Pressable, View, StyleSheet } from "react-native";
-import GoogleBtnHook from './GoogleLoginHandling'
+import GoogleLoginBtn from './GoogleLoginHandling';
 
 class SignInModal extends Component {
 	constructor(props) {
@@ -30,13 +30,12 @@ class SignInModal extends Component {
 						Alert.alert("Modal is closed.");
 						this.setModalVisible(!modalVisible);
 					}}
-					presentationStyle="formSheet"
-					transparent={false}
+					
 				>
 					<View style={styles.centeredView}>
 			            <View style={styles.modalView}>
 			            	<Text style={styles.modalText}>Welcome to CSUMB Intramurals</Text>
-			            	<GoogleBtnHook/>
+			            	<GoogleLoginBtn/>
 			              	<Pressable
 			                	style={[styles.button, styles.buttonClose]}
 			                	onPress={() => this.setModalVisible(!modalVisible)}
@@ -55,7 +54,6 @@ class SignInModal extends Component {
 		    </View>
 		);
 	}
-
 }
 
 const styles = StyleSheet.create({

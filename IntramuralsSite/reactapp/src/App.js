@@ -5,7 +5,7 @@ import {
 	Switch,
 } from "react-router-dom"
 
-
+import SignInModal from './components/SignInModal'
 import Header from './Header';
 import MainPage from "./pages";
 import SportsPage from "./pages/sports";
