@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from "axios";
 import { GoogleLogin } from 'react-google-login';
 
 const CLIENT_ID =
@@ -20,10 +21,12 @@ class GoogleLoginBtn extends Component {
   login (response) {
     if(response.accessToken){
       alert(`Logged in successfully welcome ${response.profileObj.name}.`);
-      this.setState(state => ({
-        isLogined: true,
-        accessToken: response.accessToken
-      }));
+      axios
+        .post(`http://localhost:8000/login`)
+        .then(() => ({
+          isLogined: true,
+          accessToken: response.accessToken}))
+        .catch(err => console.log(err));
     }
   }
 
