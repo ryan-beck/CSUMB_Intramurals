@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import axios from "axios";
+import axios from "axios"; 
 import { GoogleLogin } from 'react-google-login';
 
 const CLIENT_ID =
@@ -20,13 +20,21 @@ class GoogleLoginBtn extends Component {
 
   login (response) {
     if(response.accessToken){
-      alert(`Logged in successfully welcome ${response.profileObj.name}.`);
-      axios
-        .post(`http://localhost:8000/login`)
-        .then(() => ({
-          isLogined: true,
-          accessToken: response.accessToken}))
-        .catch(err => console.log(err));
+      // alert(`Logged in successfully welcome ${response.getBasicProfile().getName()}.`);
+      this.setState(state => ({
+        isLogined: true,
+        accessToken: response.accessToken
+      }));
+
+      var profile = response.getBasicProfile();
+      console.log(response.profileObj.imageUrl);
+      axios({
+        method:'post', 
+        url: 'http://localhost:8000/login/', 
+        params: {
+          email: profile.getEmail(),
+          name: profile.getName(),
+          imageUrl: profile.getImageUrl()}});
     }
   }
 
