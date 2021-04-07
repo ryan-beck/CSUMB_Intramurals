@@ -1,0 +1,21 @@
+.title {
+    text-align:center;
+}
+
+.component-search-input input {
+    border-radius: 2px;
+    border: 1px solid #bbb;
+    font-size: 18px;
+    padding: 10px 8px;
+    width: 40%;
+}
+
+.searchdiv {
+    text-align:center;
+}
+
+.divider {
+    width: 5px;
+    height: auto;
+    display: inline-block;
+}
