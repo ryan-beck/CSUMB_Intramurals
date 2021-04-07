@@ -7,17 +7,44 @@
   color:white;
   font-weight: bolder;
   margin-left: 30px;
+  float:left;
 }
 
 .navigation {
-  /*margin-left: 50px;*/
-  padding-bottom: 10px;
+  padding-bottom: 15px;
   text-align: center;
 }
 
 .navigation-button {
   font-size: 15px;
+  font-weight: bold;
   text-decoration: none;
   color:white; 
   margin-right: 10px;
+}
+
+.button {
+  box-sizing: content-box;
+  margin-right: 20px;
+  padding: 5px 5px;
+  text-align: center;
+  border-radius: 24px;
+  border-color: transparent;
+  background-color: white;
+  box-shadow: 0px 16px 60px rgba(78, 79, 114, 0.08);
+  position: absolute;
+  right: 0;
+
+}
+
+.buttonText {
+  color: #4285f4;
+  font-weight: bolder;
+  font-size: 15px;
+}
+
+.icon {
+  height: 15px;
+  width: 15px;
+  margin-right: 5px;
 }
