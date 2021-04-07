@@ -20,17 +20,16 @@ class GoogleLoginBtn extends Component {
 
   login (response) {
     if(response.accessToken){
-      // alert(`Logged in successfully welcome ${response.getBasicProfile().getName()}.`);
       this.setState(state => ({
         isLogined: true,
         accessToken: response.accessToken
       }));
 
       var profile = response.getBasicProfile();
-      console.log(response.profileObj.imageUrl);
+
       axios({
         method:'post', 
-        url: 'http://localhost:8000/login/', 
+        url: 'http://localhost:8000/api/login/', 
         params: {
           email: profile.getEmail(),
           name: profile.getName(),
