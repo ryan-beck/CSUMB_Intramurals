@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from "axios"; 
 import { GoogleLogout } from 'react-google-login';
 
 const CLIENT_ID =
@@ -22,6 +23,11 @@ class GoogleLogoutBtn extends Component {
       isLogined: false,
       accessToken: ''
     }));
+
+    axios({
+      method:'post', 
+      url: 'http://localhost:8000/api/logout/',
+    });
   }
 
   handleLogoutFailure (response) {

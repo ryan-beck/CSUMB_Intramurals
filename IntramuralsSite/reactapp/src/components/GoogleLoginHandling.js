@@ -27,13 +27,16 @@ class GoogleLoginBtn extends Component {
 
       var profile = response.getBasicProfile();
 
+
       axios({
         method:'post', 
         url: 'http://localhost:8000/api/login/', 
         data: {
           email: profile.getEmail(),
           name: profile.getName(),
-          imageUrl: profile.getImageUrl()}});
+          imageUrl: profile.getImageUrl()},
+        withCredentials: true
+        });
     }
   }
 

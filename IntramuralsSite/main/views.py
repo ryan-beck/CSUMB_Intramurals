@@ -18,7 +18,9 @@ def char_count(request):
 
 def login(request):
 	body = json.loads(request.body.decode('utf-8'))
+	print("am i here")
 	if request.method == 'POST':
+		print("here")
 		email = body["email"]
 		if not Account.objects.filter(email=email).exists():
 			name = body["name"]
@@ -36,9 +38,19 @@ def login(request):
 			except Exception as e:
 				return HttpResponse(e)
 		#add account authentication/ login stuff here
-		return redirect('/api/testLogin/')
+		request.session["email"] = email
+		print("here")
+		print(request.session.get("email"))
+		return JsonResponse({'status': 'ok'})
+
+def logout(request):
+	print("email: ", request.session.get("email"))
+	del request.session["email"]
+	print("is there email?: ", request.session.get("email"))
+	return redirect("/")
 
 def testLogin(request):
+	print(request.session.get("email"))
 	#add check for is request.user.is_authenticated here for testing
 	return HttpResponse("please")
 
