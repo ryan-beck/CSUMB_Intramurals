@@ -1,12 +1,25 @@
 import React from "react";
+import SearchTextInput from "../SearchBar";
+import Box from '@material-ui/core/Box';
+
+import { Alert, Modal, StyleSheet, Text, Pressable, View } from "react-native";
+
+
+import "../sports.css"
+
 
 const SportsPage = () => {
+	
 	return (
-		<div>
-			<h3>welcome to viewing sports</h3>
-			<small>insert viewable sports here</small>
-		</div>
+		<Box>
+			<h1 class="title">Sports Page</h1>
+			<div class="searchdiv"> 
+				<SearchTextInput/>
+			</div>
+		</Box>
 	);
 }
+
+
 
 export default SportsPage;
