@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { GoogleLogin, GoogleLogout } from 'react-google-login';
+import axios from "axios"; 
+import { GoogleLogin } from 'react-google-login';
 
 const CLIENT_ID =
   '1071786778662-0lmd9mio92ksbhqq3h5o3est54nrcbg9.apps.googleusercontent.com';
 
-class GoogleBtn extends Component {
+class GoogleLoginBtn extends Component {
    constructor(props) {
     super(props);
 
@@ -15,25 +16,25 @@ class GoogleBtn extends Component {
 
     this.login = this.login.bind(this);
     this.handleLoginFailure = this.handleLoginFailure.bind(this);
-    this.logout = this.logout.bind(this);
-    this.handleLogoutFailure = this.handleLogoutFailure.bind(this);
   }
 
   login (response) {
     if(response.accessToken){
-      alert(`Logged in successfully welcome ${response.profileObj.name}.`);
       this.setState(state => ({
         isLogined: true,
         accessToken: response.accessToken
       }));
-    }
-  }
 
-  logout (response) {
-    this.setState(state => ({
-      isLogined: false,
-      accessToken: ''
-    }));
+      var profile = response.getBasicProfile();
+
+      axios({
+        method:'post', 
+        url: 'http://localhost:8000/api/login/', 
+        data: {
+          email: profile.getEmail(),
+          name: profile.getName(),
+          imageUrl: profile.getImageUrl()}});
+    }
   }
 
   handleLoginFailure (response) {
@@ -41,22 +42,10 @@ class GoogleBtn extends Component {
     console.log('Login failed: res:', response);
   }
 
-  handleLogoutFailure (response) {
-    alert('Failed to log out')
-  }
-
   render() {
     return (
     <div>
-      { this.state.isLogined ?
-        <GoogleLogout
-          clientId={ CLIENT_ID }
-          buttonText='Logout'
-          onLogoutSuccess={ this.logout }
-          onFailure={ this.handleLogoutFailure }
-          hostedDomain={ 'csumb.edu' }
-        >
-        </GoogleLogout>: <GoogleLogin
+      <GoogleLogin
           clientId={ CLIENT_ID }
           buttonText='Login'
           onSuccess={ this.login }
@@ -65,7 +54,6 @@ class GoogleBtn extends Component {
           responseType='code,token'
           hostedDomain={'csumb.edu'}
         />
-      }
       { this.state.accessToken ? <h5>Your Access Token: <br/><br/> { this.state.accessToken }</h5> : null }
 
     </div>
@@ -73,4 +61,4 @@ class GoogleBtn extends Component {
   }
 }
 
-export default GoogleBtn;
+export default GoogleLoginBtn;
