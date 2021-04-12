@@ -30,7 +30,7 @@ class GoogleLoginBtn extends Component {
       axios({
         method:'post', 
         url: 'http://localhost:8000/api/login/', 
-        params: {
+        data: {
           email: profile.getEmail(),
           name: profile.getName(),
           imageUrl: profile.getImageUrl()}});
