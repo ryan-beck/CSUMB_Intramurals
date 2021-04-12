@@ -2,6 +2,7 @@ import React, { Fragment } from "react";
 
 import SignInModal from '../components/SignInModal.js';
 
+
 const MainPage = () => {
 	return (
 		<Fragment>
