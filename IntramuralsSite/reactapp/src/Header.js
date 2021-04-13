@@ -1,15 +1,21 @@
 import React, { Fragment } from 'react';
 
 import "./App.css"
+import UserContext from './UserContext';
 import GoogleLogoutBtn from './components/GoogleLogoutHandling';
 
-const Header = () => {
+function Header() {
   return (
       <Fragment>
       <div class="header">
       	<div>
       	<span class="header-text">CSUMB Intramurals</span>
-		  <GoogleLogoutBtn/>
+      		<UserContext.Consumer>
+	      		{({value}) => {
+	      			<GoogleLogoutBtn value={value}/>
+	      		}}
+	      	</UserContext.Consumer>
+		  
 		</div>
 	  	<div class="navigation">
 	  		<a class="navigation-button" href="/">Home</a>

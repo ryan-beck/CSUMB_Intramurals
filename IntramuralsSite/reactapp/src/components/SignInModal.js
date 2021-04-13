@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Alert, Modal, Text, Pressable, View, StyleSheet } from "react-native";
 import GoogleLoginBtn from './GoogleLoginHandling';
+import UserContext from '../UserContext.js';
 
 class SignInModal extends Component {
 	constructor(props) {
@@ -21,6 +22,8 @@ class SignInModal extends Component {
 
 	render() {
 		const { modalVisible } = this.state;
+		let value = this.context;
+		console.log(value);
 		return (
 			<View style={styles.centeredView}>
 				<Modal
@@ -34,7 +37,7 @@ class SignInModal extends Component {
 				>
 					<View style={styles.centeredView}>
 			            <View style={styles.modalView}>
-			            	<Text style={styles.modalText}>Welcome to CSUMB Intramurals</Text>
+			            	<Text style={styles.modalText}>CSUMB</Text>
 			            	<GoogleLoginBtn/>
 			              	<Pressable
 			                	style={[styles.button, styles.buttonClose]}
@@ -55,6 +58,8 @@ class SignInModal extends Component {
 		);
 	}
 }
+
+SignInModal.contextType = UserContext;
 
 const styles = StyleSheet.create({
   centeredView: {

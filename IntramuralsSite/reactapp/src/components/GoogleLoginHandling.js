@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from "axios"; 
 import { GoogleLogin } from 'react-google-login';
+import UserContext from '../UserContext.js';
 
 const CLIENT_ID =
   '1071786778662-0lmd9mio92ksbhqq3h5o3est54nrcbg9.apps.googleusercontent.com';
@@ -9,10 +10,6 @@ class GoogleLoginBtn extends Component {
    constructor(props) {
     super(props);
 
-    this.state = {
-      isLogined: false,
-      accessToken: ''
-    };
 
     this.login = this.login.bind(this);
     this.handleLoginFailure = this.handleLoginFailure.bind(this);
@@ -20,13 +17,11 @@ class GoogleLoginBtn extends Component {
 
   login (response) {
     if(response.accessToken){
-      this.setState(state => ({
-        isLogined: true,
-        accessToken: response.accessToken
-      }));
-
       var profile = response.getBasicProfile();
 
+      this.context.loginUser(profile.getEmail());
+      let value = this.context;
+      console.log(value);
 
       axios({
         method:'post', 
@@ -57,11 +52,11 @@ class GoogleLoginBtn extends Component {
           responseType='code,token'
           hostedDomain={'csumb.edu'}
         />
-      { this.state.accessToken ? <h5>Your Access Token: <br/><br/> { this.state.accessToken }</h5> : null }
-
     </div>
     )
   }
 }
+
+GoogleLoginBtn.contextType = UserContext;
 
 export default GoogleLoginBtn;
