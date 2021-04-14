@@ -7,16 +7,16 @@ class Account(models.Model):
     is_admin = models.BooleanField(default=False) 
 
     def __str__(self):
-        return self.email
+        return self.email + " (" + str(self.id) + ")"
     
 
 class Sport(models.Model):
     sport_name = models.TextField()
-    logo_url = models.TextField()
+    logo_url = models.TextField(default="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse4.mm.bing.net%2Fth%3Fid%3DOIP.HuOqn7QL9Gw7vHAzolIJzgHaHa%26pid%3DApi&f=1")
     is_active = models.BooleanField()
 
     def __str__(self):
-        return self.sport_name
+        return self.sport_name + " (" + str(self.id) + ")"
     
 
 class League(models.Model):
@@ -30,7 +30,7 @@ class League(models.Model):
     reg_end_date = models.DateField()
 
     def __str__(self):
-        return self.league_name
+        return self.sport.sport_name +": "+ self.league_name + " (" + str(self.id) + ")"
     
 
 class Team(models.Model):
@@ -39,7 +39,7 @@ class Team(models.Model):
     players = models.ManyToManyField(Account)
 
     def __str__(self):
-        return self.team_name
+        return self.team_name + " (" + str(self.id) + ")"
     
 
 class Game(models.Model):

@@ -7,7 +7,8 @@ from django.contrib.auth.models import User
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from main.models import Account, Team
+from .models import Account, Team, League
+from .serializers import LeaugeSerializer, SportSerializer
 
 def index(request):
     return HttpResponse("Index page for website")
@@ -28,17 +29,21 @@ def join_team(request):
     team.save()
     return HttpResponse('Successfully joined team')
 
-    # print("here 1")
-    # if request.method == "POST":
-    #     print("here 2")
-    #     user_id = request.POST.get("user_id")
-    #     team_id = request.POST.get("team_id")
-    #     user_account = Account.objects.get(id=user_id)
-    #     team = Team.objects.get(id=team_id)
-    #     team.players.add(user_account)
-    #     team.save()
-    #     return HttpResponse('Successfully joined team')
-    # return HttpResponse('Failed')
+@api_view(['POST'])
+def create_sport(request):
+	serializer = SportSerializer(data=request.data)
+	if serializer.is_valid():
+		serializer.save()
+	return Response(serializer.data)
+
+@api_view(['POST'])
+def create_league(request):
+	serializer = LeaugeSerializer(data=request.data)
+	if serializer.is_valid():
+		serializer.save()
+	return Response(serializer.data)
+
+
 
 def login(request):
 	body = json.loads(request.body.decode('utf-8'))
