@@ -47,7 +47,7 @@ class LoginPage extends React.Component {
         	<Fragment>
 			<div class="split left">
 				<div class="centered">
-					<img className="title-image" src={logo}/>
+					<img className="title-image" src={logo} alt="LoginLogo"/>
 					<label className="title">CSUMB Intramurals</label>
 					<p>Description.</p>
 				</div>
@@ -102,7 +102,7 @@ class App extends Component {
     ifUserSignedIn(Component) {
         if (this.state.isSignedIn == null) {
             return (
-                <h1></h1>
+                <h1> </h1>
             )
         }
         return this.state.isSignedIn ?

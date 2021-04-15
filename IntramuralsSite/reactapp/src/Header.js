@@ -15,13 +15,13 @@ const Header = () => {
 				<div class="header">
 					<div>
 						<span>
-							<img class="header-image" src={logo}/>
+							<img class="header-image" src={logo} alt="HeaderLogo"/>
 							<a class="header-text" href="/">CSUMB Intramurals</a>
 						</span>
 						<span class="dropdown">				
 							<Dropdown >
 			                    <Dropdown.Toggle class="dropdown-text" as="a" >
-				                    <img class="dropdown-image" src={imageUrl}/>
+				                    <img class="dropdown-image" src={imageUrl} alt="UserProfilePicture"/>
 				                    <label>{name}</label>
 			                    </Dropdown.Toggle>
 			                    <Dropdown.Menu>
