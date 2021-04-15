@@ -15,6 +15,7 @@ import axios from "axios";
 import "../sports.css"
 
 
+<<<<<<< HEAD
 class SportsPage extends Component {
 	constructor(props) {
     super(props);
@@ -122,6 +123,17 @@ class SportsPage extends Component {
 			</Box>
 		)
 	}
+=======
+const SportsPage = () => {
+	return (
+		<Box>
+			<h1 class="title">Sports Page</h1>
+			<div class="searchdiv"> 
+				<SearchTextInput/>
+			</div>
+		</Box>
+	);
+>>>>>>> d70bfa079c27ddc109840b298239db0da40414ac
 }
 
 const styles = StyleSheet.create({
