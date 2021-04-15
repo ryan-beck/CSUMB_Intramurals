@@ -1,30 +1,43 @@
 import React, { Fragment } from 'react';
+import {Dropdown} from 'react-bootstrap';
 
-import "./App.css"
-import UserContext from './UserContext';
-import GoogleLogoutBtn from './components/GoogleLogoutHandling';
+import "./Header.css";
+import logo from "./otterLogoTransparent.png";
 
-function Header() {
-  return (
-      <Fragment>
-      <div class="header">
-      	<div>
-      	<span class="header-text">CSUMB Intramurals</span>
-      		<UserContext.Consumer>
-	      		{({value}) => {
-	      			<GoogleLogoutBtn value={value}/>
-	      		}}
-	      	</UserContext.Consumer>
-		  
-		</div>
-	  	<div class="navigation">
-	  		<a class="navigation-button" href="/">Home</a>
-	  		<a class="navigation-button" href="/sports">Sports</a>
-	  	</div>
-		</div>
+const Header = () => {
+	const authInstance = window.gapi.auth2.getAuthInstance();
+	const user = authInstance.currentUser.get();
+    const profile = user.getBasicProfile();
+    const name = profile.getName();
+    const imageUrl = profile.getImageUrl();
+		return (
+			<Fragment>
+				<div class="header">
+					<div>
+						<span>
+							<img class="header-image" src={logo}/>
+							<a class="header-text" href="/">CSUMB Intramurals</a>
+						</span>
+						<span class="dropdown">				
+							<Dropdown >
+			                    <Dropdown.Toggle class="dropdown-text" as="a" >
+				                    <img class="dropdown-image" src={imageUrl}/>
+				                    <label>{name}</label>
+			                    </Dropdown.Toggle>
+			                    <Dropdown.Menu>
+			                        <Dropdown.Item onClick={authInstance.signOut}>Sign out</Dropdown.Item>
+			                    </Dropdown.Menu>
+			                </Dropdown>
+		                </span>
+					</div>
+					<div class="navigation">
+						<a class="navigation-button" href="/">Home</a>
+						<a class="navigation-button" href="/sports">Sports</a>
+					</div>
+				</div>
 
-      	</Fragment>
-  );
+			</Fragment>
+		);
 }
 
 export default Header;

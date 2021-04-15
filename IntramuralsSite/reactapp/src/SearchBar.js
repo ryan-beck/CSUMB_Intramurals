@@ -6,9 +6,6 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 
-import UserContext from './UserContext.js';
-
-
 const SearchTextInput = () => {
     
 
@@ -26,7 +23,6 @@ const SearchTextInput = () => {
 
   return (
     <div>
-    <Test/>
       <TextInput
         style={styles.input}
         onChangeText={onChangeNumber}
@@ -63,19 +59,5 @@ const styles = StyleSheet.create({
     borderWidth:2,
   },
 });
-
-class Test extends Component {
-  constructor(props) {
-    super(props);
-  }
-  render () {
-    let value = this.context;
-    console.log(value);
-    return ( 
-    <label>{value.user.username}</label>);
-  }
-}
-Test.contextType = UserContext;
-
 
 export default SearchTextInput;
