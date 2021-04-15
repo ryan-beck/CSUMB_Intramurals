@@ -9,7 +9,6 @@ import "../sports.css"
 
 
 const SportsPage = () => {
-	
 	return (
 		<Box>
 			<h1 class="title">Sports Page</h1>

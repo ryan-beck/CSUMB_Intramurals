@@ -1,0 +1,46 @@
+.header {
+  background-color: #00688B;
+}
+
+.header-text {
+	font-size: 30px;
+	color:white;
+	font-weight: bolder;
+	margin-left: 10px;	
+}
+
+.header-image {
+	width: 100px;
+	margin-left: 20px;
+}
+
+.navigation {
+	padding-bottom: 10px;
+	text-align: center;
+}
+
+.navigation-button {
+	font-size: 15px;
+	text-decoration: none;
+	color:white; 
+	margin-right: 10px;
+	font-weight: bold;
+}
+
+.dropdown {
+	float: right;
+	margin-top: 10px;
+}
+
+.dropdown-text {
+	font-size: 20px;
+	text-decoration: none;
+	color:white; 
+	font-weight: bold;
+	margin-right: 20px;
+}
+
+.dropdown-image {
+	margin-right: 10px;
+	width: 60px;
+}
