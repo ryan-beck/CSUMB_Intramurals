@@ -9,27 +9,11 @@ import FormLabel from '@material-ui/core/FormLabel';
 
 const SearchTextInput = () => {
     
-
-   function logChange(val) {
-     console.log("Selected: " + val.value);
-   } 
-
-  const [text, onChangeText] = React.useState("Useless Text");
-  const [number, onChangeNumber] = React.useState(null);
-  const [selectedValue, setSelectedValue] = React.useState('a');
-
-  const handleChange = (event) => {
-    setSelectedValue(event.target.value);
-  };
-
   return (
     <div>
       <TextInput
         style={styles.input}
-        onChangeText={onChangeNumber}
-        value={number}
         placeholder=" Search for Sports"
-        keyboardType="numeric"
       />
       <FormControl component="fieldset">
       <RadioGroup row aria-label="position" name="position" defaultValue="top">

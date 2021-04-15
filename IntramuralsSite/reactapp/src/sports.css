@@ -19,3 +19,8 @@
     height: auto;
     display: inline-block;
 }
+
+.league_display {
+    margin: 20px;
+    border: 1px solid #bbb;
+}
