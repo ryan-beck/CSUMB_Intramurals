@@ -100,9 +100,9 @@ class App extends Component {
     }
 
     ifUserSignedIn(Component) {
-        if (this.state.isSignedIn === null) {
+        if (this.state.isSignedIn == null) {
             return (
-                <h1>Checking if youre signed in...</h1>
+                <h1></h1>
             )
         }
         return this.state.isSignedIn ?
