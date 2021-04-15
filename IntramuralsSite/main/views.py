@@ -6,7 +6,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from .models import Account, Team, League
-from .serializers import LeaugeSerializer, SportSerializer
+from .serializers import LeagueSerializer, SportSerializer
 
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
@@ -37,7 +37,7 @@ def create_sport(request):
 
 @api_view(['POST'])
 def create_league(request):
-	serializer = LeaugeSerializer(data=request.data)
+	serializer = LeagueSerializer(data=request.data)
 	if serializer.is_valid():
 		serializer.save()
 	return Response(serializer.data)
@@ -59,7 +59,6 @@ def createAccount(request):
 			except Exception as e:
 				return HttpResponse(e)
 		return JsonResponse({'status': 'ok'})
-    return JsonResponse({"count": len(text)})
 
 @api_view(['GET'])
 def getSportsList(request):
