@@ -8,6 +8,13 @@ from rest_framework.response import Response
 from .models import Account, Team, League
 from .serializers import LeaugeSerializer, SportSerializer
 
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+
+from .models import Sport
+
+from .serializers import *
+
 def index(request):
     return HttpResponse("Index page for website")
 
@@ -52,7 +59,20 @@ def createAccount(request):
 			except Exception as e:
 				return HttpResponse(e)
 		return JsonResponse({'status': 'ok'})
+    return JsonResponse({"count": len(text)})
 
+@api_view(['GET'])
+def getSportsList(request):
+    data = Sport.objects.all()
 
+    sports = SportSerializer(data, context={'request': request}, many=True)
 
+    return Response(sports.data)
 
+@api_view(['GET'])
+def getLeagueList(request):
+    data = League.objects.all()
+
+    leagues = LeagueSerializer(data, context={'request': request}, many=True)
+
+    return Response(leagues.data)
