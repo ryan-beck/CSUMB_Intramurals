@@ -33,6 +33,7 @@ const Header = () => {
 					<div class="navigation">
 						<a class="navigation-button" href="/">Home</a>
 						<a class="navigation-button" href="/sports">Sports</a>
+						<a class="navigation-button" href="/profile">Profile</a>
 					</div>
 				</div>
 
