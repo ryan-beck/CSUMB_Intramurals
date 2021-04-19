@@ -6,7 +6,14 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from .models import Account, Team, League
-from .serializers import LeaugeSerializer, SportSerializer
+from .serializers import LeagueSerializer, SportSerializer
+
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+
+from .models import Sport
+
+from .serializers import *
 
 def index(request):
     return HttpResponse("Index page for website")
@@ -30,7 +37,7 @@ def create_sport(request):
 
 @api_view(['POST'])
 def create_league(request):
-	serializer = LeaugeSerializer(data=request.data)
+	serializer = LeagueSerializer(data=request.data)
 	if serializer.is_valid():
 		serializer.save()
 	return Response(serializer.data)
@@ -53,6 +60,18 @@ def createAccount(request):
 				return HttpResponse(e)
 		return JsonResponse({'status': 'ok'})
 
+@api_view(['GET'])
+def getSportsList(request):
+    data = Sport.objects.all()
 
+    sports = SportSerializer(data, context={'request': request}, many=True)
 
+    return Response(sports.data)
 
+@api_view(['GET'])
+def getLeagueList(request):
+    data = League.objects.all()
+
+    leagues = LeagueSerializer(data, context={'request': request}, many=True)
+
+    return Response(leagues.data)
