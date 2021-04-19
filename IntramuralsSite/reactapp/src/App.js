@@ -14,7 +14,7 @@ import CreateSportForm from "./components/CreateSportForm";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "./App.css";
 
-class LoginPage extends React.Component {
+class LoginPage extends Component {
     componentDidMount() {
         window.gapi.load('signin2', () => {
 			const params = {
