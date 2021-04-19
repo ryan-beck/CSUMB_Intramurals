@@ -27,8 +27,12 @@ class LoginPage extends Component {
 				        url: 'http://localhost:8000/api/createAccount/', 
 				        data: {
 							email: profile.getEmail(),
-							name: profile.getName(),
-							imageUrl: profile.getImageUrl()},
+							display_name: profile.getName(),
+							photo_url: profile.getImageUrl()},
+							is_admin: false,
+			        })
+			        .then(({data}) => {
+			        	console.log(data);
 			        });
 				},
 				onfailure: () => {
