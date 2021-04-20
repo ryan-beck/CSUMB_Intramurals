@@ -55,15 +55,15 @@ class CreateSportForm extends Component {
                 <h2>Create a League</h2>
                 <form onSubmit={this.submitHandler}>
                     <label>League Name</label> <br/>
-                    <input type="text" placeholder="ex: 'Fall 2021: 3v3'" name="leagueName" value={this.state.leagueName} onChange={this.onChangeHandler}/> <br/>
+                    <input type="text" placeholder="ex: 'Fall 2021: 3v3'" name="leagueName" value={this.state.leagueName} onChange={this.onChangeHandler} required/> <br/>
                     <label>League Start Date </label> <br/>
-                    <input type="date" name="startDate" value={this.state.startDate} onChange={this.onChangeHandler}/> <br/>
+                    <input type="date" name="startDate" value={this.state.startDate} onChange={this.onChangeHandler} required/> <br/>
                     <label>League End Date </label> <br/>
-                    <input type="date" name="endDate" value={this.state.endDate} onChange={this.onChangeHandler}/> <br/>
+                    <input type="date" name="endDate" value={this.state.endDate} onChange={this.onChangeHandler} required/> <br/>
                     <label>Registration Start Date </label> <br/>
-                    <input type="date" name="startRegDate" value={this.state.startRegDate} onChange={this.onChangeHandler}/> <br/>
+                    <input type="date" name="startRegDate" value={this.state.startRegDate} onChange={this.onChangeHandler} required/> <br/>
                     <label>Registration End Date </label> <br/>
-                    <input type="date" name="endRegDate" value={this.state.endRegDate} onChange={this.onChangeHandler}/> <br/>
+                    <input type="date" name="endRegDate" value={this.state.endRegDate} onChange={this.onChangeHandler} required/> <br/>
                     <input type="submit" value="Submit"/>
                 </form>
             </div>
