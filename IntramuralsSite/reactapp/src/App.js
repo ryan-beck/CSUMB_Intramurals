@@ -15,7 +15,7 @@ import CreateLeagueForm from "./components/CreateLeagueForm";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "./App.css";
 
-class LoginPage extends React.Component {
+class LoginPage extends Component {
     componentDidMount() {
         window.gapi.load('signin2', () => {
 			const params = {
@@ -28,8 +28,13 @@ class LoginPage extends React.Component {
 				        url: 'http://localhost:8000/api/createAccount/', 
 				        data: {
 							email: profile.getEmail(),
-							name: profile.getName(),
-							imageUrl: profile.getImageUrl()},
+							display_name: profile.getName(),
+							photo_url: profile.getImageUrl(),
+							is_admin: false
+						}
+			        })
+			        .then(({data}) => {
+			        	console.log(data);
 			        });
 				},
 				onfailure: () => {
@@ -68,11 +73,37 @@ class LoginPage extends React.Component {
 
 class App extends Component {
 	constructor(props) {
-        super(props)
+        super(props);
 
         this.state = {
-            isSignedIn: null
-        }
+            isSignedIn: null,
+            user: {}
+        };
+        this.setSignInStatus = this.setSignInStatus.bind(this);
+
+    }
+
+    setSignInStatus(signedInStatus) {
+    	if (signedInStatus) {
+    		const authInstance =  window.gapi.auth2.getAuthInstance();
+    		const profile = authInstance.currentUser.get().getBasicProfile();
+	      	const email = profile.getEmail();
+	    	axios({
+		        method:'get', 
+		        url: 'http://localhost:8000/api/getAccountByEmail/'+email
+	        })
+	        .then(({data}) => {
+	        	this.setState({
+	        		isSignedIn: signedInStatus,
+	        		user: data
+	        	});
+	        });
+	    } else {
+	    	this.setState({
+        		isSignedIn: signedInStatus,
+        		user: {}
+        	});
+	    }
     }
 
     initializeGoogleSignIn() {
@@ -82,12 +113,14 @@ class App extends Component {
 			hosted_domain: 'csumb.edu',
 			scope: 'email'
         }).then(() => {
-          const authInstance =  window.gapi.auth2.getAuthInstance()
-          const isSignedIn = authInstance.isSignedIn.get()
-          this.setState({isSignedIn})
+          const authInstance =  window.gapi.auth2.getAuthInstance();
+          const isSignedIn = authInstance.isSignedIn.get();
+          this.setSignInStatus(isSignedIn);
+
 
           authInstance.isSignedIn.listen(isSignedIn => {
-            this.setState({isSignedIn})
+            this.setSignInStatus(isSignedIn);
+            console.log(isSignedIn);
           });
         })
       });
@@ -108,8 +141,8 @@ class App extends Component {
         }
         return this.state.isSignedIn ?
 	        <Fragment>
-	        	<Header/>
-	            <Component/>
+	        	<Header user={this.state.user}/>
+	            <Component user={this.state.user}/>
 	        </Fragment> 
 	        :
             <LoginPage/>

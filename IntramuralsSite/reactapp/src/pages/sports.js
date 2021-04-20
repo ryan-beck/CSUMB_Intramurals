@@ -25,6 +25,7 @@ class SportsPage extends Component {
 	  displayArray: [],
 	  searchtTextInput: " ",
 	  leagueArray: [],
+	  user: props.user
     };
 
 	this.handleSearchChange = this.handleSearchChange.bind(this)

@@ -42,23 +42,16 @@ def create_league(request):
 		serializer.save()
 	return Response(serializer.data)
 
+@api_view(['POST'])
 def createAccount(request):
 	body = json.loads(request.body.decode('utf-8'))
-	if request.method == 'POST':
-		email = body["email"]
-		if not Account.objects.filter(email=email).exists():
-			name = body["name"]
-			imageUrl = body["imageUrl"]
-			try:
-				account = Account(
-					email=email, 
-					display_name=name, 
-					photo_url=imageUrl,
-					is_admin=False)
-				account.save()
-			except Exception as e:
-				return HttpResponse(e)
-		return JsonResponse({'status': 'ok'})
+	email = body["email"]
+	if not Account.objects.filter(email=email).exists():
+		serializer = AccountSerializer(data=request.data)
+		if serializer.is_valid():
+			serializer.save()
+		return Response(serializer.data)
+	return JsonResponse({'status': 'ok'})
 
 @api_view(['GET'])
 def getSportsList(request):
@@ -75,3 +68,9 @@ def getLeagueList(request):
     leagues = LeagueSerializer(data, context={'request': request}, many=True)
 
     return Response(leagues.data)
+
+@api_view(['GET'])
+def getAccountByEmail(request, email):
+	account = Account.objects.get(email=email)
+	serializer = AccountSerializer(instance=account)
+	return Response(serializer.data)
