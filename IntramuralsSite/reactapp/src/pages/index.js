@@ -1,7 +1,14 @@
 import React, { Fragment, Component } from "react";
+import axios from "axios"; 
 import "../index.css";
 
 class MainPage extends Component {
+
+	componentDidMount() {
+		var user = window.gapi.auth2.getAuthInstance().currentUser.get();
+		var email = user.getBasicProfile().getEmail();
+		console.log(email);
+	}
 
 	render()  {
 		return (

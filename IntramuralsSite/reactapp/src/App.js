@@ -28,8 +28,9 @@ class LoginPage extends Component {
 				        data: {
 							email: profile.getEmail(),
 							display_name: profile.getName(),
-							photo_url: profile.getImageUrl()},
-							is_admin: false,
+							photo_url: profile.getImageUrl(),
+							is_admin: false
+						}
 			        })
 			        .then(({data}) => {
 			        	console.log(data);
@@ -71,11 +72,37 @@ class LoginPage extends Component {
 
 class App extends Component {
 	constructor(props) {
-        super(props)
+        super(props);
 
         this.state = {
-            isSignedIn: null
-        }
+            isSignedIn: null,
+            user: {}
+        };
+        this.setSignInStatus = this.setSignInStatus.bind(this);
+
+    }
+
+    setSignInStatus(signedInStatus) {
+    	if (signedInStatus) {
+    		const authInstance =  window.gapi.auth2.getAuthInstance();
+    		const profile = authInstance.currentUser.get().getBasicProfile();
+	      	const email = profile.getEmail();
+	    	axios({
+		        method:'get', 
+		        url: 'http://localhost:8000/api/getAccountByEmail/'+email
+	        })
+	        .then(({data}) => {
+	        	this.setState({
+	        		isSignedIn: signedInStatus,
+	        		user: data
+	        	});
+	        });
+	    } else {
+	    	this.setState({
+        		isSignedIn: signedInStatus,
+        		user: {}
+        	});
+	    }
     }
 
     initializeGoogleSignIn() {
@@ -85,12 +112,14 @@ class App extends Component {
 			hosted_domain: 'csumb.edu',
 			scope: 'email'
         }).then(() => {
-          const authInstance =  window.gapi.auth2.getAuthInstance()
-          const isSignedIn = authInstance.isSignedIn.get()
-          this.setState({isSignedIn})
+          const authInstance =  window.gapi.auth2.getAuthInstance();
+          const isSignedIn = authInstance.isSignedIn.get();
+          this.setSignInStatus(isSignedIn);
+
 
           authInstance.isSignedIn.listen(isSignedIn => {
-            this.setState({isSignedIn})
+            this.setSignInStatus(isSignedIn);
+            console.log(isSignedIn);
           });
         })
       });

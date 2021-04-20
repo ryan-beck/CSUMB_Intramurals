@@ -51,7 +51,6 @@ def createAccount(request):
 		if serializer.is_valid():
 			serializer.save()
 		return Response(serializer.data)
-		
 	return JsonResponse({'status': 'ok'})
 
 @api_view(['GET'])
@@ -69,3 +68,9 @@ def getLeagueList(request):
     leagues = LeagueSerializer(data, context={'request': request}, many=True)
 
     return Response(leagues.data)
+
+@api_view(['GET'])
+def getAccountByEmail(request, email):
+	account = Account.objects.get(email=email)
+	serializer = AccountSerializer(instance=account)
+	return Response(serializer.data)
