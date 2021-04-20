@@ -115,6 +115,23 @@ class SportsPage extends Component {
 						{this.state.displayArray.map((sport, index) => (
 						  <div key={index}>
 							<h3>{sport.sport_name}</h3>
+							<div>
+							{this.state.leagueArray.map((league, index) => (
+							  <div key={index}>
+								{(() => {
+								if (sport.id == league.sport) {
+									return (
+									<div><a href="#"><h5>{league.league_name}</h5></a></div>
+									)
+								} else {
+									return (
+									<div><h1></h1></div>
+									)
+								}
+								})()}
+							  </div>
+							))}
+							</div>
 						  </div>
 						))}
 					 </div>
