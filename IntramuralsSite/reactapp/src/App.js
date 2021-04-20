@@ -140,8 +140,8 @@ class App extends Component {
         }
         return this.state.isSignedIn ?
 	        <Fragment>
-	        	<Header/>
-	            <Component/>
+	        	<Header user={this.state.user}/>
+	            <Component user={this.state.user}/>
 	        </Fragment> 
 	        :
             <LoginPage/>
