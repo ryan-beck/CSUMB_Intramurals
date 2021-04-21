@@ -8,7 +8,8 @@ class CreateSportForm extends Component {
 
         this.state = {
             // TODO: pass id of selected sport as prop
-            sportId: 1,
+            sportId: this.props.sportId,
+            sportName: this.props.sportName,
             leagueName: "",
             startDate: "",
             endDate: "",
@@ -52,7 +53,7 @@ class CreateSportForm extends Component {
     render () {
         return (
             <div>
-                <h2>Create a League</h2>
+                <h2>Create League for {this.state.sportName}</h2>
                 <form onSubmit={this.submitHandler}>
                     <label>League Name</label> <br/>
                     <input type="text" placeholder="ex: 'Fall 2021: 3v3'" name="leagueName" value={this.state.leagueName} onChange={this.onChangeHandler} required/> <br/>
