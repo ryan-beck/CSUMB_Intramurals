@@ -1,0 +1,10 @@
+.editIcon {
+    height: 25px;
+    width: 25px;
+    margin-top: 20px;
+    margin-left: 10px;
+}
+.editSpan {
+    display: flex;
+    flex-direction: row;
+}

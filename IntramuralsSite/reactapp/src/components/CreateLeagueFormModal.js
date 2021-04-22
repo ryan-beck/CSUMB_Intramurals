@@ -1,7 +1,11 @@
 import React, { Component } from "react";
 import { Alert, Modal, Text, Pressable, View, StyleSheet } from "react-native";
-import CreateLeagueForm from './CreateLeagueForm'
+import CreateLeagueForm from './CreateLeagueForm';
+import add from '../assets/add.png';
+import edit from '../assets/pencil.png';
+import remove from '../assets/delete.png';
 
+import '../style/leagueForm.css'
 
 class CreateLeagueFormModal extends Component {
 	constructor(props) {
@@ -48,11 +52,20 @@ class CreateLeagueFormModal extends Component {
 			            </View>
 			        </View>
 		        </Modal>
-		        <Pressable
-		        	onPress={() => this.setModalVisible(true)}
-		        >
-		        	<button>Add League</button>
-		        </Pressable>
+                <span class="editSpan">
+                    <Pressable
+                        onPress={() => this.setModalVisible(true)}
+                    >
+                        <img class="editIcon" src={add}></img>
+                    </Pressable>
+                    {/* <Pressable>
+                        <img class="editIcon" src={edit}></img>
+                    </Pressable>
+                    <Pressable>
+                        <img class="editIcon" src={remove}></img>
+                    </Pressable> */}
+                </span>
+		        
 		    </View>
 		);
 	}
@@ -66,34 +79,34 @@ const styles = StyleSheet.create({
         alignItems: "center",
         marginTop: 22
       },
-      modalView: {
+    modalView: {
         margin: 20,
         backgroundColor: "#00688B",
         borderRadius: 20,
         padding: 35,
         alignItems: "center"
-      },
-      button: {
+    },
+    button: {
         borderRadius: 5,
         padding: 10,
-      },
-      buttonOpen: {
+    },
+    buttonOpen: {
         backgroundColor: "#F194FF",
-      },
-      buttonClose: {
-        backgroundColor: "#2196F3",
-      },
-      textStyle: {
+    },
+    buttonClose: {
+        
+    },
+    textStyle: {
         color: "white",
         fontWeight: "bold",
         textAlign: "center"
-      },
-      modalText: {
+    },
+    modalText: {
         marginBottom: 15,
         textAlign: "center",
         color: "white",
         fontWeight: "bolder"
-      }
+    }
 });
 
 export default CreateLeagueFormModal;
