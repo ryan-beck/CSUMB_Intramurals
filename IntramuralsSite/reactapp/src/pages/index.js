@@ -11,15 +11,15 @@ class MainPage extends Component {
         };
     }
 
-    componentDidMount() {
-    	fetch('http://localhost:8000/api/getEventsByUser/'+this.state.user.id)
-        .then(res => res.json())
-        .then((res) => {
-        	this.setState({
-        		teams: res
-        	});
-        });
-    }
+    // componentDidMount() {
+    // 	fetch('http://localhost:8000/api/getEventsByUser/'+this.state.user.id)
+    //     .then(res => res.json())
+    //     .then((res) => {
+    //     	this.setState({
+    //     		teams: res
+    //     	});
+    //     });
+    // }
 
 	render()  {
 		return (
