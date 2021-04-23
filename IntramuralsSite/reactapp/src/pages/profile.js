@@ -1,6 +1,6 @@
 import React from 'react';
 import { Component } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -8,7 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 
 
-const useStyles = makeStyles({
+const styles = theme => ({
   root: {
     flexGrow: 1,
   },
@@ -23,7 +23,6 @@ function TabPanel(props) {
       hidden={value !== index}
       id={`vertical-tabpanel-${index}`}
       aria-labelledby={`vertical-tab-${index}`}
-      {...other}
     >
       {value === index && (
         <Box p={3}>
@@ -34,34 +33,58 @@ function TabPanel(props) {
   );
 }
 
-const ProfilePage = () => {
-  const classes = useStyles();
-  const [value, setValue] = React.useState(0);
+class ProfilePage extends Component {
+  constructor(props){
+    super(props);
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
+    this.state = {
+      value: 0,
+      teamsArray: [],
+      UpcomingGames: []
+    }
+
+    this.handleTabChange = this.handleTabChange.bind(this)
+  }
+
+  handleTabChange (event, newValue) {
+    this.setState({
+      value:newValue
+    })
   };
 
-  return (
-    <Paper className={classes.root}>
-      <Tabs
-        value={value}
-        onChange={handleChange}
-        indicatorColor="primary"
-        textColor="primary"
-        centered
-      >
-        <Tab label="My Teams" />
-        <Tab label="My Games" />
-      </Tabs>
-      <TabPanel value={value} index={0}>
-         Item One
-       </TabPanel>
-       <TabPanel value={value} index={1}>
-         Item Two
-       </TabPanel>
-    </Paper>
-  );
+  // componentDidMount(){
+  //   fetch()
+  //   .then(res => res.json())
+  //   .then(
+  //     (result) => {
+  //       this.setState
+  //     }
+  //   )
+  // }
+
+  render() {
+    const { classes } = this.props;
+		return (
+      <Paper className={classes.root}>
+        <Tabs
+          value={this.state.value}
+          onChange={this.handleTabChange}
+          indicatorColor="primary"
+          textColor="primary"
+          centered
+        >
+          <Tab label="My Teams" />
+          <Tab label="My Games" />
+        </Tabs>
+        <TabPanel value={this.state.value} index={0}>
+           Item One
+         </TabPanel>
+         <TabPanel value={this.state.value} index={1}>
+           Item Two
+         </TabPanel>
+      </Paper>
+    )
+	}
 }
 
-export default ProfilePage;
+export default withStyles(styles, { withTheme:true})(ProfilePage);
