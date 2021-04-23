@@ -1,16 +1,16 @@
 import React from "react";
-import { Component, useState, useEffect } from 'react';
+import { Component } from 'react';
 //import SearchTextInput from "../SearchBar";
 import Box from '@material-ui/core/Box';
-import { Alert, Modal, StyleSheet, Text, Pressable, View, TextInput } from "react-native";
+import { TextInput, StyleSheet } from "react-native";
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
-import FormLabel from '@material-ui/core/FormLabel';
 
 
-import axios from "axios";
+
+//import axios from "axios";
 
 import "../sports.css"
 
@@ -70,7 +70,7 @@ class SportsPage extends Component {
 		  SearchTextInput: evt.target.value
 		});
 
-		if(this.state.SearchTextInput != " ") {
+		if(this.state.SearchTextInput !== " ") {
 			this.setState({
 			  displayArray: this.state.sportsArray.filter(sport => sport.sport_name.includes(this.state.SearchTextInput))
 			});
@@ -83,8 +83,8 @@ class SportsPage extends Component {
 	render() {
 		return (
 			<Box>
-				<h1 class="title">Sports Page</h1>
-				<div class="searchdiv"> 
+				<h1 className="title">Sports Page</h1>
+				<div className="searchdiv"> 
 					<div>
 					  <TextInput
 						value = {this.state.SearchTextInput}
@@ -110,7 +110,7 @@ class SportsPage extends Component {
 					</FormControl>
 				</div>
 				</div>
-				<Box class="league_display">
+				<Box className="league_display">
 					 <div>
 						{this.state.displayArray.map((sport, index) => (
 						  <div key={index}>
@@ -119,13 +119,13 @@ class SportsPage extends Component {
 							{this.state.leagueArray.map((league, index) => (
 							  <div key={index}>
 								{(() => {
-								if (sport.id == league.sport) {
+								if (sport.id === league.sport) {
 									return (
-									<div><a href="#"><h5>{league.league_name}</h5></a></div>
+									<div><a href={'/leagues/'+ sport.sport_name+'/'+league.league_name}><h5>{league.league_name}</h5></a></div>
 									)
 								} else {
 									return (
-									<div><h1></h1></div>
+									<div><h1> </h1></div>
 									)
 								}
 								})()}

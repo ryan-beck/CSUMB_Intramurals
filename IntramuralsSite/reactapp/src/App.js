@@ -9,6 +9,7 @@ import {
 import Header from './Header';
 import MainPage from "./pages";
 import SportsPage from "./pages/sports";
+import LeaguePage from "./pages/leagues";
 import logo from "./otterLogoTransparent.png"
 import CreateSportForm from "./components/CreateSportForm";
 import CreateLeagueForm from "./components/CreateLeagueForm";
@@ -100,19 +101,19 @@ class App extends Component {
       document.body.appendChild(script);
     }
 
-    ifUserSignedIn(Component) {
+    ifUserSignedIn(Component,props) {
         if (this.state.isSignedIn == null) {
             return (
                 <h1> </h1>
             )
         }
         return this.state.isSignedIn ?
-	        <Fragment>
+	        (<Fragment>
 	        	<Header/>
-	            <Component/>
-	        </Fragment> 
+	            <Component props={props}/>
+	        </Fragment>) 
 	        :
-            <LoginPage/>
+            (<LoginPage/>)
     }
 
   render() {
@@ -121,7 +122,8 @@ class App extends Component {
 			    <Switch>
 				    <Route exact path="/" render={() => this.ifUserSignedIn(MainPage)}/>
 				    <Route exact path="/sports" render={() => this.ifUserSignedIn(SportsPage)}/>
-					<Route exact path="/admin" render={() => this.ifUserSignedIn(CreateLeagueForm)} />
+					<Route exact path="/admin" render={() => this.ifUserSignedIn(CreateLeagueForm)}/>
+					<Route path="/leagues/:sport/:league" render={props => this.ifUserSignedIn(LeaguePage,{...props})}/>
 			    </Switch>
 		    </Router>
 		    
