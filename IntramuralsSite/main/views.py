@@ -75,3 +75,4 @@ def getLeagueList(request):
     leagues = LeagueSerializer(data, context={'request': request}, many=True)
 
     return Response(leagues.data)
+
