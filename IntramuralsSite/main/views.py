@@ -11,7 +11,7 @@ from .serializers import LeagueSerializer, SportSerializer
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 
-from .models import Sport
+from .models import Sport, Game
 
 from .serializers import *
 
@@ -74,3 +74,43 @@ def getAccountByEmail(request, email):
 	account = Account.objects.get(email=email)
 	serializer = AccountSerializer(instance=account)
 	return Response(serializer.data)
+
+@api_view(['POST'])
+def generateGameSchedule(request):
+	leagueId = request.data['leagueId']
+	gameNum = request.data['gameNum']
+	
+	teams = list(Team.objects.filter(league=leagueId))
+	games = generateSchedule(teams, gameNum)
+	for game in games:
+		print(game)
+	return HttpResponse("games generated")
+
+
+def generateSchedule(teams, gameNum):
+        # how many games (gameNum)
+
+        # what days / times will games be played
+        # how long will each game last
+		# how to determine home/away
+        # what location will the game be played
+		
+
+		if len(teams) % 2 != 0:
+			teams.append(None)
+		games = []
+		
+		for i in range(gameNum):
+			matrix = [teams[:len(teams)//2], teams[len(teams)//2:][::-1]]
+			for j in range(len(matrix[0])):
+				if matrix[0][j] != None and matrix[1][j] != None:
+					game = Game(league=teams[0].league, 
+								start_time="2021-10-18",
+								home_team=matrix[0][j],
+								away_team=matrix[1][j])
+					games.append(game)
+			
+			teams = [teams[0]] + [teams[-1]] + teams[1:-1]
+		return games
+
+	

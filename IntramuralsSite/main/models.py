@@ -50,3 +50,6 @@ class Game(models.Model):
     home_score = models.IntegerField(null=True)
     away_score = models.IntegerField(null=True)
 
+    def __str__(self):
+        return " ".join(str(self.league).split()[:2]) + ": " + self.home_team.team_name + " vs. " + self.away_team.team_name
+
