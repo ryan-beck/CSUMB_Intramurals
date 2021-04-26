@@ -50,3 +50,8 @@ class Game(models.Model):
     home_score = models.IntegerField(null=True)
     away_score = models.IntegerField(null=True)
 
+class Post(models.Model):
+    text = models.TextField()
+    media_url = models.TextField()
+    owner = models.ForeignKey(Account, on_delete=models.CASCADE)
+    posted_date = models.DateField()

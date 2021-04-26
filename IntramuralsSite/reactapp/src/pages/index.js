@@ -18,7 +18,6 @@ class MainPage extends Component {
         	this.setState({
         		events: res
         	});
-        	console.log(this.state.events);
         });
     }
 
