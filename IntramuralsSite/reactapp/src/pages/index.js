@@ -7,7 +7,8 @@ class MainPage extends Component {
 
         this.state = {
             user: props.user,
-            events: []
+            events: [],
+            posts: []
         };
     }
 
@@ -19,19 +20,45 @@ class MainPage extends Component {
         		events: res
         	});
         });
+        fetch('http://localhost:8000/api/getPosts/')
+        .then(res => res.json())
+        .then((res) => {
+			this.setState({
+				posts: res
+			});
+        });
     }
 
 	render()  {
 		return (
 			<Fragment>
 				<div className="main">
-					<h2>SideBar</h2>
-					<p>This sidebar is of full height (100%) and always shown.</p>
-					<p>Scroll down the page to see the result.</p>
-					<p>Some text to enable scrolling.. Lorem ipsum dolor sit amet, illum definitiones no quo, maluisset concludaturque et eum, altera fabulas ut quo. Atqui causae gloriatur ius te, id agam omnis evertitur eum. Affert laboramus repudiandae nec et. Inciderint efficiantur his ad. Eum no molestiae voluptatibus.</p>
-					<p>Some text to enable scrolling.. Lorem ipsum dolor sit amet, illum definitiones no quo, maluisset concludaturque et eum, altera fabulas ut quo. Atqui causae gloriatur ius te, id agam omnis evertitur eum. Affert laboramus repudiandae nec et. Inciderint efficiantur his ad. Eum no molestiae voluptatibus.</p>
-					<p>Some text to enable scrolling.. Lorem ipsum dolor sit amet, illum definitiones no quo, maluisset concludaturque et eum, altera fabulas ut quo. Atqui causae gloriatur ius te, id agam omnis evertitur eum. Affert laboramus repudiandae nec et. Inciderint efficiantur his ad. Eum no molestiae voluptatibus.</p>
-					<p>Some text to enable scrolling.. Lorem ipsum dolor sit amet, illum definitiones no quo, maluisset concludaturque et eum, altera fabulas ut quo. Atqui causae gloriatur ius te, id agam omnis evertitur eum. Affert laboramus repudiandae nec et. Inciderint efficiantur his ad. Eum no molestiae voluptatibus.</p>
+					{this.state.posts.map((post, index) => (
+						<div key={index} className="post">
+							<span>
+								<label className="post-title">{post.display_name}</label>
+								<label className="post-date">{post.posted_date}</label>
+							</span>
+							{(() => {
+								if (post.text) {
+									return (
+										<div>
+											<label className="post-text">{post.text}</label>
+										</div>
+									);
+								}
+							})()}
+							{(() => {
+								if (post.media_url) {
+									return (
+										<div>
+											<img className="post-media" src={post.media_url} alt="PostedMedia"/>
+										</div>
+									);
+								}
+							})()}
+						</div>
+					))}
 				</div>
 				<div className="sidenav">
 					<label className="sidenav-title">Upcoming Games</label>
@@ -42,7 +69,7 @@ class MainPage extends Component {
 								<li><span>{event.gameTime}</span></li>
 							</ul>
 						</div>
-						))}
+					))}
 				</div>
 			</Fragment>
 		);

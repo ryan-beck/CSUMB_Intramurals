@@ -5,6 +5,7 @@ from . import views
 urlpatterns = [
     path('getSports/', views.getSportsList, name='getSports'),
     path('getLeagues/', views.getLeagueList, name='getLeague'),
+    path('getPosts/', views.getPosts, name='getPosts'),
     path('getEventsByUser/<str:userId>/', views.getEventsByUser, name='getEventsByUser'),
     path('getAccountByEmail/<str:email>/', views.getAccountByEmail, name='getAccountByEmail'),
     # path('joinTeam/', views.join_team, name='join_team'),

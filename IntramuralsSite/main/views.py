@@ -67,6 +67,21 @@ def getLeagueList(request):
     return Response(leagues.data)
 
 @api_view(['GET'])
+def getPosts(request):
+	data = Post.objects.all()
+
+	posts_serializer = PostSerializer(data, context={'request': request}, many=True)
+	
+	for i in range(len(posts_serializer.data)):
+		user = Account.objects.get(id=posts_serializer.data[i]['owner'])
+		posts_serializer.data[i]['display_name'] = user.display_name
+
+		date = datetime.strptime(posts_serializer.data[i]['posted_date'], '%Y-%m-%d')
+		posts_serializer.data[i]['posted_date'] = date.strftime("%m-%d-%Y")
+		
+	return Response(posts_serializer.data)
+
+@api_view(['GET'])
 def getAccountByEmail(request, email):
 	account = Account.objects.get(email=email)
 	serializer = AccountSerializer(instance=account)
