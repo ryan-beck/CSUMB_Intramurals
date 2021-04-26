@@ -51,7 +51,7 @@ class Game(models.Model):
     away_score = models.IntegerField(null=True)
 
 class Post(models.Model):
-    text = models.TextField()
-    media_url = models.TextField()
+    text = models.TextField(blank=True)
+    media_url = models.TextField(blank=True)
     owner = models.ForeignKey(Account, on_delete=models.CASCADE)
     posted_date = models.DateField()
