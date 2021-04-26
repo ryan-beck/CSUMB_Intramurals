@@ -7,19 +7,20 @@ class MainPage extends Component {
 
         this.state = {
             user: props.user,
-            teams: {}
+            events: []
         };
     }
 
-    // componentDidMount() {
-    // 	fetch('http://localhost:8000/api/getEventsByUser/'+this.state.user.id)
-    //     .then(res => res.json())
-    //     .then((res) => {
-    //     	this.setState({
-    //     		teams: res
-    //     	});
-    //     });
-    // }
+    componentDidMount() {
+    	fetch('http://localhost:8000/api/getEventsByUser/'+this.state.user.id)
+        .then(res => res.json())
+        .then((res) => {
+        	this.setState({
+        		events: res
+        	});
+        	console.log(this.state.events);
+        });
+    }
 
 	render()  {
 		return (
@@ -34,7 +35,15 @@ class MainPage extends Component {
 					<p>Some text to enable scrolling.. Lorem ipsum dolor sit amet, illum definitiones no quo, maluisset concludaturque et eum, altera fabulas ut quo. Atqui causae gloriatur ius te, id agam omnis evertitur eum. Affert laboramus repudiandae nec et. Inciderint efficiantur his ad. Eum no molestiae voluptatibus.</p>
 				</div>
 				<div className="sidenav">
-					<label>My Stuff</label>
+					<label className="sidenav-title">Upcoming Games</label>
+					{this.state.events.map((event, index) => (
+						<div key={index}>
+							<label>{event.gameTitle}</label>
+							<ul>
+								<li><span>{event.gameTime}</span></li>
+							</ul>
+						</div>
+						))}
 				</div>
 			</Fragment>
 		);

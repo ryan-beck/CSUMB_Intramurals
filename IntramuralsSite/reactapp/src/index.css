@@ -12,12 +12,22 @@
   text-align: center;
 }
 
-.sidenav-text{
-  
+.sidenav-title{
+  font-weight: bolder;
+  font-size: 20px;
 }
 
 .main {
   margin-right: 25%; /* Same as the width of the sidenav */
   font-size: 28px; /* Increased text to enable scrolling */
   padding: 170px 20px;
+}
+
+ul {
+  padding-left: 100px;
+}
+
+li span {
+  position: relative;
+  left: -90px;
 }

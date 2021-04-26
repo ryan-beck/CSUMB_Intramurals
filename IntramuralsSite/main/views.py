@@ -1,4 +1,5 @@
 import json
+from datetime import datetime
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.models import User
@@ -104,6 +105,45 @@ def getEventsByUser(request, userId):
 	game_data = Game.objects.filter(home_team__in=team_ids) | Game.objects.filter(away_team__in=team_ids)
 	game_serializer = GameSerializer(game_data, context={'request': request}, many=True)
 
+	#put together events to be able to return one list
 	events = []
-	# print(game_serializer.data)
-	return JsonResponse({'status': 'ok'})
+	for game in game_serializer.data:
+		leagueTitle = ''
+		sportId = 0
+		sportTitle = ''
+		teamName = ''
+		home = False
+
+		gameTime = datetime.strptime(game['start_time'], '%Y-%m-%d')
+
+		if gameTime > datetime.today():
+
+			for i in range(len(team_serializer.data)):
+				if team_serializer.data[i]['id'] == game['home_team']:
+					home = True
+					teamName = team_serializer.data[i]['team_name']
+					break
+				elif team_serializer.data[i]['id'] == game['away_team']:
+					home = False
+					teamName = team_serializer.data[i]['team_name']
+					break
+
+			for i in range(len(league_serializer.data)):
+				if league_serializer.data[i]['id'] == game['league']:
+					sportId = league_serializer.data[i]['sport']
+					leagueTitle = league_serializer.data[i]['league_name']
+					break
+
+			for i in range(len(sport_serializer.data)):
+				if sport_serializer.data[i]['id'] == sportId:
+					sportTitle = sport_serializer.data[i]['sport_name']
+					break
+
+			event = sportTitle + ': ' + leagueTitle + ' - ' + teamName
+			strGameTime = gameTime.strftime("%m-%d-%Y")
+			pair = {'gameTime': strGameTime, 'gameTitle':event, 'homeTeam': home}
+			events.append(pair)
+
+	events.sort(key = lambda x: datetime.strptime(x['gameTime'], '%m-%d-%Y'))
+
+	return Response(events)
