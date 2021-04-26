@@ -57,6 +57,7 @@ class MainPage extends Component {
 									);
 								}
 							})()}
+							<hr/>
 						</div>
 					))}
 				</div>
