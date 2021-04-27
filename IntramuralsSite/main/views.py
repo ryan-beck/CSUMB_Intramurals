@@ -102,45 +102,44 @@ def generateGameSchedule(request):
 
 	
 	leagueStart = datetime.datetime(leagueStart.year, leagueStart.month, leagueStart.day) + datetime.timedelta(minutes=startTime)
-	# print("League Start: " , leagueStart.strftime('%Y-%m-%d %H:%M:%S'))
 	
 	games = generateSchedule(teams, gameNum, leagueStart, gameLength, teamGamesPerDay)
-	for game in games:
-		print(game)
-	return HttpResponse("games generated")
+	# TODO: save games here when everything is finalized
+	serializer = GameSerializer(games, context={'request': request}, many=True)
+	return Response(serializer.data)
 
 
 def generateSchedule(teams, gameNum, leagueStart, gameLength, teamGamesPerDay):
-        # TODO:
-		# case of multiple usable locations
-		# how to determine home/away
-        # what location will the game be played
+	# TODO:
+	# case of multiple usable locations
+	# how to determine home/away
+	# what location will the game be played
+	
+	if len(teams) % 2 != 0:
+		teams.append(None)
+	games = []
+	
+	currDateTime = leagueStart
+	currGamesPerDay = 0
+	currWeek = 0
+	for i in range(gameNum):
+		if currGamesPerDay == teamGamesPerDay:
+			currGamesPerDay = 0
+			currWeek += 1
+			currDateTime = leagueStart + datetime.timedelta(weeks=currWeek)
+		matrix = [teams[:len(teams)//2], teams[len(teams)//2:][::-1]]
+		for j in range(len(matrix[0])):
+			if matrix[0][j] != None and matrix[1][j] != None:
+				game = Game(league=teams[0].league, 
+							start_time=str(currDateTime),
+							home_team=matrix[0][j],
+							away_team=matrix[1][j])
+				games.append(game)
+				currDateTime += datetime.timedelta(minutes=gameLength)
 		
-		if len(teams) % 2 != 0:
-			teams.append(None)
-		games = []
-		
-		currDateTime = leagueStart
-		currGamesPerDay = 0
-		currWeek = 0
-		for i in range(gameNum):
-			if currGamesPerDay == teamGamesPerDay:
-				currGamesPerDay = 0
-				currWeek += 1
-				currDateTime = leagueStart + datetime.timedelta(weeks=currWeek)
-			matrix = [teams[:len(teams)//2], teams[len(teams)//2:][::-1]]
-			for j in range(len(matrix[0])):
-				if matrix[0][j] != None and matrix[1][j] != None:
-					game = Game(league=teams[0].league, 
-								start_time=str(currDateTime),
-								home_team=matrix[0][j],
-								away_team=matrix[1][j])
-					games.append(game)
-					currDateTime += datetime.timedelta(minutes=gameLength)
-			
-			currGamesPerDay += 1
-			teams = [teams[0]] + [teams[-1]] + teams[1:-1]
-		return games
+		currGamesPerDay += 1
+		teams = [teams[0]] + [teams[-1]] + teams[1:-1]
+	return games
 
 	
 @api_view(['GET'])
