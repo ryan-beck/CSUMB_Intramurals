@@ -32,14 +32,8 @@ class SportsPage extends Component {
 
 	this.handleSearchChange = this.handleSearchChange.bind(this)
 	this.adminViewSwitch = this.adminViewSwitch.bind(this);
+	this.handleFormSubmit = this.handleFormSubmit.bind(this);
   }
-
-  	adminViewSwitch() {
-		this.setState({
-			isAdminView: !this.state.isAdminView
-		});
-		console.log(this.state.isAdminView);
-	}
 
 	componentDidMount() {
 		fetch("http://localhost:8000/api/getSports/")
@@ -70,6 +64,19 @@ class SportsPage extends Component {
 			  console.log("Error in database call")
 			}
 		  )
+	}
+
+	adminViewSwitch() {
+		this.setState({
+			isAdminView: !this.state.isAdminView
+		});
+	}
+
+	handleFormSubmit(newLeague) {
+		console.log("form submit called");
+		this.setState ({
+			leagueArray : this.state.leagueArray.concat(newLeague)
+		});
 	}
 
 
@@ -142,7 +149,7 @@ class SportsPage extends Component {
 							{(() => {
 								if (this.state.isAdminView) {
 									return (
-									<div> <CreateLeagueFormModal sportId={sport.id} sportName={sport.sport_name}/> </div>
+									<div> <CreateLeagueFormModal sportId={sport.id} sportName={sport.sport_name} handleFormSubmit={this.handleFormSubmit}/> </div>
 									)
 								}
 							})()}

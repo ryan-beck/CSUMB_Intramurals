@@ -33,20 +33,23 @@ class CreateSportForm extends Component {
     submitHandler(event) {
         event.preventDefault();
         // TODO: implement form validation
+        let leagueData = {
+            sport: this.state.sportId,
+            league_name: this.state.leagueName,
+            start_date: this.state.startDate,
+            end_date: this.state.endDate,
+            reg_start_date: this.state.startRegDate,
+            reg_end_date: this.state.endRegDate
+        };
         axios({
             method:'post', 
             url: 'http://localhost:8000/api/createLeague/', 
-            data: {
-              sport: this.state.sportId,
-              league_name: this.state.leagueName,
-              start_date: this.state.startDate,
-              end_date: this.state.endDate,
-              reg_start_date: this.state.startRegDate,
-              reg_end_date: this.state.endRegDate
-            }})
-            .then(({data}) => {
-                console.log(data);
-            });
+            data: leagueData
+        })
+        .then(({data}) => {
+            console.log(data);
+            this.props.handleFormSubmit(leagueData);
+        });
     }
     
 

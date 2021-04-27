@@ -18,6 +18,7 @@ class CreateLeagueFormModal extends Component {
 		};
 
 		this.setModalVisible = this.setModalVisible.bind(this);
+        this.handleFormSubmit = this.handleFormSubmit.bind(this);
 	}
 
 	setModalVisible (visible) {
@@ -25,6 +26,11 @@ class CreateLeagueFormModal extends Component {
 	        modalVisible: visible
 	    }));
 	}
+
+    handleFormSubmit (newLeague) {
+        this.setModalVisible(false);
+        this.props.handleFormSubmit(newLeague);
+    }
 
 	render() {
 		const { modalVisible } = this.state;
@@ -42,7 +48,8 @@ class CreateLeagueFormModal extends Component {
 				>
 					<View style={styles.centeredView}>
 			            <View style={styles.modalView}>
-			            	<CreateLeagueForm sportId={this.state.sportId} sportName={this.state.sportName}/>
+			            	<CreateLeagueForm sportId={this.state.sportId} sportName={this.state.sportName} 
+                            handleFormSubmit={this.handleFormSubmit}/>
 			              	<Pressable
 			                	style={[styles.button, styles.buttonClose]}
 			                	onPress={() => this.setModalVisible(!modalVisible)}
