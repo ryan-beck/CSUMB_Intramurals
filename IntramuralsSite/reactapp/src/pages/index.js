@@ -1,5 +1,11 @@
 import React, { Fragment, Component } from "react";
+import { Pressable } from "react-native";
 import "../index.css";
+
+import add from '../assets/add.png';
+import edit from '../assets/pencil.png';
+import remove from '../assets/delete.png';
+import CreateLeagueFormModal from '../components/CreateLeagueFormModal';
 
 class MainPage extends Component {
 	constructor(props) {
@@ -33,12 +39,31 @@ class MainPage extends Component {
 		return (
 			<Fragment>
 				<div className="main">
+					{(() => {
+						if (this.state.user.is_admin) {
+							return (
+								<span>
+									<img className="adminIcons" src={add}></img>
+								</span>
+							);
+						}
+					})()}
 					{this.state.posts.map((post, index) => (
 						<div key={index} className="post">
 							<span>
 								<label className="post-title">{post.display_name}</label>
 								<label className="post-date">{post.posted_date}</label>
 							</span>
+							{(() => {
+								if (this.state.user.is_admin) {
+									return (
+										<div className="editIcons">
+											<img className="adminIcons" src={edit}></img>
+											<img className="adminIcons" src={remove}></img>
+										</div>
+									);
+								}
+							})()}
 							{(() => {
 								if (post.text) {
 									return (

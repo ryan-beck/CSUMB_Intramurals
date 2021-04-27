@@ -46,6 +46,15 @@
   padding: 170px 30px;
 }
 
+.adminIcons {
+    height: 30px;
+    width: 30px;
+}
+
+.editIcons {
+	float: right;
+}
+
 ul {
   padding-left: 100px;
 }
