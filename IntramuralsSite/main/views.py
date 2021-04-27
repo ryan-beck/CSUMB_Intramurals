@@ -1,4 +1,5 @@
 import json
+import datetime
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.models import User
@@ -78,38 +79,70 @@ def getAccountByEmail(request, email):
 @api_view(['POST'])
 def generateGameSchedule(request):
 	leagueId = request.data['leagueId']
+	#number of total games to played throughout season
 	gameNum = request.data['gameNum']
+	#int representing day of week, 0 Monday, 6 Sunday
+	gameDay = request.data['gameDay']
+	#time that games will begin, in minutes
+	startTime = request.data['startTime']
+	#length of each game, in minutes
+	gameLength = request.data['gameLength']
+	#games to be played by each team per day
+	teamGamesPerDay = request.data['teamGamesPerDay']
+	
+	# TODO:'loactionNum': for case of multiple usable locations
+	#	         i.e. 2 or more courts/fields can be used at a time
+	#	   'location': string of location name
+	#			 i.e. 'Otter Sports Center'
+
+	
 	
 	teams = list(Team.objects.filter(league=leagueId))
-	games = generateSchedule(teams, gameNum)
+	leagueStart = League.objects.get(id=leagueId).start_date
+	if leagueStart.weekday() < gameDay:
+		leagueStart += datetime.timedelta(days=gameDay)
+	elif leagueStart.weekday() > gameDay:
+		leagueStart += 7-leagueStart.weekday() + datetime.timedelta(days=gameDay)
+
+	
+	leagueStart = datetime.datetime(leagueStart.year, leagueStart.month, leagueStart.day) + datetime.timedelta(minutes=startTime)
+	# print("League Start: " , leagueStart.strftime('%Y-%m-%d %H:%M:%S'))
+	
+	games = generateSchedule(teams, gameNum, leagueStart, gameLength, teamGamesPerDay)
 	for game in games:
 		print(game)
 	return HttpResponse("games generated")
 
 
-def generateSchedule(teams, gameNum):
-        # how many games (gameNum)
-
-        # what days / times will games be played
-        # how long will each game last
+def generateSchedule(teams, gameNum, leagueStart, gameLength, teamGamesPerDay):
+        # TODO:
+		# case of multiple usable locations
 		# how to determine home/away
         # what location will the game be played
 		
-
 		if len(teams) % 2 != 0:
 			teams.append(None)
 		games = []
 		
+		currDateTime = leagueStart
+		currGamesPerDay = 0
+		currWeek = 0
 		for i in range(gameNum):
+			if currGamesPerDay == teamGamesPerDay:
+				currGamesPerDay = 0
+				currWeek += 1
+				currDateTime = leagueStart + datetime.timedelta(weeks=currWeek)
 			matrix = [teams[:len(teams)//2], teams[len(teams)//2:][::-1]]
 			for j in range(len(matrix[0])):
 				if matrix[0][j] != None and matrix[1][j] != None:
 					game = Game(league=teams[0].league, 
-								start_time="2021-10-18",
+								start_time=str(currDateTime),
 								home_team=matrix[0][j],
 								away_team=matrix[1][j])
 					games.append(game)
+					currDateTime += datetime.timedelta(minutes=gameLength)
 			
+			currGamesPerDay += 1
 			teams = [teams[0]] + [teams[-1]] + teams[1:-1]
 		return games
 
