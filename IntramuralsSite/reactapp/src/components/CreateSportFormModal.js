@@ -1,20 +1,16 @@
 import React, { Component } from "react";
 import { Alert, Modal, Text, Pressable, View, StyleSheet } from "react-native";
-import CreateLeagueForm from './CreateLeagueForm';
-import add from '../assets/add.png';
-import edit from '../assets/pencil.png';
-import remove from '../assets/delete.png';
+import CreateSportForm from './CreateSportForm';
+
 
 import '../style/leagueForm.css'
 
-class CreateLeagueFormModal extends Component {
+class CreateSportFormModal extends Component {
 	constructor(props) {
 	    super(props);
 
 		this.state = {
 			modalVisible: false,
-            sportId: props.sportId,
-            sportName: props.sportName
 		};
 
 		this.setModalVisible = this.setModalVisible.bind(this);
@@ -27,9 +23,9 @@ class CreateLeagueFormModal extends Component {
 	    }));
 	}
 
-    handleFormSubmit (newLeague) {
+    handleFormSubmit (newSport) {
         this.setModalVisible(false);
-        this.props.handleFormSubmit(newLeague);
+        this.props.handleFormSubmit(newSport);
     }
 
 	render() {
@@ -44,8 +40,7 @@ class CreateLeagueFormModal extends Component {
 				>
 					<View style={styles.centeredView}>
 			            <View style={styles.modalView}>
-			            	<CreateLeagueForm sportId={this.state.sportId} sportName={this.state.sportName} 
-                            handleFormSubmit={this.handleFormSubmit}/>
+			            	<CreateSportForm handleFormSubmit={this.handleFormSubmit}/>
 			              	<Pressable
 			                	style={[styles.button, styles.buttonClose]}
 			                	onPress={() => this.setModalVisible(!modalVisible)}
@@ -59,14 +54,8 @@ class CreateLeagueFormModal extends Component {
                     <Pressable
                         onPress={() => this.setModalVisible(true)}
                     >
-                        <img class="editIcon" src={add}></img>
+                       <button>Add new sport</button>
                     </Pressable>
-                    {/* <Pressable>
-                        <img class="editIcon" src={edit}></img>
-                    </Pressable>
-                    <Pressable>
-                        <img class="editIcon" src={remove}></img>
-                    </Pressable> */}
                 </span>
 		        
 		    </View>
@@ -112,4 +101,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default CreateLeagueFormModal;
+export default CreateSportFormModal;
