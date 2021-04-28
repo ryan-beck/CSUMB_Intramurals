@@ -5,7 +5,7 @@ import "../index.css";
 import add from '../assets/add.png';
 import edit from '../assets/pencil.png';
 import remove from '../assets/delete.png';
-import CreateLeagueFormModal from '../components/CreateLeagueFormModal';
+import CreatePostFormModal from '../components/CreatePostFormModal';
 
 class MainPage extends Component {
 	constructor(props) {
@@ -42,9 +42,7 @@ class MainPage extends Component {
 					{(() => {
 						if (this.state.user.is_admin) {
 							return (
-								<span>
-									<img className="adminIcons" src={add}></img>
-								</span>
+								<div> <CreatePostFormModal userId={this.state.user.id}/> </div>
 							);
 						}
 					})()}
@@ -54,16 +52,6 @@ class MainPage extends Component {
 								<label className="post-title">{post.display_name}</label>
 								<label className="post-date">{post.posted_date}</label>
 							</span>
-							{(() => {
-								if (this.state.user.is_admin) {
-									return (
-										<div className="editIcons">
-											<img className="adminIcons" src={edit}></img>
-											<img className="adminIcons" src={remove}></img>
-										</div>
-									);
-								}
-							})()}
 							{(() => {
 								if (post.text) {
 									return (

@@ -40,6 +40,13 @@ def create_league(request):
 	return Response(serializer.data)
 
 @api_view(['POST'])
+def create_post(request):
+	serializer = PostSerializer(data=request.data)
+	if serializer.is_valid():
+		serializer.save()
+	return Response(serializer.data)
+
+@api_view(['POST'])
 def createAccount(request):
 	body = json.loads(request.body.decode('utf-8'))
 	email = body["email"]
