@@ -9,6 +9,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import CreateLeagueFormModal from '../components/CreateLeagueFormModal';
+import CreateSportFormModal from '../components/CreateSportFormModal';
 
 
 import axios from "axios";
@@ -32,7 +33,8 @@ class SportsPage extends Component {
 
 	this.handleSearchChange = this.handleSearchChange.bind(this)
 	this.adminViewSwitch = this.adminViewSwitch.bind(this);
-	this.handleFormSubmit = this.handleFormSubmit.bind(this);
+	this.handleLeagueFormSubmit = this.handleLeagueFormSubmit.bind(this);
+	this.handleSportFormSubmit = this.handleSportFormSubmit.bind(this);
   }
 
 	componentDidMount() {
@@ -72,11 +74,17 @@ class SportsPage extends Component {
 		});
 	}
 
-	handleFormSubmit(newLeague) {
-		console.log("form submit called");
+	handleLeagueFormSubmit(newLeague) {
 		this.setState ({
 			leagueArray : this.state.leagueArray.concat(newLeague)
 		});
+	}
+
+	handleSportFormSubmit(newSport) {
+		this.setState ({
+			sportsArray: this.state.sportsArray.concat(newSport),
+			displayArray: this.state.displayArray.concat(newSport)
+		})
 	}
 
 
@@ -140,6 +148,13 @@ class SportsPage extends Component {
 					</FormControl>
 				</div>
 				</div>
+				{(() => {
+					if (this.state.isAdminView) {
+						return (
+							<div> <CreateSportFormModal handleFormSubmit={this.handleSportFormSubmit}/> </div>
+						)
+					}
+				})()}
 				<Box class="league_display">
 					 <div>
 						{this.state.displayArray.map((sport, index) => (
@@ -149,7 +164,7 @@ class SportsPage extends Component {
 							{(() => {
 								if (this.state.isAdminView) {
 									return (
-									<div> <CreateLeagueFormModal sportId={sport.id} sportName={sport.sport_name} handleFormSubmit={this.handleFormSubmit}/> </div>
+									<div> <CreateLeagueFormModal sportId={sport.id} sportName={sport.sport_name} handleFormSubmit={this.handleLeagueFormSubmit}/> </div>
 									)
 								}
 							})()}
