@@ -76,8 +76,8 @@ def getPosts(request):
 		user = Account.objects.get(id=posts_serializer.data[i]['owner'])
 		posts_serializer.data[i]['display_name'] = user.display_name
 
-		date = datetime.strptime(posts_serializer.data[i]['posted_date'], '%Y-%m-%d')
-		posts_serializer.data[i]['posted_date'] = date.strftime("%m-%d-%Y")
+		date = datetime.strptime(posts_serializer.data[i]['posted_date'], '%Y-%m-%dT%H:%M:%SZ')
+		posts_serializer.data[i]['posted_date'] = date.strftime("%m-%d-%Y %I:%M %p")
 		
 	return Response(posts_serializer.data)
 
@@ -129,7 +129,7 @@ def getEventsByUser(request, userId):
 		teamName = ''
 		home = False
 
-		gameTime = datetime.strptime(game['start_time'], '%Y-%m-%d')
+		gameTime = datetime.strptime(game['start_time'], '%Y-%m-%dT%H:%M:%SZ')
 
 		if gameTime > datetime.today():
 
@@ -155,10 +155,10 @@ def getEventsByUser(request, userId):
 					break
 
 			event = sportTitle + ': ' + leagueTitle + ' - ' + teamName
-			strGameTime = gameTime.strftime("%m-%d-%Y")
+			strGameTime = gameTime.strftime("%m-%d-%Y %I:%M %p")
 			pair = {'gameTime': strGameTime, 'gameTitle':event, 'homeTeam': home}
 			events.append(pair)
 
-	events.sort(key = lambda x: datetime.strptime(x['gameTime'], '%m-%d-%Y'))
+	events.sort(key = lambda x: datetime.strptime(x['gameTime'], '%m-%d-%Y %I:%M %p'))
 
 	return Response(events)

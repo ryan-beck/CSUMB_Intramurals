@@ -44,14 +44,15 @@ class Team(models.Model):
 
 class Game(models.Model):
     league = models.ForeignKey(League, on_delete=models.CASCADE)
-    start_time = models.DateField()
+    start_time = models.DateTimeField()
     home_team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='home_team')
     away_team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='away_team')
     home_score = models.IntegerField(null=True)
     away_score = models.IntegerField(null=True)
 
+
 class Post(models.Model):
     text = models.TextField(blank=True)
     media_url = models.TextField(blank=True)
     owner = models.ForeignKey(Account, on_delete=models.CASCADE)
-    posted_date = models.DateField()
+    posted_date = models.DateTimeField()
