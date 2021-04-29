@@ -1,28 +1,33 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, Component } from 'react';
 import {Dropdown} from 'react-bootstrap';
 
 import "./Header.css";
 import logo from "./otterLogoTransparent.png";
 
-const Header = () => {
-	const authInstance = window.gapi.auth2.getAuthInstance();
-	const user = authInstance.currentUser.get();
-    const profile = user.getBasicProfile();
-    const name = profile.getName();
-    const imageUrl = profile.getImageUrl();
+class Header extends Component {
+	constructor(props) {
+        super(props);
+
+        this.state = {
+            user: props.user
+        };
+    }
+
+    render() {
+    	const authInstance = window.gapi.auth2.getAuthInstance();
 		return (
 			<Fragment>
-				<div class="header">
+				<div className="header">
 					<div>
 						<span>
-							<img class="header-image" src={logo} alt="HeaderLogo"/>
-							<a class="header-text" href="/">CSUMB Intramurals</a>
+							<img className="header-image" src={logo} alt="HeaderLogo"/>
+							<a className="header-text" href="/">CSUMB Intramurals</a>
 						</span>
-						<span class="dropdown">				
+						<span className="dropdown">				
 							<Dropdown >
-			                    <Dropdown.Toggle class="dropdown-text" as="a" >
-				                    <img class="dropdown-image" src={imageUrl} alt="UserProfilePicture"/>
-				                    <label>{name}</label>
+			                    <Dropdown.Toggle className="dropdown-text" as="a" >
+				                    <img className="dropdown-image" src={this.state.user.photo_url} alt="UserProfilePicture"/>
+				                    <label>{this.state.user.display_name}</label>
 			                    </Dropdown.Toggle>
 			                    <Dropdown.Menu>
 			                        <Dropdown.Item onClick={authInstance.signOut}>Sign out</Dropdown.Item>
@@ -39,6 +44,7 @@ const Header = () => {
 
 			</Fragment>
 		);
+	}
 }
 
 export default Header;

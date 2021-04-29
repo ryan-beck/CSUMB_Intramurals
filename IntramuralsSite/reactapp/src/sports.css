@@ -1,5 +1,6 @@
 .title {
     text-align:center;
+    padding-top: 170px;
 }
 
 .component-search-input input {
@@ -24,3 +25,14 @@
     margin: 20px;
     border: 1px solid #bbb;
 }
+
+.sportRow {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.adminSwitch {
+    float: right;
+}
+

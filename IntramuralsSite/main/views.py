@@ -5,14 +5,10 @@ from django.contrib.auth.models import User
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from .models import Account, Team, League
-from .serializers import LeagueSerializer, SportSerializer
-
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 
-from .models import Sport
-
+from .models import *
 from .serializers import *
 
 def index(request):
@@ -42,23 +38,16 @@ def create_league(request):
 		serializer.save()
 	return Response(serializer.data)
 
+@api_view(['POST'])
 def createAccount(request):
 	body = json.loads(request.body.decode('utf-8'))
-	if request.method == 'POST':
-		email = body["email"]
-		if not Account.objects.filter(email=email).exists():
-			name = body["name"]
-			imageUrl = body["imageUrl"]
-			try:
-				account = Account(
-					email=email, 
-					display_name=name, 
-					photo_url=imageUrl,
-					is_admin=False)
-				account.save()
-			except Exception as e:
-				return HttpResponse(e)
-		return JsonResponse({'status': 'ok'})
+	email = body["email"]
+	if not Account.objects.filter(email=email).exists():
+		serializer = AccountSerializer(data=request.data)
+		if serializer.is_valid():
+			serializer.save()
+		return Response(serializer.data)
+	return JsonResponse({'status': 'ok'})
 
 @api_view(['GET'])
 def getSportsList(request):
@@ -77,7 +66,44 @@ def getLeagueList(request):
     return Response(leagues.data)
 
 @api_view(['GET'])
-def getTeamsList(request):
-	data = Team.objects.all()
+def getAccountByEmail(request, email):
+	account = Account.objects.get(email=email)
+	serializer = AccountSerializer(instance=account)
+	return Response(serializer.data)
 
+@api_view(['GET'])
+def getEventsByUser(request, userId):
+	# grab teams based on userId
+	team_data = Team.objects.filter(players=userId)
+	team_serializer = TeamSerializer(team_data, context={'request': request}, many=True)
+
+	# grab league ids and team ids from the list of teams
+	team_ids = []
+	league_ids = []
+	for i in range(len(team_serializer.data)):
+		if team_serializer.data[i]["league"] not in league_ids:
+			league_ids.append(team_serializer.data[i]["league"])
+		if team_serializer.data[i]["id"] not in team_ids:
+			team_ids.append(team_serializer.data[i]["id"])
 	
+	# grab leagues from list of league ids
+	league_data = League.objects.filter(id__in=league_ids)
+	league_serializer = LeagueSerializer(league_data, context={'request': request}, many=True)
+
+	# grab sport ids from list of leagues
+	sport_ids = []
+	for i in range(len(league_serializer.data)):
+		if league_serializer.data[i]["sport"] not in sport_ids:
+			sport_ids.append(league_serializer.data[i]["sport"])
+
+	# grab sports from list of sport ids
+	sport_data = Sport.objects.filter(id__in=sport_ids)
+	sport_serializer = SportSerializer(sport_data, context={'request': request}, many=True)
+
+	# grab games from team_ids
+	game_data = Game.objects.filter(home_team__in=team_ids) | Game.objects.filter(away_team__in=team_ids)
+	game_serializer = GameSerializer(game_data, context={'request': request}, many=True)
+
+	events = []
+	# print(game_serializer.data)
+	return JsonResponse({'status': 'ok'})
