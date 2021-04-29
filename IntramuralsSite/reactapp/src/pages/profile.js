@@ -7,6 +7,9 @@ import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 
+import MySports from "../components/ProfileMySports";
+
+
 
 const styles = theme => ({
   root: {
@@ -77,10 +80,10 @@ class ProfilePage extends Component {
           <Tab label="My Games" />
         </Tabs>
         <TabPanel value={this.state.value} index={0}>
-           Item One
+           <MySports></MySports>
          </TabPanel>
          <TabPanel value={this.state.value} index={1}>
-           Item Two
+         insert games tab here
          </TabPanel>
       </Paper>
     )

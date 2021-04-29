@@ -75,3 +75,9 @@ def getLeagueList(request):
     leagues = LeagueSerializer(data, context={'request': request}, many=True)
 
     return Response(leagues.data)
+
+@api_view(['GET'])
+def getTeamsList(request):
+	data = Team.objects.all()
+
+	
