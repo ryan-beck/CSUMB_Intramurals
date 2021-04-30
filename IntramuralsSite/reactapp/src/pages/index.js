@@ -46,7 +46,7 @@ class MainPage extends Component {
 							);
 						}
 					})()}
-					{this.state.posts.map((post, index) => (
+					{this.state.posts.reverse().map((post, index) => (
 						<div key={index} className="post">
 							<span>
 								<label className="post-title">{post.display_name}</label>
