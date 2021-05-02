@@ -8,28 +8,40 @@ class MySports extends Component {
 
 
     this.state = {
-      
+		user: props.user,
+		teamsArray: props.teamsArray,
     };
   }
 
 
 
-	componentDidMount() {
-        fetch(){
-
-        }
-		
-	}
+	// componentDidMount() {
+    //     fetch("http://localhost:8000/api/getTeamsByUser/"+this.state.user.id).then(res => res.json()).then(
+	// 		(result) => {
+	// 			this.setState({
+	// 				teamsArray: result
+	// 			});
+	// 			console.log(this.state.teamsArray)
+	// 		},
+	// 		(error) => {
+	// 			console.log("Error in database call")
+	// 		}
+	// 	)
+	// }
 
 
 	handleSearchChange(evt)  {
-
+		
 	};
 
 
 	render() {
 		return (
-            <h1>Outline for my teams</h1>
+			<div>
+			{this.state.teamsArray.map((team, index) => (
+				<span>{team.team_name}</span>
+			))}
+			</div>
 			
 		)
 	}

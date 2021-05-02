@@ -8,6 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 
 import MySports from "../components/ProfileMySports";
+import "../style/profile.css"
 
 
 
@@ -43,7 +44,8 @@ class ProfilePage extends Component {
     this.state = {
       value: 0,
       teamsArray: [],
-      UpcomingGames: []
+      UpcomingGames: [],
+      user: props.user,
     }
 
     this.handleTabChange = this.handleTabChange.bind(this)
@@ -55,37 +57,43 @@ class ProfilePage extends Component {
     })
   };
 
-  // componentDidMount(){
-  //   fetch()
-  //   .then(res => res.json())
-  //   .then(
-  //     (result) => {
-  //       this.setState
-  //     }
-  //   )
-  // }
+	componentDidMount() {
+        fetch("http://localhost:8000/api/getTeamsByUser/"+this.state.user.id).then(res => res.json()).then(
+			(result) => {
+				this.setState({
+					teamsArray: result
+				});
+				console.log(this.state.teamsArray)
+			},
+			(error) => {
+				console.log("Error in database call")
+			}
+		)
+	}
 
   render() {
     const { classes } = this.props;
 		return (
-      <Paper className={classes.root}>
-        <Tabs
-          value={this.state.value}
-          onChange={this.handleTabChange}
-          indicatorColor="primary"
-          textColor="primary"
-          centered
-        >
-          <Tab label="My Teams" />
-          <Tab label="My Games" />
-        </Tabs>
-        <TabPanel value={this.state.value} index={0}>
-           <MySports></MySports>
-         </TabPanel>
-         <TabPanel value={this.state.value} index={1}>
-         insert games tab here
-         </TabPanel>
-      </Paper>
+      <div class = "title">
+        <Paper className={classes.root}>
+          <Tabs
+            value={this.state.value}
+            onChange={this.handleTabChange}
+            indicatorColor="primary"
+            textColor="primary"
+            centered
+          >
+            <Tab label="My Teams" />
+            <Tab label="My Games" />
+          </Tabs>
+          <TabPanel value={this.state.value} index={0}>
+            <MySports teamsArray={this.state.teamsArray} user = {this.state.user} ></MySports>
+          </TabPanel>
+          <TabPanel value={this.state.value} index={1}>
+          insert games tab here
+          </TabPanel>
+        </Paper>
+      </div>
     )
 	}
 }

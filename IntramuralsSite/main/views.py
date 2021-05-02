@@ -107,3 +107,9 @@ def getEventsByUser(request, userId):
 	events = []
 	# print(game_serializer.data)
 	return JsonResponse({'status': 'ok'})
+
+@api_view(['GET'])
+def getTeamsByUser(request, userId):
+	team_data = Team.objects.filter(players=userId)
+	team_serializer = TeamSerializer(team_data, context={'request': request}, many=True)
+	return Response(team_serializer.data)

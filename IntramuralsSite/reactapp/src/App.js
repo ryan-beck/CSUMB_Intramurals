@@ -155,11 +155,8 @@ class App extends Component {
 			    <Switch>
 				    <Route exact path="/" render={() => this.ifUserSignedIn(MainPage)}/>
 				    <Route exact path="/sports" render={() => this.ifUserSignedIn(SportsPage)}/>
-<<<<<<< HEAD
 					<Route exact path="/admin" render={() => this.ifUserSignedIn(CreateSportForm)} />
 					<Route exact path="/profile" render={() => this.ifUserSignedIn(ProfilePage)} />
-=======
->>>>>>> main
 			    </Switch>
 		    </Router>
 		    
