@@ -1,4 +1,5 @@
 import json
+from datetime import datetime as dt
 import datetime
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
@@ -40,6 +41,13 @@ def create_league(request):
 	return Response(serializer.data)
 
 @api_view(['POST'])
+def create_post(request):
+	serializer = PostSerializer(data=request.data)
+	if serializer.is_valid():
+		serializer.save()
+	return Response(serializer.data)
+
+@api_view(['POST'])
 def createAccount(request):
 	body = json.loads(request.body.decode('utf-8'))
 	email = body["email"]
@@ -65,6 +73,21 @@ def getLeagueList(request):
     leagues = LeagueSerializer(data, context={'request': request}, many=True)
 
     return Response(leagues.data)
+
+@api_view(['GET'])
+def getPosts(request):
+	data = Post.objects.all()
+
+	posts_serializer = PostSerializer(data, context={'request': request}, many=True)
+	
+	for i in range(len(posts_serializer.data)):
+		user = Account.objects.get(id=posts_serializer.data[i]['owner'])
+		posts_serializer.data[i]['display_name'] = user.display_name
+
+		date = dt.strptime(posts_serializer.data[i]['posted_date'], '%Y-%m-%dT%H:%M:%SZ')
+		posts_serializer.data[i]['posted_date'] = date.strftime("%m-%d-%Y %I:%M %p")
+		
+	return Response(posts_serializer.data)
 
 @api_view(['GET'])
 def getAccountByEmail(request, email):
@@ -178,6 +201,60 @@ def getEventsByUser(request, userId):
 	game_data = Game.objects.filter(home_team__in=team_ids) | Game.objects.filter(away_team__in=team_ids)
 	game_serializer = GameSerializer(game_data, context={'request': request}, many=True)
 
+	#put together events to be able to return one list
 	events = []
-	# print(game_serializer.data)
-	return JsonResponse({'status': 'ok'})
+	for game in game_serializer.data:
+		leagueTitle = ''
+		sportId = 0
+		sportTitle = ''
+		teamName = ''
+		home = False
+
+		gameTime = dt.strptime(game['start_time'], '%Y-%m-%dT%H:%M:%SZ')
+
+		if gameTime > dt.today():
+
+			for i in range(len(team_serializer.data)):
+				if team_serializer.data[i]['id'] == game['home_team']:
+					home = True
+					teamName = team_serializer.data[i]['team_name']
+					break
+				elif team_serializer.data[i]['id'] == game['away_team']:
+					home = False
+					teamName = team_serializer.data[i]['team_name']
+					break
+
+			for i in range(len(league_serializer.data)):
+				if league_serializer.data[i]['id'] == game['league']:
+					sportId = league_serializer.data[i]['sport']
+					leagueTitle = league_serializer.data[i]['league_name']
+					break
+
+			for i in range(len(sport_serializer.data)):
+				if sport_serializer.data[i]['id'] == sportId:
+					sportTitle = sport_serializer.data[i]['sport_name']
+					break
+
+			event = sportTitle + ': ' + leagueTitle + ' - ' + teamName
+			strGameTime = gameTime.strftime("%m-%d-%Y %I:%M %p")
+			pair = {'gameTime': strGameTime, 'gameTitle':event, 'homeTeam': home}
+			events.append(pair)
+
+	events.sort(key = lambda x: dt.strptime(x['gameTime'], '%m-%d-%Y %I:%M %p'))
+
+	return Response(events)
+
+@api_view(['DELETE'])
+def deletePost(request, postId):
+	post = Post.objects.get(id=postId)
+	post.delete()
+	return HttpResponse('deleted')
+
+@api_view(['PUT'])
+def editPost(request, postId):
+	post = Post.objects.get(id=postId)
+	serializer = PostSerializer(post, data=request.data)
+	if serializer.is_valid():
+		serializer.save()
+
+	return HttpResponse('updated')

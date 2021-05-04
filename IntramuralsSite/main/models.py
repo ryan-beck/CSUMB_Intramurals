@@ -53,3 +53,9 @@ class Game(models.Model):
     def __str__(self):
         return " ".join(str(self.league).split()[:2]) + ": " + self.home_team.team_name + " vs. " + self.away_team.team_name + " " + self.start_time
 
+
+class Post(models.Model):
+    text = models.TextField(blank=True)
+    media_url = models.TextField(blank=True)
+    owner = models.ForeignKey(Account, on_delete=models.CASCADE)
+    posted_date = models.DateTimeField()
