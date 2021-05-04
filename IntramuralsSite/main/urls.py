@@ -15,4 +15,5 @@ urlpatterns = [
     path('createPost/', views.create_post, name='createPost'),
     path('deletePost/<str:postId>/', views.deletePost, name='deletePost'),
     path('editPost/<str:postId>/', views.editPost, name='editPost'),
+    path('generateGameSchedule/', views.generateGameSchedule, name='generateGameSchedule'),
 ]
