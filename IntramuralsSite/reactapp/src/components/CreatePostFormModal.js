@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Alert, Modal, Text, Pressable, View, StyleSheet } from "react-native";
 import CreatePostForm from './CreatePostForm';
 import edit from '../assets/pencil.png';
-import '../style/modal.css'; 
 
 class CreatePostFormModal extends Component {
 	constructor(props) {

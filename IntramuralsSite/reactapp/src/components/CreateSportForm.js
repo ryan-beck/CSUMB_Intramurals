@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from "axios"; 
 
 import '../style/sportForm.css'
+import '../style/modal.css';
 
 class CreateSportForm extends Component {
 
@@ -47,14 +48,14 @@ class CreateSportForm extends Component {
     render () {
         return (
             <div class="sportForm">
-                <h2>Create a new sport</h2>
+                <h2 className="modalText">Add a New Sport</h2>
                 <form onSubmit={this.submitHandler}>
-                    <label>Sport Name</label> <br/>
+                    <label className="modalText">Sport Name</label> <br/>
                     <input type="text" name="sportName" value={this.state.sportName} onChange={this.onChangeHandler}/> <br/>
-                    <label>Photo Url</label> <br/>
+                    <label className="modalText">Photo Url</label> <br/>
                     <input type="text" name="logoUrl" value={this.state.logoUrl} onChange={this.onChangeHandler}/> <br/>
                     Dont have a url for the photo? Try uploading an image to <a href="https://imgur.com/upload">Imgur</a> to create a url. <br/>
-                    <input type="submit" value="Submit"/>
+                    <input className="submitHandler" type="submit" value="Submit"/>
                 </form>
             </div>
             

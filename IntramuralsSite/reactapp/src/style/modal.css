@@ -31,8 +31,23 @@
   	border-bottom-style: hidden;
 }
 
-.editIcon {
-	float: right;
+.left {
+    float: left;
+}   
+
+.right {
+    float: right;
+}
+
+.center {
+	display: block;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+.form-group {
+    margin-left: 5%;
+    margin-right: 5%;
 }
 
 input[type=file]::-webkit-file-upload-button {
