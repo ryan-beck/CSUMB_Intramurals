@@ -52,7 +52,7 @@ class CreatePostFormModal extends Component {
                 <span>
                     {this.state.isCreating ? (
                         <Pressable
-                            style={styles.button}
+                            style={styles.addButton}
                             onPress={() => this.setModalVisible(true)}
                         >
                             
@@ -61,10 +61,11 @@ class CreatePostFormModal extends Component {
                     )
                     : (
                         <Pressable
+                            style={styles.editButton}
                             onPress={() => this.setModalVisible(true)}
                         >
                             
-                            <img className="editIcon" src={edit} alt="EditIcon"/>
+                                <Text style={styles.textStyle}>Edit Post</Text>
                         </Pressable>
                     )}
                     
@@ -95,7 +96,15 @@ const styles = StyleSheet.create({
         textAlign: "center",
         fontSize: 15
     },
-    button: {
+    addButton: {
+        borderRadius: 20,
+        padding: 10,
+        elevation: 2,
+        float:"left",
+        backgroundColor: "#00688B",
+        width: 500
+    },
+    editButton: {
         borderRadius: 20,
         padding: 10,
         elevation: 2,
