@@ -7,4 +7,10 @@
 .editSpan {
     display: flex;
     flex-direction: row;
+    padding-left: 20px;
+    padding-bottom: 15px;
+}
+.addLeague {
+	float: right;
+	padding-bottom: 10px;
 }
