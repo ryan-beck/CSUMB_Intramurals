@@ -50,11 +50,12 @@ class CreatePostFormModal extends Component {
 		        </Modal>
                 <span>
                     <Pressable
+                        style={styles.button}
                         onPress={() => this.setModalVisible(true)}
                     >
-                        <img className="adminIcons" src={add}></img>
+                        <Text style={styles.textStyle}>Add a Post</Text>
                     </Pressable>
-                </span>
+                </span> 
 		    </View>
 		);
 	}
@@ -78,7 +79,15 @@ const styles = StyleSheet.create({
     textStyle: {
         color: "white",
         fontWeight: "bold",
-        textAlign: "center"
+        textAlign: "center",
+        fontSize: 15
+    },
+    button: {
+        borderRadius: 20,
+        padding: 10,
+        elevation: 2,
+        float:"right",
+        backgroundColor: "#00688B",
     }
 });
 
