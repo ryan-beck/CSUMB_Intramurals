@@ -76,15 +76,16 @@ def getAccountByEmail(request, email):
 def generateGameSchedule(request):
 	leagueId = request.data['leagueId']
 	#number of total games to played throughout season
-	gameNum = request.data['gameNum']
+	gameNum = int(request.data['gameNum'])
 	#int representing day of week, 0 Monday, 6 Sunday
-	gameDay = request.data['gameDay']
+	gameDay = int(request.data['gameDay'])
 	#time that games will begin, in minutes
-	startTime = request.data['startTime']
+	startTime = request.data['startTime'].split(":")
+	startTime = int(startTime[0])*60 + int(startTime[1])
 	#length of each game, in minutes
-	gameLength = request.data['gameLength']
+	gameLength = int(request.data['gameLength'])
 	#games to be played by each team per day
-	teamGamesPerDay = request.data['teamGamesPerDay']
+	teamGamesPerDay = int(request.data['teamGamesPerDay'])
 	
 	# TODO:'loactionNum': for case of multiple usable locations
 	#	         i.e. 2 or more courts/fields can be used at a time
@@ -104,6 +105,8 @@ def generateGameSchedule(request):
 	leagueStart = datetime.datetime(leagueStart.year, leagueStart.month, leagueStart.day) + datetime.timedelta(minutes=startTime)
 	
 	games = generateSchedule(teams, gameNum, leagueStart, gameLength, teamGamesPerDay)
+	for game in games:
+		print(game)
 	# TODO: save games here when everything is finalized
 	serializer = GameSerializer(games, context={'request': request}, many=True)
 	return Response(serializer.data)
