@@ -175,3 +175,12 @@ def deletePost(request, postId):
 	post = Post.objects.get(id=postId)
 	post.delete()
 	return HttpResponse('deleted')
+
+@api_view(['PUT'])
+def editPost(request, postId):
+	post = Post.objects.get(id=postId)
+	serializer = PostSerializer(post, data=request.data)
+	if serializer.is_valid():
+		serializer.save()
+
+	return HttpResponse('updated')

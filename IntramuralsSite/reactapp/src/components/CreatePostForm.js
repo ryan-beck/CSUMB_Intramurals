@@ -20,6 +20,7 @@ class CreatePostForm extends Component {
         this.onChangeHandler = this.onChangeHandler.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.postToDjango = this.postToDjango.bind(this);
+        this.editPostDjango = this.editPostDjango.bind(this);
         this.createHandler = this.createHandler.bind(this);
         this.editHandler = this.editHandler.bind(this);
         this.deleteHandler = this.deleteHandler.bind(this);
@@ -54,6 +55,28 @@ class CreatePostForm extends Component {
             url: 'http://localhost:8000/api/createPost/', 
             data: {
               text: this.state.postText,
+              media_url: this.state.mediaUrl,
+              owner: this.state.owner,
+              posted_date: today
+            }
+        })
+        .then(({data}) => {
+            console.log(data);
+            window.location.reload();
+        });
+    }
+
+    editPostDjango(newText) {
+        var today = new Date(this.state.post.posted_date),
+        date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate(),
+        time = today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds();
+        var today = date+' '+time;
+
+        axios({
+            method:'put', 
+            url: 'http://localhost:8000/api/editPost/'+ (this.state.post.id).toString()+'/', 
+            data: {
+              text: newText,
               media_url: this.state.mediaUrl,
               owner: this.state.owner,
               posted_date: today
@@ -102,35 +125,33 @@ class CreatePostForm extends Component {
         var newText = this.state.post.text;
         if(document.EditPostForm.editText.value != this.state.post.text) {
             newText = document.EditPostForm.editText.value;
-            console.log(newText);
         }
 
         if(this.state.image) {
-            console.log("new image");
-            // var uploadTask = storage.ref(`images/${this.state.image.name}`).put(this.state.image);
-            // uploadTask.on(
-            //     "state_changed",
-            //     snapshot => {},
-            //     error => {
-            //         console.log(error);
-            //     },
-            //     () => {
-            //         storage
-            //         .ref("images")
-            //         .child(this.state.image.name)
-            //         .getDownloadURL()
-            //         .then(url => {
-            //             this.setState({
-            //                 mediaUrl: url
-            //             });
-            //             this.postToDjango();
-            //         })
-            //     }
-            // );
+            var uploadTask = storage.ref(`images/${this.state.image.name}`).put(this.state.image);
+            uploadTask.on(
+                "state_changed",
+                snapshot => {},
+                error => {
+                    console.log(error);
+                },
+                () => {
+                    storage
+                    .ref("images")
+                    .child(this.state.image.name)
+                    .getDownloadURL()
+                    .then(url => {
+                        this.setState({
+                            mediaUrl: url
+                        });
+                        this.editPostDjango(newText);
+                    })
+                }
+            );
         } 
-        // else {
-        //     this.postToDjango();
-        // }
+        else {
+            this.editPostDjango(newText);
+        }
         
     }
 
@@ -146,8 +167,7 @@ class CreatePostForm extends Component {
     }
     
 
-    render () {
-        console.log(this.state.post)
+    render () {    
         return (
             <div>
             {(() => {
