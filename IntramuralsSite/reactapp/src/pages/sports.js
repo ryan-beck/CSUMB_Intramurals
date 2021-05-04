@@ -106,16 +106,20 @@ class SportsPage extends Component {
 	render() {
 		return (
 			<Box>
-				<span className="top">
-				<h1 class="title">Sports Page</h1>
+				<span>
+				<h1 className="sportTitle">View Sports</h1>
 				
 				{(() => {
 					if (this.state.user.is_admin) {
 						return (
-							<Button
-								onPress={this.adminViewSwitch}
-								title="Switch admin view"
-							/>
+							<div className="adminSwitch">
+								<label>Toggle Admin View</label><br/>
+								<label class="switch">
+								  <input type="checkbox" onClick={this.adminViewSwitch}/>
+								  <span class="slider round"></span>
+								</label>
+							</div>
+							
 						)
 					}
 				})()}
@@ -155,12 +159,11 @@ class SportsPage extends Component {
 						)
 					}
 				})()}
-				<Box class="league_display">
-					 <div>
+				<Box >
+					 <div className="grid-container">
 						{this.state.displayArray.map((sport, index) => (
 						  <div key={index}>
-							<span className="sportRow">
-							<h3>{sport.sport_name}</h3>
+							<div className="grid-item">
 							{(() => {
 								if (this.state.isAdminView) {
 									return (
@@ -168,7 +171,8 @@ class SportsPage extends Component {
 									)
 								}
 							})()}
-							</span>
+							<img className="logo" src={sport.logo_url} alt="SportLogo"/>
+							<label>{sport.sport_name}</label>
 							
 							<div>
 							{this.state.leagueArray.map((league, index) => (
@@ -186,6 +190,7 @@ class SportsPage extends Component {
 								})()}
 							  </div>
 							))}
+							</div>
 							</div>
 						  </div>
 						))}

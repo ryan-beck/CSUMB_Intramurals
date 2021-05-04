@@ -52,10 +52,12 @@ class CreateSportFormModal extends Component {
 		        </Modal>
                 <span class="editSpan">
                     <Pressable
-                        onPress={() => this.setModalVisible(true)}
-                    >
-                       <button>Add new sport</button>
-                    </Pressable>
+                            style={styles.editButton}
+                            onPress={() => this.setModalVisible(true)}
+                        >
+                            
+                                <Text style={styles.textStyle}>Add New Sport</Text>
+                        </Pressable>
                 </span>
 		        
 		    </View>
@@ -98,6 +100,19 @@ const styles = StyleSheet.create({
         textAlign: "center",
         color: "white",
         fontWeight: "bolder"
+    },
+    textStyle: {
+        color: "white",
+        fontWeight: "bold",
+        textAlign: "center",
+        fontSize: 15
+    },
+    editButton: {
+        borderRadius: 20,
+        padding: 12,
+        elevation: 2,
+        float:"right",
+        backgroundColor: "#00688B",
     }
 });
 
