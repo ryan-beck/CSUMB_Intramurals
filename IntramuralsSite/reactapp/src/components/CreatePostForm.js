@@ -44,8 +44,6 @@ class CreatePostForm extends Component {
         time = today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds();
         var today = date+' '+time;
 
-
-        console.log(this.state.mediaUrl);
         // add post to django database
         axios({
             method:'post', 
@@ -65,7 +63,10 @@ class CreatePostForm extends Component {
     submitHandler(event) {
         event.preventDefault();
 
-        if(this.state.image) {
+        if(document.PostForm.postText.value.trim() == "" && document.PostForm.postImage.value.trim() == ""){
+            alert( "At least one field is required" );
+            document.PostForm.postText.focus();
+        } else if(this.state.image) {
             var uploadTask = storage.ref(`images/${this.state.image.name}`).put(this.state.image);
             uploadTask.on(
                 "state_changed",
@@ -96,10 +97,10 @@ class CreatePostForm extends Component {
         return (
             <div>
                 <h2 className="modalText">Add A New Post</h2>
-                <form onSubmit={this.submitHandler}>
+                <form name="PostForm" onSubmit={this.submitHandler}>
                     <label className="modalText">Caption:</label> <br/>
-                    <textarea name="postText" rows="5" cols="50" value={this.state.postText} onChange={this.onChangeHandler}/> <br/><br/>
-                    <input type="file" id="actual-btn" accept="image/*" onChange={this.handleChange} className="modalText"/>
+                    <textarea name="postText" rows="5" cols="50" value={this.state.postText} onChange={this.onChangeHandler} placeholder="What would you like to say?"/> <br/><br/>
+                    <input type="file" name="postImage" id="actual-btn" accept="image/*" onChange={this.handleChange} className="modalText"/>
                     <input className="submitHandler" type="submit" value="Submit"/>
                 </form>
             </div>
