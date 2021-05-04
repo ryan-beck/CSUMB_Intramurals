@@ -44,9 +44,12 @@ class Team(models.Model):
 
 class Game(models.Model):
     league = models.ForeignKey(League, on_delete=models.CASCADE)
-    start_time = models.DateField()
+    start_time = models.DateTimeField()
     home_team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='home_team')
     away_team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='away_team')
     home_score = models.IntegerField(null=True)
     away_score = models.IntegerField(null=True)
+
+    def __str__(self):
+        return " ".join(str(self.league).split()[:2]) + ": " + self.home_team.team_name + " vs. " + self.away_team.team_name + " " + self.start_time
 
