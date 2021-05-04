@@ -17,10 +17,6 @@
   font-size: 20px;
 }
 
-.post {
-	
-}
-
 .post-title {
 	font-size: 25px;
 	font-weight: bold;
@@ -44,15 +40,6 @@
   margin-right: 30%; /* Same as the width of the sidenav */
   font-size: 28px; /* Increased text to enable scrolling */
   padding: 170px 30px;
-}
-
-.adminIcons {
-    height: 30px;
-    width: 30px;
-}
-
-.editIcons {
-	float: right;
 }
 
 ul {

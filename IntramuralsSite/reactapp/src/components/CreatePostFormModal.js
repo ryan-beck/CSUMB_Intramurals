@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 import { Alert, Modal, Text, Pressable, View, StyleSheet } from "react-native";
 import CreatePostForm from './CreatePostForm';
-import add from '../assets/add.png';
 import edit from '../assets/pencil.png';
-import remove from '../assets/delete.png';
+import '../style/modal.css'; 
 
 class CreatePostFormModal extends Component {
 	constructor(props) {
@@ -12,6 +11,8 @@ class CreatePostFormModal extends Component {
 		this.state = {
 			modalVisible: false,
             userId: props.userId,
+            post: props.post,
+            isCreating: props.create
 		};
 
 		this.setModalVisible = this.setModalVisible.bind(this);
@@ -39,7 +40,7 @@ class CreatePostFormModal extends Component {
 				>
 					<View style={styles.centeredView}>
 			            <View style={styles.modalView}>
-			            	<CreatePostForm userId={this.state.userId}/>
+			            	<CreatePostForm userId={this.state.userId} post={this.state.post} create={this.state.isCreating}/>
 			              	<Pressable
 			                	onPress={() => this.setModalVisible(!modalVisible)}
 			              	>
@@ -49,12 +50,24 @@ class CreatePostFormModal extends Component {
 			        </View>
 		        </Modal>
                 <span>
-                    <Pressable
-                        style={styles.button}
-                        onPress={() => this.setModalVisible(true)}
-                    >
-                        <Text style={styles.textStyle}>Add a Post</Text>
-                    </Pressable>
+                    {this.state.isCreating ? (
+                        <Pressable
+                            style={styles.button}
+                            onPress={() => this.setModalVisible(true)}
+                        >
+                            
+                                <Text style={styles.textStyle}>Add a Post</Text>
+                        </Pressable>
+                    )
+                    : (
+                        <Pressable
+                            onPress={() => this.setModalVisible(true)}
+                        >
+                            
+                            <img className="editIcon" src={edit} alt="EditIcon"/>
+                        </Pressable>
+                    )}
+                    
                 </span> 
 		    </View>
 		);

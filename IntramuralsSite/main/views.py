@@ -169,3 +169,9 @@ def getEventsByUser(request, userId):
 	events.sort(key = lambda x: datetime.strptime(x['gameTime'], '%m-%d-%Y %I:%M %p'))
 
 	return Response(events)
+
+@api_view(['DELETE'])
+def deletePost(request, postId):
+	post = Post.objects.get(id=postId)
+	post.delete()
+	return HttpResponse('deleted')

@@ -10,6 +10,8 @@ class CreatePostForm extends Component {
 
         this.state = {
             owner: props.userId,
+            post: props.post,
+            isCreating: props.create,
             postText: "",
             image: null,
             mediaUrl: ""
@@ -18,7 +20,9 @@ class CreatePostForm extends Component {
         this.onChangeHandler = this.onChangeHandler.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.postToDjango = this.postToDjango.bind(this);
-        this.submitHandler = this.submitHandler.bind(this);
+        this.createHandler = this.createHandler.bind(this);
+        this.editHandler = this.editHandler.bind(this);
+        this.deleteHandler = this.deleteHandler.bind(this);
     }
 
     onChangeHandler(event) {
@@ -61,12 +65,12 @@ class CreatePostForm extends Component {
         });
     }
 
-    submitHandler(event) {
+    createHandler(event) {
         event.preventDefault();
 
-        if(document.PostForm.postText.value.trim() == "" && document.PostForm.postImage.value.trim() == ""){
+        if(document.CreatePostForm.postText.value.trim() == "" && document.CreatePostForm.postImage.value.trim() == ""){
             alert( "At least one field is required" );
-            document.PostForm.postText.focus();
+            document.CreatePostForm.postText.focus();
         } else if(this.state.image) {
             var uploadTask = storage.ref(`images/${this.state.image.name}`).put(this.state.image);
             uploadTask.on(
@@ -92,18 +96,89 @@ class CreatePostForm extends Component {
             this.postToDjango();
         }     
     }
+
+    editHandler(event) {
+        event.preventDefault();
+        var newText = this.state.post.text;
+        if(document.EditPostForm.editText.value != this.state.post.text) {
+            newText = document.EditPostForm.editText.value;
+            console.log(newText);
+        }
+
+        if(this.state.image) {
+            console.log("new image");
+            // var uploadTask = storage.ref(`images/${this.state.image.name}`).put(this.state.image);
+            // uploadTask.on(
+            //     "state_changed",
+            //     snapshot => {},
+            //     error => {
+            //         console.log(error);
+            //     },
+            //     () => {
+            //         storage
+            //         .ref("images")
+            //         .child(this.state.image.name)
+            //         .getDownloadURL()
+            //         .then(url => {
+            //             this.setState({
+            //                 mediaUrl: url
+            //             });
+            //             this.postToDjango();
+            //         })
+            //     }
+            // );
+        } 
+        // else {
+        //     this.postToDjango();
+        // }
+        
+    }
+
+    deleteHandler(event) {
+        axios({
+            method:'delete', 
+            url: 'http://localhost:8000/api/deletePost/'+this.state.post.id,
+        })
+        .then(({data}) => {
+            console.log(data);
+            window.location.reload();
+        });
+    }
     
 
     render () {
+        console.log(this.state.post)
         return (
             <div>
-                <h2 className="modalText">Add A New Post</h2>
-                <form name="PostForm" onSubmit={this.submitHandler}>
-                    <label className="modalText">Caption:</label> <br/>
-                    <textarea name="postText" rows="5" cols="50" value={this.state.postText} onChange={this.onChangeHandler} placeholder="What would you like to say?"/> <br/><br/>
-                    <input type="file" name="postImage" id="actual-btn" accept="image/*" onChange={this.handleChange} className="modalText"/>
-                    <input className="submitHandler" type="submit" value="Submit"/>
-                </form>
+            {(() => {
+                if (this.state.isCreating) {
+                    return (
+                        <div> 
+                            <h2 className="modalText">Add A New Post</h2>
+                            <form name="CreatePostForm" onSubmit={this.createHandler}>
+                                <label className="modalText">Caption:</label> <br/>
+                                <textarea name="postText" rows="5" cols="50" value={this.state.postText} onChange={this.onChangeHandler} placeholder="What would you like to say?"/> <br/><br/>
+                                <input type="file" name="postImage" id="actual-btn" accept="image/*" onChange={this.handleChange} className="modalText"/>
+                                <input className="submitHandler" type="submit" value="Submit"/>
+                            </form>
+                        </div>
+                    );
+                } else {
+                    return(
+                        <div>
+                            <h2 className="modalText">Edit Your Post</h2>
+                            <form name="EditPostForm" onSubmit={this.editHandler}>
+                                <label className="modalText">Caption:</label> <br/>
+                                <textarea name="editText" rows="5" cols="50" defaultValue={this.state.post.text} onChange={this.onChangeHandler} placeholder="What would you like to say?"/> <br/><br/>
+                                <input type="file" name="editImage" id="actual-btn" accept="image/*" onChange={this.handleChange} className="modalText"/>
+
+                                <input name="deleteButton" className="deleteHandler" type="button" value="Delete" onClick={this.deleteHandler}/>
+                                <input name="submitButton" className="submitHandler" type="submit" value="Submit"/>
+                            </form>
+                        </div>
+                    );
+                }
+            })()}
             </div>
             
         )

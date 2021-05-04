@@ -2,9 +2,6 @@ import React, { Fragment, Component } from "react";
 import { Pressable } from "react-native";
 import "../index.css";
 
-import add from '../assets/add.png';
-import edit from '../assets/pencil.png';
-import remove from '../assets/delete.png';
 import CreatePostFormModal from '../components/CreatePostFormModal';
 
 class MainPage extends Component {
@@ -42,16 +39,24 @@ class MainPage extends Component {
 					{(() => {
 						if (this.state.user.is_admin) {
 							return (
-								<div> <CreatePostFormModal userId={this.state.user.id}/> </div>
+								<div> <CreatePostFormModal userId={this.state.user.id} post="" create={true}/> </div>
 							);
 						}
 					})()}
 					{this.state.posts.reverse().map((post, index) => (
 						<div key={index} className="post">
+							{(() => {
+								if (this.state.user.is_admin && post.owner==this.state.user.id) {
+									return (
+										<div> <CreatePostFormModal userId={this.state.user.id} post={post} create={false}/> </div>
+									);
+								}
+							})()}
 							<span>
 								<label className="post-title">{post.display_name}</label>
 								<label className="post-date">{post.posted_date}</label>
 							</span>
+
 							{(() => {
 								if (post.text) {
 									return (

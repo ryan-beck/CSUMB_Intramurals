@@ -13,4 +13,5 @@ urlpatterns = [
     path('createSport/', views.create_sport, name='createSport'),
     path('createLeague/', views.create_league, name='createLeague'),
     path('createPost/', views.create_post, name='createPost'),
+    path('deletePost/<str:postId>/', views.deletePost, name='deletePost'),
 ]
