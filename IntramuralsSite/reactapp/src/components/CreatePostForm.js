@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from "axios"; 
 import { storage } from '../firebase';
+import '../style/modal.css'; 
 
 class CreatePostForm extends Component {
 
@@ -94,12 +95,12 @@ class CreatePostForm extends Component {
     render () {
         return (
             <div>
-                <h2>Add A New Post</h2>
+                <h2 className="modalText">Add A New Post</h2>
                 <form onSubmit={this.submitHandler}>
-                    <label>Caption</label> <br/>
-                    <textarea name="postText" rows="5" cols="50" value={this.state.postText} onChange={this.onChangeHandler}/> <br/>
-                    <input type="file" name="myfile" accept="image/*" onChange={this.handleChange}/>
-                    <input type="submit" value="Submit"/>
+                    <label className="modalText">Caption:</label> <br/>
+                    <textarea name="postText" rows="5" cols="50" value={this.state.postText} onChange={this.onChangeHandler}/> <br/><br/>
+                    <input type="file" id="actual-btn" accept="image/*" onChange={this.handleChange} className="modalText"/>
+                    <input className="submitHandler" type="submit" value="Submit"/>
                 </form>
             </div>
             

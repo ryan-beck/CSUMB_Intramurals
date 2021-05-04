@@ -41,7 +41,6 @@ class CreatePostFormModal extends Component {
 			            <View style={styles.modalView}>
 			            	<CreatePostForm userId={this.state.userId}/>
 			              	<Pressable
-			                	style={[styles.button, styles.buttonClose]}
 			                	onPress={() => this.setModalVisible(!modalVisible)}
 			              	>
 			                	<Text style={styles.textStyle}>Cancel</Text>
@@ -76,26 +75,10 @@ const styles = StyleSheet.create({
         padding: 35,
         alignItems: "center"
     },
-    button: {
-        borderRadius: 5,
-        padding: 10,
-    },
-    buttonOpen: {
-        backgroundColor: "#F194FF",
-    },
-    buttonClose: {
-        
-    },
     textStyle: {
         color: "white",
         fontWeight: "bold",
         textAlign: "center"
-    },
-    modalText: {
-        marginBottom: 15,
-        textAlign: "center",
-        color: "white",
-        fontWeight: "bolder"
     }
 });
 
