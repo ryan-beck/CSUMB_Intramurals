@@ -55,7 +55,7 @@ class LoginPage extends Component {
 				<div class="centered">
 					<img className="title-image" src={logo} alt="LoginLogo"/>
 					<label className="title">CSUMB Intramurals</label>
-					<p>Description.</p>
+					<p>A simple and lightweight application for organizing intramural sports at CSUMB.</p>
 				</div>
 			</div>
 
