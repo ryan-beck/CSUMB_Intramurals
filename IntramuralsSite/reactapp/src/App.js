@@ -9,11 +9,14 @@ import {
 import Header from './Header';
 import MainPage from "./pages";
 import SportsPage from "./pages/sports";
+import LeaguePage from "./pages/leagues";
+import TeamPage from "./pages/team";
 import logo from "./otterLogoTransparent.png"
 import CreateSportForm from "./components/CreateSportForm";
 import CreateLeagueFormModal from "./components/CreateLeagueFormModal";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "./App.css";
+import CreateLeagueForm from './components/CreateLeagueForm.js'
 
 class LoginPage extends Component {
     componentDidMount() {
@@ -133,7 +136,7 @@ class App extends Component {
       document.body.appendChild(script);
     }
 
-    ifUserSignedIn(Component) {
+    ifUserSignedIn(Component,props) {
         if (this.state.isSignedIn == null) {
             return (
                 <h1> </h1>
@@ -142,10 +145,10 @@ class App extends Component {
         return this.state.isSignedIn ?
 	        <Fragment>
 	        	<Header user={this.state.user}/>
-	            <Component user={this.state.user}/>
+	            <Component user={this.state.user} props={props}/>
 	        </Fragment> 
 	        :
-            <LoginPage/>
+            (<LoginPage/>)
     }
 
   render() {
@@ -154,6 +157,9 @@ class App extends Component {
 			    <Switch>
 				    <Route exact path="/" render={() => this.ifUserSignedIn(MainPage)}/>
 				    <Route exact path="/sports" render={() => this.ifUserSignedIn(SportsPage)}/>
+					<Route exact path="/admin" render={() => this.ifUserSignedIn(CreateLeagueForm)}/>
+					<Route path="/leagues/:sport/:league" render={props => this.ifUserSignedIn(LeaguePage,{...props})}/>
+					<Route path="/team/:team/:id/" render={props => this.ifUserSignedIn(TeamPage,{...props})}/>
 			    </Switch>
 		    </Router>
 		    
