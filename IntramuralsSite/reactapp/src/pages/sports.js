@@ -2,11 +2,16 @@ import React from "react";
 import { Component } from 'react';
 //import SearchTextInput from "../SearchBar";
 import Box from '@material-ui/core/Box';
-import { TextInput, StyleSheet } from "react-native";
+import { TextInput, StyleSheet, Button } from "react-native";
+
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
+
+import FormLabel from '@material-ui/core/FormLabel';
+import CreateLeagueFormModal from '../components/CreateLeagueFormModal';
+import CreateLeagueForm from '../components/CreateLeagueForm.js'
 
 
 
@@ -25,13 +30,20 @@ class SportsPage extends Component {
 	  displayArray: [],
 	  searchtTextInput: " ",
 	  leagueArray: [],
+	  user: props.user,
+	  isAdminView: false,
     };
 
 	this.handleSearchChange = this.handleSearchChange.bind(this)
-
+	this.adminViewSwitch = this.adminViewSwitch.bind(this);
   }
 
-
+  	adminViewSwitch() {
+		this.setState({
+			isAdminView: !this.state.isAdminView
+		});
+		console.log(this.state.isAdminView);
+	}
 
 	componentDidMount() {
 		fetch("http://localhost:8000/api/getSports/")
@@ -83,8 +95,23 @@ class SportsPage extends Component {
 	render() {
 		return (
 			<Box>
-				<h1 className="title">Sports Page</h1>
-				<div className="searchdiv"> 
+				<span className="top">
+				<h1 class="title">Sports Page</h1>
+				
+				{(() => {
+					if (this.state.user.is_admin) {
+						return (
+							<Button
+								onPress={this.adminViewSwitch}
+								title="Switch admin view"
+							/>
+						)
+					}
+				})()}
+				
+				</span>
+				<br/><br/>
+				<div class="searchdiv"> 
 					<div>
 					  <TextInput
 						value = {this.state.SearchTextInput}
@@ -114,7 +141,17 @@ class SportsPage extends Component {
 					 <div>
 						{this.state.displayArray.map((sport, index) => (
 						  <div key={index}>
+							<span className="sportRow">
 							<h3>{sport.sport_name}</h3>
+							{(() => {
+								if (this.state.isAdminView) {
+									return (
+									<div> <CreateLeagueFormModal sportId={sport.id} sportName={sport.sport_name}/> </div>
+									)
+								}
+							})()}
+							</span>
+							
 							<div>
 							{this.state.leagueArray.map((league, index) => (
 							  <div key={index}>
