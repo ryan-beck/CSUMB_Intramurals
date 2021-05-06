@@ -43,6 +43,8 @@ class Team(models.Model):
     wins = models.IntegerField(default=0)
     losses = models.IntegerField(default=0)
     ties = models.IntegerField(default=0)
+    is_open = models.BooleanField()
+    player_limit = models.IntegerField(null=True)
 
     def __str__(self):
         return self.team_name + " (" + str(self.id) + ")"
