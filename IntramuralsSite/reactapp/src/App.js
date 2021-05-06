@@ -10,8 +10,6 @@ import Header from './Header';
 import MainPage from "./pages";
 import SportsPage from "./pages/sports";
 import logo from "./otterLogoTransparent.png"
-import CreateSportForm from "./components/CreateSportForm";
-import CreateLeagueFormModal from "./components/CreateLeagueFormModal";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "./App.css";
 
