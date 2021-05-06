@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from "axios"; 
-import '../style/modal.css'; 
+import '../../style/modal.css'; 
 
 class CreateSportForm extends Component {
 

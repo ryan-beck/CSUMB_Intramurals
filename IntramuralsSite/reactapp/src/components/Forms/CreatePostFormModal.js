@@ -1,20 +1,19 @@
 import React, { Component } from "react";
 import { Alert, Modal, Text, Pressable, View, StyleSheet } from "react-native";
-import CreateSportForm from './CreateSportForm';
+import CreatePostForm from './CreatePostForm';
 
-
-import '../style/leagueForm.css'
-
-class CreateSportFormModal extends Component {
+class CreatePostFormModal extends Component {
 	constructor(props) {
 	    super(props);
 
 		this.state = {
 			modalVisible: false,
+            userId: props.userId,
+            post: props.post,
+            isCreating: props.create
 		};
 
 		this.setModalVisible = this.setModalVisible.bind(this);
-        this.handleFormSubmit = this.handleFormSubmit.bind(this);
 	}
 
 	setModalVisible (visible) {
@@ -23,11 +22,6 @@ class CreateSportFormModal extends Component {
 	    }));
 	}
 
-    handleFormSubmit (newSport) {
-        this.setModalVisible(false);
-        this.props.handleFormSubmit(newSport);
-    }
-
 	render() {
 		const { modalVisible } = this.state;
 		return (
@@ -35,14 +29,17 @@ class CreateSportFormModal extends Component {
 				<Modal
 					animationType="slide"
 					visible={ modalVisible }
+					onRequestClose={() => {
+						Alert.alert("Modal is closed.");
+						this.setModalVisible(!modalVisible);
+					}}
 					presentationStyle="formSheet"
 					transparent={true}
 				>
 					<View style={styles.centeredView}>
 			            <View style={styles.modalView}>
-			            	<CreateSportForm handleFormSubmit={this.handleFormSubmit}/>
+			            	<CreatePostForm userId={this.state.userId} post={this.state.post} create={this.state.isCreating}/>
 			              	<Pressable
-			                	style={[styles.button, styles.buttonClose]}
 			                	onPress={() => this.setModalVisible(!modalVisible)}
 			              	>
 			                	<Text style={styles.textStyle}>Cancel</Text>
@@ -50,16 +47,27 @@ class CreateSportFormModal extends Component {
 			            </View>
 			        </View>
 		        </Modal>
-                <span class="editSpan">
-                    <Pressable
+                <span>
+                    {this.state.isCreating ? (
+                        <Pressable
+                            style={styles.addButton}
+                            onPress={() => this.setModalVisible(true)}
+                        >
+                            
+                                <Text style={styles.textStyle}>Add a Post</Text>
+                        </Pressable>
+                    )
+                    : (
+                        <Pressable
                             style={styles.editButton}
                             onPress={() => this.setModalVisible(true)}
                         >
                             
-                                <Text style={styles.textStyle}>Add New Sport</Text>
+                                <Text style={styles.textStyle}>Edit Post</Text>
                         </Pressable>
-                </span>
-		        
+                    )}
+                    
+                </span> 
 		    </View>
 		);
 	}
@@ -80,40 +88,27 @@ const styles = StyleSheet.create({
         padding: 35,
         alignItems: "center"
     },
-    button: {
-        borderRadius: 5,
-        padding: 10,
-    },
-    buttonOpen: {
-        backgroundColor: "#F194FF",
-    },
-    buttonClose: {
-        
-    },
-    textStyle: {
-        color: "white",
-        fontWeight: "bold",
-        textAlign: "center"
-    },
-    modalText: {
-        marginBottom: 15,
-        textAlign: "center",
-        color: "white",
-        fontWeight: "bolder"
-    },
     textStyle: {
         color: "white",
         fontWeight: "bold",
         textAlign: "center",
         fontSize: 15
     },
+    addButton: {
+        borderRadius: 20,
+        padding: 10,
+        elevation: 2,
+        float:"left",
+        backgroundColor: "#00688B",
+        width: 500
+    },
     editButton: {
         borderRadius: 20,
-        padding: 12,
+        padding: 10,
         elevation: 2,
         float:"right",
         backgroundColor: "#00688B",
     }
 });
 
-export default CreateSportFormModal;
+export default CreatePostFormModal;
