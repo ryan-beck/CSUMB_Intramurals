@@ -6,6 +6,14 @@
     font-size: 50px;
 }
 
+.leagueTitle {
+    padding-top: 170px;
+    color: #444444;
+    font-weight: bolder;
+    font-size: 50px;
+    text-align: center;
+}
+
 .Secondarytitle {
     text-align: center;
     padding-top: 10px;
@@ -174,5 +182,18 @@ input:checked + .slider:before {
 
 .slider.round:before {
   border-radius: 50%;
+}
+
+.leagueNavigation {
+    padding-bottom: 10px;
+    text-align: center;
+}
+
+.leagueNavigationButton {
+    font-size: 15px;
+    text-decoration: none;
+    margin-right: 10px;
+    font-weight: bold;
+    color: black;
 }
 

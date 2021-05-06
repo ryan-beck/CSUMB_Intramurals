@@ -144,7 +144,7 @@ class TeamPage extends Component {
 		
 		return (
 			<Box>
-				<h1 className="title"> {this.props.props.match.params.team} </h1>
+				<h1 className="leagueTitle"> {this.props.props.match.params.team} </h1>
 				<h3 className="Secondarytitle"> {this.state.currSport.sport_name} : {this.state.currLeague.league_name} </h3>
 				<h4 className="teamlabel"> Players: </h4>
 			</Box>
