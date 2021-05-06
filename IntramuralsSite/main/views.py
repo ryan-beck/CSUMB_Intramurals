@@ -24,7 +24,17 @@ def join_team(request):
     team = Team.objects.get(id=team_id)
     team.players.add(user_account)
     team.save()
-    return HttpResponse('Successfully joined team')
+    return JsonResponse({'status': 'ok'})
+
+@api_view(['POST'])
+def leave_team(request):
+    user_id = request.data['user_id']
+    team_id = request.data['team_id']
+    user_account = Account.objects.get(id=user_id)
+    team = Team.objects.get(id=team_id)
+    team.players.remove(user_account)
+    team.save()
+    return JsonResponse({'status': 'ok'})
 
 @api_view(['POST'])
 def create_sport(request):
@@ -73,6 +83,15 @@ def getLeagueList(request):
     leagues = LeagueSerializer(data, context={'request': request}, many=True)
 
     return Response(leagues.data)
+
+
+@api_view(['GET'])
+def getTeamList(request):
+    data = Team.objects.all()
+
+    teams = TeamSerializer(data, context={'request': request}, many=True)
+
+    return Response(teams.data)
 
 @api_view(['GET'])
 def getPosts(request):
@@ -244,6 +263,23 @@ def getEventsByUser(request, userId):
 
 	return Response(events)
 
+@api_view(['GET'])
+def getTeamsByLeague(request,sport,league):
+	print(sport,league)
+	sport_obj = Sport.objects.filter(sport_name=sport)
+	league_obj = League.objects.filter(sport=sport_obj[0],league_name=league)
+	team_data = Team.objects.filter(league=league_obj[0])
+	team_serializer = TeamSerializer(team_data, context={'request': request}, many=True)
+	#print(team_serializer)
+
+	return Response(team_serializer.data)
+
+@api_view(['GET'])
+def getAccounts(request):
+	account = Account.objects.all()
+	account_data = AccountSerializer(account, context={'request': request}, many=True)
+	return Response(account_data.data)
+
 @api_view(['DELETE'])
 def deletePost(request, postId):
 	post = Post.objects.get(id=postId)
@@ -258,3 +294,4 @@ def editPost(request, postId):
 		serializer.save()
 
 	return HttpResponse('updated')
+

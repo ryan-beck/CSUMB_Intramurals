@@ -37,6 +37,8 @@ class Team(models.Model):
     team_name = models.TextField(default="My Team")
     league = models.ForeignKey(League, on_delete=models.CASCADE)
     players = models.ManyToManyField(Account)
+    is_open = models.BooleanField()
+    player_limit = models.IntegerField(null=True)
 
     def __str__(self):
         return self.team_name + " (" + str(self.id) + ")"
