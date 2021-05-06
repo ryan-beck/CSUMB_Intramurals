@@ -184,16 +184,3 @@ input:checked + .slider:before {
   border-radius: 50%;
 }
 
-.leagueNavigation {
-    padding-bottom: 10px;
-    text-align: center;
-}
-
-.leagueNavigationButton {
-    font-size: 15px;
-    text-decoration: none;
-    margin-right: 10px;
-    font-weight: bold;
-    color: black;
-}
-

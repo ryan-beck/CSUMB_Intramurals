@@ -169,7 +169,19 @@ class LeaguePage extends Component {
 			<Box>
 				<h1 className="leagueTitle">{this.props.props.match.params.sport}: {this.props.props.match.params.league}</h1>
 				<div>
-				
+					{(() => {
+						if (this.state.user.is_admin) {
+							return (
+								<div className="adminSwitch">
+									<label>Toggle Admin View</label><br/>
+									<label class="switch">
+									  <input type="checkbox" onClick={this.adminViewSwitch}/>
+									  <span class="slider round"></span>
+									</label>
+								</div>
+							)
+						}
+					})()}
 					<h4 className="teamlabel">Teams: </h4>
 
 					<Box className="teamBox"> 

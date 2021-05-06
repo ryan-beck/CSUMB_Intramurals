@@ -11,9 +11,19 @@ class MainPage extends Component {
         this.state = {
             user: props.user,
             events: [],
-            posts: []
+            posts: [],
+            isAdminView: false
         };
+
+       	this.adminViewSwitch = this.adminViewSwitch.bind(this);
+
     }
+
+    adminViewSwitch() {
+		this.setState({
+			isAdminView: !this.state.isAdminView
+		});
+	}
 
     componentDidMount() {
     	fetch('http://localhost:8000/api/getEventsByUser/'+this.state.user.id)
@@ -36,17 +46,46 @@ class MainPage extends Component {
 		return (
 			<Fragment>
 				<div className="main">
+					<span>
 					{(() => {
 						if (this.state.user.is_admin) {
 							return (
+								<Fragment>
+									<div className="homeAdminSwitch">
+										<label className="homeAdminTitle">Toggle Admin View</label><br/>
+										<label className="homeSwitch">
+										  <input type="checkbox" onClick={this.adminViewSwitch}/>
+										  <span className="homeSlider round"></span>
+										</label>
+									</div>
+									<br/><br/>
+								</Fragment>
+							)
+						}
+					})()}
+					</span>
+					{(() => {
+						if (this.state.isAdminView) {
+							return (
 								<div> <CreatePostFormModal userId={this.state.user.id} post="" create={true}/> </div>
+							);
+						}
+					})()}
+					{(() => {
+						if (this.state.posts.length == 0) {
+							return (
+								<div className="no-posts"> 
+									<label>
+										There are currently no posts to display.
+									</label>
+								</div>
 							);
 						}
 					})()}
 					{this.state.posts.reverse().map((post, index) => (
 						<div key={index} className="post">
 							{(() => {
-								if (this.state.user.is_admin && post.owner==this.state.user.id) {
+								if (this.state.isAdminView && post.owner==this.state.user.id) {
 									return (
 										<div> <CreatePostFormModal userId={this.state.user.id} post={post} create={false}/> </div>
 									);
@@ -81,6 +120,17 @@ class MainPage extends Component {
 				</div>
 				<div className="sidenav">
 					<label className="sidenav-title">Upcoming Games</label>
+					{(() => {
+						if (this.state.events.length == 0) {
+							return (
+								<div className="no-posts"> 
+									<label>
+										You do not have any upcoming games.
+									</label>
+								</div>
+							);
+						}
+					})()}
 					{this.state.events.map((event, index) => (
 						<div key={index}>
 							<label>{event.gameTitle}</label>
