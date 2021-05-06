@@ -1,24 +1,20 @@
 import React, { Component } from "react";
 import { Alert, Modal, Text, Pressable, View, StyleSheet } from "react-native";
-import CreateLeagueForm from './CreateLeagueForm';
-import add from '../assets/add.png';
+import CreatePostForm from './CreatePostForm';
 import edit from '../assets/pencil.png';
-import remove from '../assets/delete.png';
 
-import '../style/leagueForm.css'
-
-class CreateLeagueFormModal extends Component {
+class CreatePostFormModal extends Component {
 	constructor(props) {
 	    super(props);
 
 		this.state = {
 			modalVisible: false,
-            sportId: props.sportId,
-            sportName: props.sportName
+            userId: props.userId,
+            post: props.post,
+            isCreating: props.create
 		};
 
 		this.setModalVisible = this.setModalVisible.bind(this);
-        this.handleFormSubmit = this.handleFormSubmit.bind(this);
 	}
 
 	setModalVisible (visible) {
@@ -27,11 +23,6 @@ class CreateLeagueFormModal extends Component {
 	    }));
 	}
 
-    handleFormSubmit (newLeague) {
-        this.setModalVisible(false);
-        this.props.handleFormSubmit(newLeague);
-    }
-
 	render() {
 		const { modalVisible } = this.state;
 		return (
@@ -39,15 +30,17 @@ class CreateLeagueFormModal extends Component {
 				<Modal
 					animationType="slide"
 					visible={ modalVisible }
+					onRequestClose={() => {
+						Alert.alert("Modal is closed.");
+						this.setModalVisible(!modalVisible);
+					}}
 					presentationStyle="formSheet"
 					transparent={true}
 				>
 					<View style={styles.centeredView}>
 			            <View style={styles.modalView}>
-			            	<CreateLeagueForm sportId={this.state.sportId} sportName={this.state.sportName} 
-                            handleFormSubmit={this.handleFormSubmit}/>
+			            	<CreatePostForm userId={this.state.userId} post={this.state.post} create={this.state.isCreating}/>
 			              	<Pressable
-			                	style={[styles.button, styles.buttonClose]}
 			                	onPress={() => this.setModalVisible(!modalVisible)}
 			              	>
 			                	<Text style={styles.textStyle}>Cancel</Text>
@@ -55,16 +48,27 @@ class CreateLeagueFormModal extends Component {
 			            </View>
 			        </View>
 		        </Modal>
-                <span className="addLeague">
-                    <Pressable
-                        style={styles.editButton}
-                        onPress={() => this.setModalVisible(true)}
-                    >
-                        
-                            <Text style={styles.addLeagueText}>Add League</Text>
-                    </Pressable>
-                </span>
-		        
+                <span>
+                    {this.state.isCreating ? (
+                        <Pressable
+                            style={styles.addButton}
+                            onPress={() => this.setModalVisible(true)}
+                        >
+                            
+                                <Text style={styles.textStyle}>Add a Post</Text>
+                        </Pressable>
+                    )
+                    : (
+                        <Pressable
+                            style={styles.editButton}
+                            onPress={() => this.setModalVisible(true)}
+                        >
+                            
+                                <Text style={styles.textStyle}>Edit Post</Text>
+                        </Pressable>
+                    )}
+                    
+                </span> 
 		    </View>
 		);
 	}
@@ -85,32 +89,19 @@ const styles = StyleSheet.create({
         padding: 35,
         alignItems: "center"
     },
-    button: {
-        borderRadius: 5,
-        padding: 10,
-    },
-    buttonOpen: {
-        backgroundColor: "#F194FF",
-    },
-    buttonClose: {
-        
-    },
     textStyle: {
-        color: "white",
-        fontWeight: "bold",
-        textAlign: "center"
-    },
-    modalText: {
-        marginBottom: 15,
-        textAlign: "center",
-        color: "white",
-        fontWeight: "bolder"
-    },
-    addLeagueText: {
         color: "white",
         fontWeight: "bold",
         textAlign: "center",
         fontSize: 15
+    },
+    addButton: {
+        borderRadius: 20,
+        padding: 10,
+        elevation: 2,
+        float:"left",
+        backgroundColor: "#00688B",
+        width: 500
     },
     editButton: {
         borderRadius: 20,
@@ -121,4 +112,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default CreateLeagueFormModal;
+export default CreatePostFormModal;

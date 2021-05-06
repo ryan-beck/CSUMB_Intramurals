@@ -12,12 +12,41 @@
   text-align: center;
 }
 
-.sidenav-text{
-  
+.sidenav-title {
+  font-weight: bolder;
+  font-size: 20px;
+}
+
+.post-title {
+	font-size: 25px;
+	font-weight: bold;
+}
+
+.post-date {
+	font-size: 20px;
+	float: right;
+}
+
+.post-text {
+	font-size: 20px;
+}
+
+.post-media {
+	max-height: 200px;
+	max-width: 200px;
 }
 
 .main {
-  margin-right: 25%; /* Same as the width of the sidenav */
+  margin-right: 30%; /* Same as the width of the sidenav */
   font-size: 28px; /* Increased text to enable scrolling */
-  padding: 170px 20px;
+  padding: 170px 30px;
+}
+
+ul {
+  padding-left: 100px;
+}
+
+li span {
+  position: relative;
+  left: -40px;
 }

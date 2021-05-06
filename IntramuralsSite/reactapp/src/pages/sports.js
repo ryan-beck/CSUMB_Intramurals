@@ -11,7 +11,8 @@ import FormControl from '@material-ui/core/FormControl';
 
 import FormLabel from '@material-ui/core/FormLabel';
 import CreateLeagueFormModal from '../components/CreateLeagueFormModal';
-import CreateLeagueForm from '../components/CreateLeagueForm.js'
+import CreateSportFormModal from '../components/CreateSportFormModal';
+
 
 
 
@@ -36,14 +37,9 @@ class SportsPage extends Component {
 
 	this.handleSearchChange = this.handleSearchChange.bind(this)
 	this.adminViewSwitch = this.adminViewSwitch.bind(this);
+	this.handleLeagueFormSubmit = this.handleLeagueFormSubmit.bind(this);
+	this.handleSportFormSubmit = this.handleSportFormSubmit.bind(this);
   }
-
-  	adminViewSwitch() {
-		this.setState({
-			isAdminView: !this.state.isAdminView
-		});
-		console.log(this.state.isAdminView);
-	}
 
 	componentDidMount() {
 		fetch("http://localhost:8000/api/getSports/")
@@ -76,6 +72,25 @@ class SportsPage extends Component {
 		  )
 	}
 
+	adminViewSwitch() {
+		this.setState({
+			isAdminView: !this.state.isAdminView
+		});
+	}
+
+	handleLeagueFormSubmit(newLeague) {
+		this.setState ({
+			leagueArray : this.state.leagueArray.concat(newLeague)
+		});
+	}
+
+	handleSportFormSubmit(newSport) {
+		this.setState ({
+			sportsArray: this.state.sportsArray.concat(newSport),
+			displayArray: this.state.displayArray.concat(newSport)
+		})
+	}
+
 
 	handleSearchChange(evt)  {
 		this.setState({
@@ -95,16 +110,20 @@ class SportsPage extends Component {
 	render() {
 		return (
 			<Box>
-				<span className="top">
-				<h1 class="title">Sports Page</h1>
+				<span>
+				<h1 className="sportTitle">View Sports</h1>
 				
 				{(() => {
 					if (this.state.user.is_admin) {
 						return (
-							<Button
-								onPress={this.adminViewSwitch}
-								title="Switch admin view"
-							/>
+							<div className="adminSwitch">
+								<label>Toggle Admin View</label><br/>
+								<label class="switch">
+								  <input type="checkbox" onClick={this.adminViewSwitch}/>
+								  <span class="slider round"></span>
+								</label>
+							</div>
+							
 						)
 					}
 				})()}
@@ -137,20 +156,27 @@ class SportsPage extends Component {
 					</FormControl>
 				</div>
 				</div>
-				<Box className="league_display">
-					 <div>
+				{(() => {
+					if (this.state.isAdminView) {
+						return (
+							<div> <CreateSportFormModal handleFormSubmit={this.handleSportFormSubmit}/> </div>
+						)
+					}
+				})()}
+				<Box >
+					 <div className="grid-container">
 						{this.state.displayArray.map((sport, index) => (
 						  <div key={index}>
-							<span className="sportRow">
-							<h3>{sport.sport_name}</h3>
+							<div className="grid-item">
 							{(() => {
 								if (this.state.isAdminView) {
 									return (
-									<div> <CreateLeagueFormModal sportId={sport.id} sportName={sport.sport_name}/> </div>
+									<div> <CreateLeagueFormModal sportId={sport.id} sportName={sport.sport_name} handleFormSubmit={this.handleLeagueFormSubmit}/> </div>
 									)
 								}
 							})()}
-							</span>
+							<img className="logo" src={sport.logo_url} alt="SportLogo"/>
+							<label>{sport.sport_name}</label>
 							
 							<div>
 							{this.state.leagueArray.map((league, index) => (
@@ -168,6 +194,7 @@ class SportsPage extends Component {
 								})()}
 							  </div>
 							))}
+							</div>
 							</div>
 						  </div>
 						))}
