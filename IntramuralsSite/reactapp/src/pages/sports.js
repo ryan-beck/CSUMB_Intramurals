@@ -123,7 +123,6 @@ class SportsPage extends Component {
 								  <span class="slider round"></span>
 								</label>
 							</div>
-							
 						)
 					}
 				})()}

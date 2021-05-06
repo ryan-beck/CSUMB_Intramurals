@@ -164,17 +164,14 @@ class LeaguePage extends Component {
 		  )
 	}
 
-
-
-
-
-
 	render() {
 		return (
 			<Box>
-				<h1 className="title">{this.props.props.match.params.sport}: {this.props.props.match.params.league}</h1>
+				<h1 className="leagueTitle">{this.props.props.match.params.sport}: {this.props.props.match.params.league}</h1>
 				<div>
+				
 					<h4 className="teamlabel">Teams: </h4>
+
 					<Box className="teamBox"> 
 						{this.state.teamsArray.map((team, index) => (
 							  <div key={index}>
