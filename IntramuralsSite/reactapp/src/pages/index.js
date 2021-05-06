@@ -52,7 +52,7 @@ class MainPage extends Component {
 							return (
 								<Fragment>
 									<div className="homeAdminSwitch">
-										<label className="homeAdminTitle">Toggle Admin View</label><br/>
+										<label className="homeAdminTitle">Toggle Admin View</label>
 										<label className="homeSwitch">
 										  <input type="checkbox" onClick={this.adminViewSwitch}/>
 										  <span className="homeSlider round"></span>
