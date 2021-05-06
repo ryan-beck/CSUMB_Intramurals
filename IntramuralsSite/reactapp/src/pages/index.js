@@ -2,7 +2,7 @@ import React, { Fragment, Component } from "react";
 import { Pressable } from "react-native";
 import "../index.css";
 
-import CreatePostFormModal from '../components/CreatePostFormModal';
+import CreatePostFormModal from '../components/Forms/CreatePostFormModal';
 
 class MainPage extends Component {
 	constructor(props) {

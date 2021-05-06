@@ -10,8 +10,8 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 
 import FormLabel from '@material-ui/core/FormLabel';
-import CreateLeagueFormModal from '../components/CreateLeagueFormModal';
-import CreateSportFormModal from '../components/CreateSportFormModal';
+import CreateLeagueFormModal from '../components/Forms/CreateLeagueFormModal';
+import CreateSportFormModal from '../components/Forms/CreateSportFormModal';
 
 
 
