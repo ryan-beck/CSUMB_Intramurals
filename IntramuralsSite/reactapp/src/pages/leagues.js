@@ -25,7 +25,6 @@ class LeaguePage extends Component {
 	  leagueArray: [],
 	  teamsArray: [],
 	  playerArray: [],
-	  modalShow: false,
     };
 
 	this.handleJoinTeam = this.handleJoinTeam.bind(this)

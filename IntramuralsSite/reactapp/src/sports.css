@@ -6,7 +6,15 @@
     font-size: 50px;
 }
 
-.Secondarytitle {
+.primaryTitle {
+    text-align: center;
+    padding-top: 170px;
+    color: #444444;
+    font-weight: bolder;
+    font-size: 50px;
+}
+
+.secondaryTitle {
     text-align: center;
     padding-top: 10px;
     color: #00688B;
