@@ -21,11 +21,29 @@ class LeaguePage extends Component {
 
     this.state = {
 		user: props.user,
-		isAdminView: false
+		isAdminView: false,
+		teamsArray : []
     };
 
     this.adminViewSwitch = this.adminViewSwitch.bind(this);
 
+  }
+
+  componentDidMount() {
+	fetch("http://localhost:8000/api/getTeamsByLeague/" + this.props.props.match.params.sport + '/' + this.props.props.match.params.league)
+	.then(res => res.json())
+	.then(
+	  (result) => {
+		this.setState({
+		  teamsArray: result,
+		});
+		console.log("here");
+		console.log(this.state.teamsArray)
+	  },
+	  (error) => {
+		console.log("Error in database call")
+	  }
+	)
   }
 
 	adminViewSwitch() {
@@ -63,11 +81,12 @@ class LeaguePage extends Component {
 						<Tab>Standings</Tab>
 					</TabList>
 				
+					{/* TODO onclick for panels to update tab state*/}
 					<TabPanel>
-						<TeamsTab props={this.props.props} user={this.state.user}/>
+						<TeamsTab props={this.props.props} user={this.state.user} teamsArray={this.state.teamsArray}/>
 					</TabPanel>
 					<TabPanel>
-						<GamesTab/>
+						<GamesTab leagueId={this.props.props.match.params.id} teamsArray={this.state.teamsArray}/>
 					</TabPanel>
 					<TabPanel>
 						<StandingsTab/>

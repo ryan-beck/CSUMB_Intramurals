@@ -1,5 +1,6 @@
 import React from "react";
 import { Component } from 'react';
+import axios from "axios";
 
 
 class GamesTab extends Component {
@@ -7,7 +8,8 @@ class GamesTab extends Component {
         super(props);
 
         this.state = {
-            games : {}
+            games : [],
+            teamsArray : this.props.teamsArray
         };
 
 
@@ -16,21 +18,31 @@ class GamesTab extends Component {
 
 
     componentDidMount() {
-        // axios({
-        //     method:'get', 
-        //     url: 'http://localhost:8000/api/getEventsByLeague/', 
-        //     data: {leagueId:}
-        // })
-        // .then(({data}) => {
-        //     console.log(data);
-        // });
+        fetch('http://localhost:8000/api/getEventsByLeague/'+this.props.leagueId)
+        .then(res => res.json())
+        .then((res) => {
+        	this.setState({
+        		games: res
+        	});
+        });
     }
 
 
     render() {
         return (
             <div>
-                <h1>Games Here</h1>
+                {this.state.games.map((game, index) => (
+                    <div key={index}>
+                        {(() => {
+                            return (
+                                <div>
+                                    {/* <h1>{this.state.teamsArray[game.away_team].team_name} @ {this.state.teamsArray[game.home_team].team_name}</h1> */}
+                                </div>
+                                 
+                            )
+                        })()}
+                    </div>
+				))}
             </div>
         )
     }

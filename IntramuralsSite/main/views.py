@@ -188,11 +188,10 @@ def generateSchedule(teams, gameNum, leagueStart, gameLength, teamGamesPerDay):
 	return games
 
 @api_view(['GET'])
-def getEventsByLeague(request):
-	leagueId = request.data['leagueId']
+def getEventsByLeague(request, leagueId):
 	games = Game.objects.filter(league=leagueId)
 	game_serializer = GameSerializer(games, context={'request': request}, many=True)
-	return Response(game_serializer)
+	return Response(game_serializer.data)
 
 
 	
