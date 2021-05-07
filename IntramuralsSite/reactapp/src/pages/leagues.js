@@ -1,6 +1,8 @@
 import React from "react";
 import { Component } from 'react';
 import TeamsTab from '../components/LeagueTabs/TeamsTab';
+import GamesTab from '../components/LeagueTabs/GamesTab';
+import StandingsTab from '../components/LeagueTabs/StandingsTab';
 
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
@@ -39,10 +41,10 @@ class LeaguePage extends Component {
 						<TeamsTab props={this.props.props} user={this.state.user}/>
 					</TabPanel>
 					<TabPanel>
-						<h1>Games Here</h1>
+						<GamesTab/>
 					</TabPanel>
 					<TabPanel>
-						<h1>Standings Here</h1>
+						<StandingsTab/>
 					</TabPanel>
 				</Tabs>
 				
