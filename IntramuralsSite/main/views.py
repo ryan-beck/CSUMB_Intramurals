@@ -298,7 +298,10 @@ def editPost(request, postId):
 
 @api_view(['POST']) 
 def createTeam(request):
-	return JsonResponse({"status":"ok"})
+	serializer = TeamSerializer(data=request.data)
+	if serializer.is_valid():
+		serializer.save()
+	return Response(serializer.data)
 
 @api_view(['GET']) 
 def getLeagueById(request, leagueId):

@@ -28,7 +28,7 @@ class League(models.Model):
     # TODO: maybe add constraints on these dates
     reg_start_date = models.DateField()
     reg_end_date = models.DateField()
-    player_limit = models.IntegerField(null=True)
+    
 
     def __str__(self):
         return self.sport.sport_name +": "+ self.league_name + " (" + str(self.id) + ")"

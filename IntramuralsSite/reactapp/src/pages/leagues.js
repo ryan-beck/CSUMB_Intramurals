@@ -38,7 +38,7 @@ class LeaguePage extends Component {
 		return (
 			<div>
 				<h1 className="leagueTitle">{this.props.props.match.params.sport}: {this.props.props.match.params.league}</h1>
-				<div> <CreateTeamFormModal leagueId={this.props.props.match.params.id}/> </div>
+				<div> <CreateTeamFormModal user={this.state.user} leagueId={this.props.props.match.params.id}/> </div>
 				{(() => {
 					if (this.state.user.is_admin) {
 						return (
