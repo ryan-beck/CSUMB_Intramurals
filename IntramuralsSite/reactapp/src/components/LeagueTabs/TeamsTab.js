@@ -48,7 +48,11 @@ class TeamsTab extends Component {
 					}
 				})
 				.then(({data}) => {
-					console.log(data);
+					console.log(data.status);
+					if(data.status == "PlayerExists") {
+						alert("You are already on a team in this League")
+						return
+					}
 					window.location.reload();
 				});
 			}

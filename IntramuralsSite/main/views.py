@@ -18,13 +18,20 @@ def index(request):
 
 @api_view(['POST'])
 def join_team(request):
-	print(request)
 	user_id = request.data['user_id']
 	team_id = request.data['team_id']
 	user_account = Account.objects.get(id=user_id)
-	team = Team.objects.get(id=team_id)
-	team.players.add(user_account)
-	team.save()
+	team_join = Team.objects.get(id=team_id)
+	serial_team = TeamSerializer(team_join)
+	league_id = serial_team.data['league']
+	teams_obj = Team.objects.filter(league=league_id)
+	serial_teams = TeamSerializer(teams_obj, context={'request': request}, many=True)
+	for team in serial_teams.data:
+		if team['id'] != team_id:
+			if user_id in team['players']:
+				return JsonResponse({'status': 'PlayerExists'})
+	team_join.players.add(user_account)
+	team_join.save()
 	return JsonResponse({'status': 'ok'})
 
 @api_view(['POST'])

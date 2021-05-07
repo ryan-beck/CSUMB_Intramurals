@@ -48,7 +48,8 @@ class CreateTeamForm extends Component {
             team_name: this.state.teamName,
             league: this.state.leagueId,
             players: [this.state.user.id],
-            is_open: this.state.isPrivate
+            is_open: this.state.isPrivate,
+            captain: this.state.user.id
           }
         axios({
             method:'post', 
