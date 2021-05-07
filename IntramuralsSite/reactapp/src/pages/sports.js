@@ -190,7 +190,7 @@ class SportsPage extends Component {
 						  <div key={index}>
 							<div className="grid-item">
 							{(() => {
-								if (this.state.isAdminView) {
+								if (this.state.isAdminView && sport.is_active) {
 									return (
 									<div> <CreateLeagueFormModal sportId={sport.id} sportName={sport.sport_name} handleFormSubmit={this.handleLeagueFormSubmit}/> </div>
 									)
