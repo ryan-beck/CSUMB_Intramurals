@@ -205,7 +205,7 @@ class SportsPage extends Component {
 								{(() => {
 								if (sport.id == league.sport) {
 									return (
-									<div><a href={'/leagues/'+ sport.sport_name+'/'+league.league_name+'/'+league.id}><h5>{league.league_name}</h5></a></div>
+									<div><a href={'/leagues/'+ sport.sport_name+'/'+league.league_name+'/'+league.id+'/'+sport.id}><h5>{league.league_name}</h5></a></div>
 									)
 								} else {
 									return (
