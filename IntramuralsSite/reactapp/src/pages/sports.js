@@ -12,8 +12,8 @@ import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 
 import FormLabel from '@material-ui/core/FormLabel';
-import CreateLeagueFormModal from '../components/CreateLeagueFormModal';
-import CreateSportFormModal from '../components/CreateSportFormModal';
+import CreateLeagueFormModal from '../components/Forms/CreateLeagueFormModal';
+import CreateSportFormModal from '../components/Forms/CreateSportFormModal';
 
 
 
@@ -146,7 +146,6 @@ class SportsPage extends Component {
 								  <span class="slider round"></span>
 								</label>
 							</div>
-							
 						)
 					}
 				})()}

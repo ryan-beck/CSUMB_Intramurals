@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import axios from "axios"; 
-import { storage } from '../firebase';
+import { storage } from '../../firebase';
 
-import '../style/sportForm.css'
-import '../style/modal.css';
+import '../../style/sportForm.css'
+import '../../style/modal.css';
 
 class CreateSportForm extends Component {
 

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from "axios"; 
-import { storage } from '../firebase';
-import '../style/modal.css'; 
+import { storage } from '../../firebase';
+import '../../style/modal.css'; 
 
 class CreatePostForm extends Component {
 

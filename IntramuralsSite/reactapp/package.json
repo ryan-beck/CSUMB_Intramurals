@@ -25,6 +25,7 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
     "react-select": "^4.3.0",
+    "react-tabs": "^3.2.2",
     "react-widgets": "^4.6.1",
     "web-vitals": "^1.1.0"
   },
