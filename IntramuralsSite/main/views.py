@@ -18,13 +18,14 @@ def index(request):
 
 @api_view(['POST'])
 def join_team(request):
-    user_id = request.data['user_id']
-    team_id = request.data['team_id']
-    user_account = Account.objects.get(id=user_id)
-    team = Team.objects.get(id=team_id)
-    team.players.add(user_account)
-    team.save()
-    return JsonResponse({'status': 'ok'})
+	print(request)
+	user_id = request.data['user_id']
+	team_id = request.data['team_id']
+	user_account = Account.objects.get(id=user_id)
+	team = Team.objects.get(id=team_id)
+	team.players.add(user_account)
+	team.save()
+	return JsonResponse({'status': 'ok'})
 
 @api_view(['POST'])
 def leave_team(request):
@@ -294,4 +295,16 @@ def editPost(request, postId):
 		serializer.save()
 
 	return HttpResponse('updated')
+
+@api_view(['POST']) 
+def createTeam(request):
+	return JsonResponse({"status":"ok"})
+
+@api_view(['GET']) 
+def getLeagueById(request, leagueId):
+	league = League.objects.get(id=leagueId)
+	league_serializer = LeagueSerializer(league, context={'request': request})
+	return Response(league_serializer.data)
+
+
 
