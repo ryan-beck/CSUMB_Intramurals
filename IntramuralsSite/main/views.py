@@ -303,3 +303,15 @@ def editPost(request, postId):
 
 	return HttpResponse('updated')
 
+@api_view(['POST']) 
+def createTeam(request):
+	return JsonResponse({"status":"ok"})
+
+@api_view(['GET']) 
+def getLeagueById(request, leagueId):
+	league = League.objects.get(id=leagueId)
+	league_serializer = LeagueSerializer(league, context={'request': request})
+	return Response(league_serializer.data)
+
+
+

@@ -169,8 +169,6 @@ class TeamsTab extends Component {
 		return (
 			<Box>
 				<div>
-				
-					<h4 className="teamlabel">Teams: </h4>
 
 					<Box className="teamBox"> 
 						{this.state.teamsArray.map((team, index) => (

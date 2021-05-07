@@ -20,4 +20,6 @@ urlpatterns = [
     path('deletePost/<str:postId>/', views.deletePost, name='deletePost'),
     path('editPost/<str:postId>/', views.editPost, name='editPost'),
     path('generateGameSchedule/', views.generateGameSchedule, name='generateGameSchedule'),
+    path('createTeam/', views.createTeam, name='createTeam'),
+    path('getLeagueById/<str:leagueId>/', views.getLeagueById, name='getLeagueById'),
 ]
