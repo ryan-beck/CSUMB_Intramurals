@@ -39,7 +39,7 @@ class Team(models.Model):
     league = models.ForeignKey(League, on_delete=models.CASCADE)
     players = models.ManyToManyField(Account)
     is_open = models.BooleanField()
-    captain = models.ForeignKey(League, on_delete=models.CASCADE, related_name="Captain", null=True)
+    captain = models.ForeignKey(Account, on_delete=models.CASCADE, related_name="Captain", null=True)
     def __str__(self):
         return self.team_name + " (" + str(self.id) + ")"
     
