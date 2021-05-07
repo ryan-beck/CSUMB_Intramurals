@@ -55,7 +55,7 @@ class LoginPage extends Component {
 				<div class="centered">
 					<img className="title-image" src={logo} alt="LoginLogo"/>
 					<label className="title">CSUMB Intramurals</label>
-					<p>Description.</p>
+					<p>A simple and lightweight application for organizing intramural sports at CSUMB.</p>
 				</div>
 			</div>
 
@@ -154,7 +154,7 @@ class App extends Component {
 			    <Switch>
 				    <Route exact path="/" render={() => this.ifUserSignedIn(MainPage)}/>
 				    <Route exact path="/sports" render={() => this.ifUserSignedIn(SportsPage)}/>
-					<Route path="/leagues/:sport/:league" render={props => this.ifUserSignedIn(LeaguePage,{...props})}/>
+					<Route path="/leagues/:sport/:league/:id" render={props => this.ifUserSignedIn(LeaguePage,{...props})}/>
 					<Route path="/team/:team/:id/" render={props => this.ifUserSignedIn(TeamPage,{...props})}/>
 			    </Switch>
 		    </Router>
