@@ -15,9 +15,6 @@ import FormLabel from '@material-ui/core/FormLabel';
 import CreateLeagueFormModal from '../components/Forms/CreateLeagueFormModal';
 import CreateSportFormModal from '../components/Forms/CreateSportFormModal';
 
-
-
-
 //import axios from "axios";
 
 import "../sports.css"
