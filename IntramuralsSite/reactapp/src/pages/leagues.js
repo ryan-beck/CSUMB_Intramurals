@@ -20,6 +20,13 @@ class LeaguePage extends Component {
 
 
     this.state = {
+	  user: props.user,
+      sportsArray: [] ,
+	  displayArray: [],
+	  searchtTextInput: " ",
+	  leagueArray: [],
+	  teamsArray: [],
+	  playerArray: [],
 		user: props.user,
 		isAdminView: false
     };
