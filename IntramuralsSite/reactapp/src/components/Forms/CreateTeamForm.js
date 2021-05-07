@@ -10,6 +10,7 @@ class CreateTeamForm extends Component {
 
         this.state = {
             leagueId: props.leagueId,
+            user: props.user,
             teamName: "",
             isPrivate: false,
             playerLimit: 0
@@ -39,21 +40,25 @@ class CreateTeamForm extends Component {
 
     submitHandler(event) {
         event.preventDefault();
+        this.setState({
+            isPrivate:document.getElementById("isPrivate").checked
+        });
 
-        console.log(this.state.isPrivate);
         let teamData = {
-            league: this.state.teamName,
-            players: this.state.logoUrl,
-            is_open: true
+            team_name: this.state.teamName,
+            league: this.state.leagueId,
+            players: [this.state.user.id],
+            is_open: this.state.isPrivate,
+            captain: this.state.user.id
           }
-        // axios({
-        //     method:'post', 
-        //     url: 'http://localhost:8000/api/createSport/', 
-        //     data: sportData
-        // })
-        // .then(({data}) => {
-        //     this.props.handleFormSubmit(sportData);
-        // });
+        axios({
+            method:'post', 
+            url: 'http://localhost:8000/api/createTeam/', 
+            data: teamData
+        })
+        .then(({data}) => {
+            window.location.reload();
+        });
     }
 
     render () {
@@ -62,9 +67,9 @@ class CreateTeamForm extends Component {
                 <h2 className="modalText">Add a New Team</h2>
                 <form onSubmit={this.submitHandler}>
                     <label className="modalText checkboxSpace">Team Name</label>
-                    <input type="text" name="teamName" value={this.state.teamName} onChange={this.onChangeHandler}/> <br/><br/>
+                    <input type="text" name="teamName" value={this.state.teamName} onChange={this.onChangeHandler} required/> <br/><br/>
                     <label className="modalText checkboxSpace">Would you like this team to be invite only?</label>
-                    <input type="checkbox" name="isPrivate" value={this.state.isPrivate} onChange={this.onChangeHandler}/> <br/><br/>
+                    <input type="checkbox" id="isPrivate" value={this.state.isPrivate} onChange={this.onChangeHandler}/> <br/><br/>
                     <input className="submitHandler right" type="submit" value="Submit"/>
                 </form>
             </div>

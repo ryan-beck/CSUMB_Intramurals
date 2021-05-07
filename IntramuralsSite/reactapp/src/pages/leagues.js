@@ -21,8 +21,14 @@ class LeaguePage extends Component {
 
     this.state = {
 		user: props.user,
+		sportsArray: [] ,
+		displayArray: [],
+		searchtTextInput: " ",
+		leagueArray: [],
+		teamsArray: null,
+		playerArray: [],
 		isAdminView: false,
-		teamsArray : []
+		sportIsActive: null
     };
 
     this.adminViewSwitch = this.adminViewSwitch.bind(this);
@@ -44,6 +50,14 @@ class LeaguePage extends Component {
 		console.log("Error in database call")
 	  }
 	)
+
+	fetch('http://localhost:8000/api/getSportById/'+this.props.props.match.params.sportId)
+        .then(res => res.json())
+        .then((res) => {
+            this.setState({
+				sportIsActive: res.is_active
+			});
+        });
   }
 
 	adminViewSwitch() {
@@ -56,7 +70,13 @@ class LeaguePage extends Component {
 		return (
 			<div>
 				<h1 className="leagueTitle">{this.props.props.match.params.sport}: {this.props.props.match.params.league}</h1>
-				<div> <CreateTeamFormModal leagueId={this.props.props.match.params.id}/> </div>
+				{(() => {
+					if (this.state.sportIsActive) {
+						return (
+						<div> <CreateTeamFormModal user={this.state.user} leagueId={this.props.props.match.params.id}/> </div>
+						)
+					}
+				})()}
 				{(() => {
 					if (this.state.user.is_admin) {
 						return (
@@ -83,7 +103,8 @@ class LeaguePage extends Component {
 				
 					{/* TODO onclick for panels to update tab state*/}
 					<TabPanel>
-						<TeamsTab props={this.props.props} user={this.state.user} teamsArray={this.state.teamsArray}/>
+						{ this.state.sportIsActive != null && teamsArray != null ? <TeamsTab props={this.props.props} user={this.state.user} sportIsActive={this.state.sportIsActive}/> : null }
+						
 					</TabPanel>
 					<TabPanel>
 						<GamesTab leagueId={this.props.props.match.params.id} teamsArray={this.state.teamsArray}/>

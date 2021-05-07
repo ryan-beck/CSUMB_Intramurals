@@ -150,6 +150,9 @@ class CreatePostForm extends Component {
             );
         } 
         else {
+            if(this.state.post.media_url) {
+                this.state.mediaUrl = this.state.post.media_url;
+            }
             this.editPostDjango(newText);
         }
         

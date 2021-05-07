@@ -24,11 +24,12 @@ class League(models.Model):
     league_name = models.TextField()
     start_date = models.DateField()
     end_date = models.DateField()
+    player_limit = models.IntegerField(null=True)
     # registration dates:
     # TODO: maybe add constraints on these dates
     reg_start_date = models.DateField()
     reg_end_date = models.DateField()
-    player_limit = models.IntegerField(null=True)
+    
 
     def __str__(self):
         return self.sport.sport_name +": "+ self.league_name + " (" + str(self.id) + ")"
@@ -39,7 +40,7 @@ class Team(models.Model):
     league = models.ForeignKey(League, on_delete=models.CASCADE)
     players = models.ManyToManyField(Account)
     is_open = models.BooleanField()
-
+    captain = models.ForeignKey(Account, on_delete=models.CASCADE, related_name="Captain", null=True)
     def __str__(self):
         return self.team_name + " (" + str(self.id) + ")"
     
