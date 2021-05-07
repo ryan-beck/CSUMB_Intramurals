@@ -20,20 +20,30 @@ class LeaguePage extends Component {
 
 
     this.state = {
-	  user: props.user,
-      sportsArray: [] ,
-	  displayArray: [],
-	  searchtTextInput: " ",
-	  leagueArray: [],
-	  teamsArray: [],
-	  playerArray: [],
 		user: props.user,
-		isAdminView: false
+		sportsArray: [] ,
+		displayArray: [],
+		searchtTextInput: " ",
+		leagueArray: [],
+		teamsArray: [],
+		playerArray: [],
+		isAdminView: false,
+		sportIsActive: null
     };
 
     this.adminViewSwitch = this.adminViewSwitch.bind(this);
 
   }
+
+  	componentDidMount() {
+  		fetch('http://localhost:8000/api/getSportById/'+this.props.props.match.params.sportId)
+        .then(res => res.json())
+        .then((res) => {
+            this.setState({
+				sportIsActive: res.is_active
+			});
+        });
+  	}
 
 	adminViewSwitch() {
 		this.setState({
@@ -45,7 +55,13 @@ class LeaguePage extends Component {
 		return (
 			<div>
 				<h1 className="leagueTitle">{this.props.props.match.params.sport}: {this.props.props.match.params.league}</h1>
-				<div> <CreateTeamFormModal user={this.state.user} leagueId={this.props.props.match.params.id}/> </div>
+				{(() => {
+					if (this.state.sportIsActive) {
+						return (
+						<div> <CreateTeamFormModal user={this.state.user} leagueId={this.props.props.match.params.id}/> </div>
+						)
+					}
+				})()}
 				{(() => {
 					if (this.state.user.is_admin) {
 						return (
@@ -71,7 +87,8 @@ class LeaguePage extends Component {
 					</TabList>
 				
 					<TabPanel>
-						<TeamsTab props={this.props.props} user={this.state.user}/>
+						{ this.state.sportIsActive != null ? <TeamsTab props={this.props.props} user={this.state.user} sportIsActive={this.state.sportIsActive}/> : null }
+						
 					</TabPanel>
 					<TabPanel>
 						<GamesTab/>

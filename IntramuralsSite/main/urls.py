@@ -22,4 +22,5 @@ urlpatterns = [
     path('generateGameSchedule/', views.generateGameSchedule, name='generateGameSchedule'),
     path('createTeam/', views.createTeam, name='createTeam'),
     path('getLeagueById/<str:leagueId>/', views.getLeagueById, name='getLeagueById'),
+    path('getSportById/<str:sportId>/', views.getSportById, name='getSportById'),
 ]

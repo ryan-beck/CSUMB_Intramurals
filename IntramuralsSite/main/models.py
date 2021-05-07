@@ -24,6 +24,7 @@ class League(models.Model):
     league_name = models.TextField()
     start_date = models.DateField()
     end_date = models.DateField()
+    player_limit = models.IntegerField(null=True)
     # registration dates:
     # TODO: maybe add constraints on these dates
     reg_start_date = models.DateField()

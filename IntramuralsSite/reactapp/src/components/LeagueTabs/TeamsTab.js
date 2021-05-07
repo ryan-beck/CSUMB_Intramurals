@@ -23,6 +23,7 @@ class TeamsTab extends Component {
 	  teamsArray: [],
 	  playerArray: [],
 	  modalShow: false,
+	  sportIsActive: props.sportIsActive
     };
 
 	this.handleJoinTeam = this.handleJoinTeam.bind(this)
@@ -166,6 +167,7 @@ class TeamsTab extends Component {
 	}
 
 	render() {
+		console.log(this.state.sportIsActive)
 		return (
 			<Box>
 				<div>
@@ -178,18 +180,20 @@ class TeamsTab extends Component {
 								<div>
 									<h4 className="league-title"><a href={'/team/'+ team.team_name +'/'+ team.id }><u>{team.team_name}</u></a></h4>
 									{(() => {
-										if (this.checkTeam(team.id)) {
-											return (
-											<div className="closedTag">  <Button className="joinButton" size="sm" onClick={this.handleLeaveTeam} value={team.id} > Leave? </Button>   </div>
-											)
-										} else if(!team.is_open) {
-											return(
-											<div className="closedTag"> <i> Closed </i> </div>
-											)
-										} else  {
-											return (
-											<div className="closedTag"><Button className="joinButton" size="sm" onClick={this.handleJoinTeam} value={team.id} > Join </Button></div>
-											)
+										if(this.state.sportIsActive) {
+											if (this.checkTeam(team.id)) {
+												return (
+												<div className="closedTag">  <Button className="joinButton" size="sm" onClick={this.handleLeaveTeam} value={team.id} > Leave? </Button>   </div>
+												)
+											} else if(!team.is_open) {
+												return(
+												<div className="closedTag"> <i> Closed </i> </div>
+												)
+											} else  {
+												return (
+												<div className="closedTag"><Button className="joinButton" size="sm" onClick={this.handleJoinTeam} value={team.id} > Join </Button></div>
+												)
+											}
 										}
 										})()} 
 								</div>
