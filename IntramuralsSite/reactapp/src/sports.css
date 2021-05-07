@@ -57,16 +57,6 @@
     margin:30px;
 }
 
-.teamBox {
-    margin: 40px;
-    display: flex;
-    flex-wrap:wrap;
-    flex-direction:row;
-    padding:5px;
-    justify-content:flex-start;
-    justify-content:space-around;
-}
-
 .spacer{
 
 }
@@ -87,11 +77,28 @@
 .grid-item {
   background-color: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.8);
-  padding: 20px;
-  font-size: 30px;
+  font-size: 20px;
   text-align: center;
   font-weight: bold;
-  
+}
+
+.league-grid-container {
+  display: grid;
+  grid-template-columns: auto auto;
+  background-color: #d3d3d3;
+  padding: 10px;
+}
+
+.league-grid-item {
+  background-color: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.8);
+  padding: 15px;
+  font-size: 15px;
+  text-align: center;
+}
+
+.league-title {
+    text-align: left;
 }
 
 .logo {
@@ -132,28 +139,24 @@
   transition: .4s;
 }
 
-.buttonDisplay {
-    display: flex;
-    flex-direction: row;
-}
-
 .joinButton{
-    padding:20px;
     width:80px;
     height:30px;
-    margin-left:10px;
+    display: flex;
+    justify-content: flex-end;
 }
 
 .leaveButton {
-    padding: 20px;
     width: 80px;
     height: 30px;
-    margin-left: 10px;
+    display: flex;
+    justify-content: flex-end; 
 }
 
 .closedTag{
-    margin-left:10px;
     font-size:20px;
+    display: flex;
+    justify-content: flex-end;
 }
 
 .slider:before {

@@ -171,10 +171,12 @@ class TeamsTab extends Component {
 				<div>
 
 					<Box className="teamBox"> 
+						<div className="league-grid-container">
 						{this.state.teamsArray.map((team, index) => (
 							  <div key={index}>
-								<div className="buttonDisplay">
-									<h4><a href={'/team/'+ team.team_name +'/'+ team.id }><u>{team.team_name}</u></a></h4>
+							  <div className="league-grid-item">
+								<div>
+									<h4 className="league-title"><a href={'/team/'+ team.team_name +'/'+ team.id }><u>{team.team_name}</u></a></h4>
 									{(() => {
 										if (this.checkTeam(team.id)) {
 											return (
@@ -186,7 +188,7 @@ class TeamsTab extends Component {
 											)
 										} else  {
 											return (
-											<Button className="joinButton" size="sm" onClick={this.handleJoinTeam} value={team.id} > Join </Button>
+											<div className="closedTag"><Button className="joinButton" size="sm" onClick={this.handleJoinTeam} value={team.id} > Join </Button></div>
 											)
 										}
 										})()} 
@@ -211,7 +213,9 @@ class TeamsTab extends Component {
 									</div>
 								))}
 							  </div>
+							  </div>
 							))}
+						</div>
 					</Box>
 				</div>
 			</Box>
