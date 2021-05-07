@@ -60,7 +60,7 @@ class CreateSportForm extends Component {
                 <h2 className="modalText">Create League for {this.state.sportName}</h2>
                 <form onSubmit={this.submitHandler}>
 
-                    <div class="container">
+                    <div>
                         <div className="row">
                             <div className="center">
                                 <label className="modalText">League Name</label> <br/>
