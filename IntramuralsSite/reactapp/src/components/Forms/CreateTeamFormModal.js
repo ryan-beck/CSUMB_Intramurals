@@ -51,7 +51,6 @@ class CreateTeamFormModal extends Component {
 			            </View>
 			        </View>
 		        </Modal>
-                <span>
                     <Pressable
                             style={styles.editButton}
                             onPress={() => this.setModalVisible(true)}
@@ -59,7 +58,6 @@ class CreateTeamFormModal extends Component {
                             
                             <Text style={styles.textStyle}>Add New Team</Text>
                     </Pressable>
-                </span>
 		        
 		    </View>
 		);
@@ -106,13 +104,9 @@ const styles = StyleSheet.create({
         fontSize: 15
     },
     editButton: {
-        float:"right",
         borderRadius: 20,
         padding: 12,
-        elevation: 2,
         backgroundColor: "#00688B",
-        width:150,
-        
     }
 });
 
