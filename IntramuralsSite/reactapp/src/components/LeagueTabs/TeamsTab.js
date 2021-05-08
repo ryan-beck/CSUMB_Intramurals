@@ -6,7 +6,7 @@ import Button from 'react-bootstrap/Button';
 
 import axios from "axios";
 
-import "../../sports.css"
+import "../../style/teamstab.css"
 
 
 class TeamsTab extends Component {
@@ -23,6 +23,7 @@ class TeamsTab extends Component {
 	  teamsArray: [],
 	  playerArray: [],
 	  modalShow: false,
+	  sportIsActive: props.sportIsActive
     };
 
 	this.handleJoinTeam = this.handleJoinTeam.bind(this)
@@ -167,58 +168,58 @@ class TeamsTab extends Component {
 
 	render() {
 		return (
-			<Box>
-				<div>
-
-					<Box className="teamBox"> 
-						<div className="league-grid-container">
-						{this.state.teamsArray.map((team, index) => (
-							  <div key={index}>
-							  <div className="league-grid-item">
-								<div>
-									<h4 className="league-title"><a href={'/team/'+ team.team_name +'/'+ team.id }><u>{team.team_name}</u></a></h4>
-									{(() => {
-										if (this.checkTeam(team.id)) {
-											return (
-											<div className="closedTag">  <Button className="joinButton" size="sm" onClick={this.handleLeaveTeam} value={team.id} > Leave? </Button>   </div>
-											)
-										} else if(!team.is_open) {
-											return(
-											<div className="closedTag"> <i> Closed </i> </div>
-											)
-										} else  {
-											return (
-											<div className="closedTag"><Button className="joinButton" size="sm" onClick={this.handleJoinTeam} value={team.id} > Join </Button></div>
-											)
-										}
-										})()} 
-								</div>
-								{team.players.map((player,index)=> (
+			<Box> 
+				<div className="league-grid-container">
+				{this.state.teamsArray.map((team, index) => (
+					  <div key={index}>
+					  <div className="league-grid-item">
+						<div>
+							<h4 className="league-title"><a href={'/team/'+ team.team_name +'/'+ team.id }><u>{team.team_name}</u></a></h4>
+							{(() => {
+								if(this.state.sportIsActive) {
+									if (this.checkTeam(team.id)) {
+										return (
+										<div className="closedTag">  <Button className="joinButton" size="sm" onClick={this.handleLeaveTeam} value={team.id} > Leave? </Button>   </div>
+										)
+									} else if(!team.is_open) {
+										return(
+										<div className="closedTag"> <i> Closed </i> </div>
+										)
+									} else  {
+										return (
+										<div className="closedTag"><Button className="joinButton" size="sm" onClick={this.handleJoinTeam} value={team.id} > Join </Button></div>
+										)
+									}
+								}
+								})()} 
+						</div>
+						{team.players.map((player,index)=> (
+							<div key={index}>
+								{this.state.playerArray.map((playerObj,index) => (
 									<div key={index}>
-										{this.state.playerArray.map((playerObj,index) => (
-											<div key={index}>
-												{(() => {
-													if (player == playerObj.id) {
-														return (
-														<div>{playerObj.display_name}</div>
-														)
-													} else {
-														return (
-														<div><h1> </h1></div>
-														)
-													}
-													})()}
-											</div>
-										))}
+										{(() => {
+											if (player == playerObj.id) {
+												return (
+												<div>
+													<label className="playersDisplay">{playerObj.display_name}</label>
+												</div>
+												)
+											} else {
+												return (
+												<div><h1> </h1></div>
+												)
+											}
+											})()}
 									</div>
 								))}
-							  </div>
-							  </div>
-							))}
-						</div>
-					</Box>
+							</div>
+						))}
+					  </div>
+					  </div>
+					))}
 				</div>
 			</Box>
+				
 		)
 	}
 }

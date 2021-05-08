@@ -15,9 +15,6 @@ import FormLabel from '@material-ui/core/FormLabel';
 import CreateLeagueFormModal from '../components/Forms/CreateLeagueFormModal';
 import CreateSportFormModal from '../components/Forms/CreateSportFormModal';
 
-
-
-
 //import axios from "axios";
 
 import "../sports.css"
@@ -193,7 +190,7 @@ class SportsPage extends Component {
 						  <div key={index}>
 							<div className="grid-item">
 							{(() => {
-								if (this.state.isAdminView) {
+								if (this.state.isAdminView && sport.is_active) {
 									return (
 									<div> <CreateLeagueFormModal sportId={sport.id} sportName={sport.sport_name} handleFormSubmit={this.handleLeagueFormSubmit}/> </div>
 									)
@@ -208,7 +205,7 @@ class SportsPage extends Component {
 								{(() => {
 								if (sport.id == league.sport) {
 									return (
-									<div><a href={'/leagues/'+ sport.sport_name+'/'+league.league_name+'/'+league.id}><h5>{league.league_name}</h5></a></div>
+									<div><a href={'/leagues/'+ sport.sport_name+'/'+league.league_name+'/'+league.id+'/'+sport.id}><h5>{league.league_name}</h5></a></div>
 									)
 								} else {
 									return (

@@ -50,7 +50,7 @@ class CreateSportFormModal extends Component {
 			            </View>
 			        </View>
 		        </Modal>
-                <span class="editSpan">
+                <span className="sportSpan">
                     <Pressable
                             style={styles.editButton}
                             onPress={() => this.setModalVisible(true)}

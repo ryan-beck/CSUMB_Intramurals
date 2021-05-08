@@ -316,5 +316,9 @@ def getLeagueById(request, leagueId):
 	league_serializer = LeagueSerializer(league, context={'request': request})
 	return Response(league_serializer.data)
 
-
+@api_view(['GET']) 
+def getSportById(request, sportId):
+	sport = Sport.objects.get(id=sportId)
+	sport_serializer = SportSerializer(sport, context={'request': request})
+	return Response(sport_serializer.data)
 
