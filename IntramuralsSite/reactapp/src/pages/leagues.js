@@ -53,18 +53,17 @@ class LeaguePage extends Component {
 
 	render() {
 		return (
-			<div>
-				<label className="leagueTitle"><b>{this.props.props.match.params.sport}:</b> &nbsp;{this.props.props.match.params.league}
-					{(() => {
-						if (this.state.sportIsActive) {
-							return (
-								<div className="editSpan">
-									<CreateTeamFormModal user={this.state.user} leagueId={this.props.props.match.params.id}/> 
-								</div>
-							)
-						}
-					})()}
-					</label>
+			<div className="paddingLeague">
+				{(() => {
+					if (this.state.sportIsActive) {
+						return (
+							<span className="editSpan">
+								<CreateTeamFormModal user={this.state.user} leagueId={this.props.props.match.params.id}/> 
+							</span>
+						)
+					}
+				})()}
+				<label className="leagueTitle"><b>{this.props.props.match.params.sport}:</b> &nbsp;{this.props.props.match.params.league}</label>
 				{(() => {
 					if (this.state.user.is_admin) {
 						return (
@@ -100,8 +99,6 @@ class LeaguePage extends Component {
 						<StandingsTab/>
 					</TabPanel>
 				</Tabs>
-				
-				
 			</div>
 		)
 	}
