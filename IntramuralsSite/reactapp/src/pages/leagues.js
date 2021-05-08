@@ -54,7 +54,7 @@ class LeaguePage extends Component {
 	render() {
 		return (
 			<div>
-				<label className="leagueTitle"><b>{this.props.props.match.params.sport}:</b> {this.props.props.match.params.league}
+				<label className="leagueTitle"><b>{this.props.props.match.params.sport}:</b> &nbsp;{this.props.props.match.params.league}
 					{(() => {
 						if (this.state.sportIsActive) {
 							return (
