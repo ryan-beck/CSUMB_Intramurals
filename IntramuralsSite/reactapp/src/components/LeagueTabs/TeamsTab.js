@@ -20,7 +20,7 @@ class TeamsTab extends Component {
 	  displayArray: [],
 	  searchtTextInput: " ",
 	  leagueArray: [],
-	  teamsArray: [],
+	  teamsArray: props.teamsArray,
 	  playerArray: [],
 	  modalShow: false,
 	  sportIsActive: props.sportIsActive
@@ -106,10 +106,6 @@ class TeamsTab extends Component {
 
 
 	componentDidMount() {
-
-		this.setState({
-			teamsArray : this.props.teamsArray
-		});
 
 		fetch("http://localhost:8000/api/getSports/")
 		  .then(res => res.json())

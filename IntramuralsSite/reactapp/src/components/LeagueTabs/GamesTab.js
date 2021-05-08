@@ -29,17 +29,45 @@ class GamesTab extends Component {
 
 
     render() {
+        console.log("games tab");
+        console.log(this.state.teamsArray);
+        let currDate = null;
         return (
             <div>
                 {this.state.games.map((game, index) => (
                     <div key={index}>
                         {(() => {
-                            return (
-                                <div>
-                                    {/* <h1>{this.state.teamsArray[game.away_team].team_name} @ {this.state.teamsArray[game.home_team].team_name}</h1> */}
-                                </div>
-                                 
-                            )
+                            let gameDate = game.start_time.split("T")[0];
+                            let changed = false;
+                            if(!currDate || currDate != gameDate){ 
+                                currDate = gameDate;
+                                changed = true;
+                            }
+                            let homeTeam = null;
+                            let awayTeam = null;
+                            this.state.teamsArray.forEach(element => {
+                                if(parseInt(game.home_team) === element.id)
+                                    homeTeam = element;
+                                if(parseInt(game.away_team) === element.id)
+                                    awayTeam = element;
+                            });
+                            if(changed) {
+                                return (
+                                    <div>
+                                        <h3>{currDate}</h3>
+                                        <p>{awayTeam.team_name} @ {homeTeam.team_name}</p>
+                                        {/* <h1>{game.away_team} @ {game.home_team}</h1> */}
+                                    </div>  
+                                )
+                            } else {
+                                return (
+                                    <div>
+                                        <p>{awayTeam.team_name} @ {homeTeam.team_name}</p>
+                                        {/* <h1>{game.away_team} @ {game.home_team}</h1> */}
+                                    </div>
+                                     
+                                )
+                            } 
                         })()}
                     </div>
 				))}
