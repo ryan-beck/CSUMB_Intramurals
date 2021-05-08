@@ -1,0 +1,36 @@
+.league-grid-container {
+  display: grid;
+  grid-template-columns: auto auto;
+  background-color: #d3d3d3;
+  padding: 10px;
+}
+
+.league-grid-item {
+  background-color: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.8);
+  padding: 15px;
+  font-size: 15px;
+  text-align: center;
+}
+
+.league-title {
+    text-align: left;
+    font-size: 25px;
+}
+
+.playersDisplay {
+  font-size: 20px;
+}
+
+.joinButton{
+    width:80px;
+    height:30px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.closedTag{
+    font-size:20px;
+    display: flex;
+    justify-content: flex-end;
+}
