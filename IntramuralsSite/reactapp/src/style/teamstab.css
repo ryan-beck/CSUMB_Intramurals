@@ -34,3 +34,22 @@
     display: flex;
     justify-content: flex-end;
 }
+
+.admin-view-delete {
+    float: right;
+}
+
+.deleteTeam {
+    border-radius: 20px;
+    font-size: 13px;
+    padding: 6px;
+    color: white;
+    font-weight: bold;
+    background-color: #e50000;
+
+    outline: none;
+    border-top-style: hidden;
+    border-right-style: hidden;
+    border-left-style: hidden;
+    border-bottom-style: hidden;
+}

@@ -117,7 +117,7 @@ class LeaguePage extends Component {
 				
 					{/* TODO onclick for panels to update tab state*/}
 					<TabPanel>
-						{ this.state.sportIsActive != null && this.state.teamsArray != null ? <TeamsTab props={this.props.props} teamsArray={this.state.teamsArray} user={this.state.user} sportIsActive={this.state.sportIsActive} leagueId={this.props.props.match.params.id}/> : null }
+						{ this.state.sportIsActive != null && this.state.teamsArray != null ? <TeamsTab props={this.props.props} teamsArray={this.state.teamsArray} user={this.state.user} sportIsActive={this.state.sportIsActive} leagueId={this.props.props.match.params.id} isAdminView={this.state.isAdminView}/> : null }
 						
 					</TabPanel>
 					<TabPanel>

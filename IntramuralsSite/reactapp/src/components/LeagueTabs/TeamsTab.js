@@ -1,5 +1,5 @@
 import React from "react";
-import { Component } from 'react';
+import { Component, Fragment } from 'react';
 import Box from '@material-ui/core/Box';
 import Button from 'react-bootstrap/Button';
 
@@ -27,10 +27,11 @@ class TeamsTab extends Component {
 		sportIsActive: props.sportIsActive
     };
 
-	this.handleJoinTeam = this.handleJoinTeam.bind(this)
-	this.checkTeam = this.checkTeam.bind(this)
-	this.handleLeaveTeam = this.handleLeaveTeam.bind(this)
-	this.hasLeagueBegun = this.hasLeagueBegun.bind(this)
+	this.handleJoinTeam = this.handleJoinTeam.bind(this);
+	this.checkTeam = this.checkTeam.bind(this);
+	this.handleLeaveTeam = this.handleLeaveTeam.bind(this);
+	this.hasLeagueBegun = this.hasLeagueBegun.bind(this);
+	this.deleteHandler = this.deleteHandler.bind(this);
 
   }
 
@@ -142,6 +143,16 @@ class TeamsTab extends Component {
 		return mydate <= today;
 	}
 
+	deleteHandler(teamId) {
+	    axios({
+	        method:'delete', 
+	        url: 'http://localhost:8000/api/deleteTeam/'+teamId,
+	    })
+	    .then(({data}) => {
+	        window.location.reload(); 
+	    });
+	}
+
 	render() {
 		return (
 			<Box> 
@@ -150,7 +161,19 @@ class TeamsTab extends Component {
 					  <div key={index}>
 					  <div className="league-grid-item">
 						<div>
+							{(() => {
+								if (this.props.isAdminView) {
+									return (
+									<Fragment>
+										<span className="admin-view-delete">
+											<input name="deleteButton" className="deleteTeam" type="button" value="Delete This Team" onClick={() => this.deleteHandler(team.id)}/>
+										</span>
+										</Fragment>
+									)
+								}
+							})()}
 							<h4 className="league-title"><a href={'/team/'+ team.team_name +'/'+ team.id+'/'+ team.captain}><u>{team.team_name}</u></a></h4>
+							
 							{(() => {
 								if(this.state.sportIsActive && !this.hasLeagueBegun()) {
 									if (this.checkTeam(team.id)) {
