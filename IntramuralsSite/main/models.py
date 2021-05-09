@@ -4,7 +4,10 @@ class Account(models.Model):
     email = models.TextField(unique=True)
     display_name = models.TextField()
     photo_url = models.TextField()
-    is_admin = models.BooleanField(default=False) 
+    is_admin = models.BooleanField(default=False)
+    wins = models.IntegerField(default=0)
+    losses = models.IntegerField(default=0)
+    ties = models.IntegerField(default=0)
 
     def __str__(self):
         return self.email + " (" + str(self.id) + ")"
@@ -39,10 +42,49 @@ class Team(models.Model):
     team_name = models.TextField(default="My Team", max_length=16)
     league = models.ForeignKey(League, on_delete=models.CASCADE)
     players = models.ManyToManyField(Account)
+    wins = models.IntegerField(default=0)
+    losses = models.IntegerField(default=0)
+    ties = models.IntegerField(default=0)
+    player_limit = models.IntegerField(null=True)
     is_open = models.BooleanField()
     captain = models.ForeignKey(Account, on_delete=models.CASCADE, related_name="Captain", null=True)
     def __str__(self):
         return self.team_name + " (" + str(self.id) + ")"
+
+    def __gt__(self, other):
+        thisWinPrct = self.wins / (self.wins + self.losses + self.ties)
+        otherWinPrct = other.wins / (other.wins + other.losses + other.ties)
+        if thisWinPrct != otherWinPrct:
+            return thisWinPrct > otherWinPrct
+        
+        thisHome = Game.objects.filter(home_team=self, away_team=other)
+        thisAway = Game.objects.filter(home_team=other, away_team=self)
+        
+        thisWins = 0
+        otherWins = 0
+        for game in thisHome:
+            if game.home_score > game.away_score:
+                thisWins += 1
+            elif game.home_score < game.away_score:
+                otherWins += 1
+        for game in thisAway:
+            if game.home_score > game.away_score:
+                otherWins += 1
+            elif game.home_score < game.away_score:
+                thisWins += 1
+        if thisWins != otherWins:
+            return thisWins > otherWins
+
+        thisScore = 0
+        otherScore = 0
+        for game in thisHome:
+            thisScore += game.home_score
+            otherScore += game.away_score
+        for game in thisAway:
+            thisScore += game.away_score
+            otherScore += game.home_score
+        return thisScore > otherScore
+
     
 
 class Game(models.Model):
