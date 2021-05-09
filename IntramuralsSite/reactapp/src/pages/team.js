@@ -119,6 +119,17 @@ class TeamPage extends Component {
 					<div className="game_card">
 						<Card style={{ width: '45rem' }}>
 						  <Card.Body>
+						  	{(() => {
+								if (this.state.gamesArray.length == 0) {
+									return (
+										<div className="no-games"> 
+											<label>
+												There are currently no games to display.
+											</label>
+										</div>
+									);
+								}
+							})()}
 						  {this.state.gamesArray.map((game, index) => (
 								  <div key={index}>
 									<Card.Title>{game.home_name} vs {game.away_name}</Card.Title>
