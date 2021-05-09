@@ -10,7 +10,8 @@
 .secondaryTitle {
     padding-left:100px;
     color: #444444;
-    font-weight: bolder;
+    font-weight: bold;
+    font-size: 25px;
 }
 
 .team_card{
@@ -29,6 +30,8 @@
 
 .profile_pic{
     padding-right:5px;
+    max-height: 50px;
+    max-width: 50px;
 }
 
 .player_cards{
@@ -42,4 +45,8 @@
 
 .big_font{
     font-size:50px;
+}
+
+.no-games {
+    text-align: center;
 }

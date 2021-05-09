@@ -160,7 +160,7 @@ class TeamsTab extends Component {
 					  <div key={index}>
 					  <div className="league-grid-item">
 						<div>
-							<h4 className="league-title"><a href={'/team/'+ team.team_name +'/'+ team.id }><u>{team.team_name}</u></a></h4>
+							<h4 className="league-title"><a href={'/team/'+ team.team_name +'/'+ team.id+'/'+ team.captain}><u>{team.team_name}</u></a></h4>
 							{(() => {
 								if(this.state.sportIsActive) {
 									if (this.checkTeam(team.id)) {

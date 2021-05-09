@@ -155,7 +155,7 @@ class App extends Component {
 				    <Route exact path="/" render={() => this.ifUserSignedIn(MainPage)}/>
 				    <Route exact path="/sports" render={() => this.ifUserSignedIn(SportsPage)}/>
 					<Route path="/leagues/:sport/:league/:id/:sportId" render={props => this.ifUserSignedIn(LeaguePage,{...props})}/>
-					<Route path="/team/:team/:id/" render={props => this.ifUserSignedIn(TeamPage,{...props})}/>
+					<Route path="/team/:team/:id/:captainId" render={props => this.ifUserSignedIn(TeamPage,{...props})}/>
 			    </Switch>
 		    </Router>
 		    
