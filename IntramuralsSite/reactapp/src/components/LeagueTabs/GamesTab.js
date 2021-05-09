@@ -90,7 +90,13 @@ class GamesTab extends Component {
                         return (
                             <div className="no-games-div"> 
                                 <h1 className="no-games">No games for this league yet</h1>
-                                <GenerateScheduleFormModal handleFormSubmit={this.handleGenerationFormSubmit} leagueId={this.state.leagueId}/>
+                                {(() => {
+                                    if(this.props.isAdminView) {
+                                        return (
+                                            <GenerateScheduleFormModal handleFormSubmit={this.handleGenerationFormSubmit} leagueId={this.state.leagueId}/>
+                                        )
+                                    }
+                                })()}   
                             </div>
                         )
                     }
