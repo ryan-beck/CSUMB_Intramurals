@@ -3,18 +3,20 @@ import { Component } from 'react';
 import axios from "axios";
 import Collapsible from 'react-collapsible';
 
+import '../../style/GamesTab.css'
 
 class GamesTab extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            games : [],
-            teamsArray : this.props.teamsArray
+            teamsArray : this.props.teamsArray, 
+            sortedGames: [],
+            currWeek: 0
         };
 
         this.sortGamesByDate = this.sortGamesByDate.bind(this);
-
+        this.getCurrWeek = this.getCurrWeek.bind(this);
     }
 
 
@@ -22,8 +24,11 @@ class GamesTab extends Component {
         fetch('http://localhost:8000/api/getEventsByLeague/'+this.props.leagueId)
         .then(res => res.json())
         .then((res) => {
+            let sortedGames = this.sortGamesByDate(res);
+            let currWeek = this.getCurrWeek(sortedGames);
         	this.setState({
-        		games: res
+        		sortedGames: sortedGames,
+                currWeek: currWeek
         	});
         });
     }
@@ -48,51 +53,33 @@ class GamesTab extends Component {
         return sortedGames;
     }
 
+    getCurrWeek (games) {
+        // var now = new Date();
+        var now = new Date("2021-09-16");
+        let i = 0;
+        let gameDate = new Date(games[i][0].start_time.split("T")[0]);
+        while (now > gameDate && i < games.length-1) {
+            console.log("Now: " + now);
+            console.log("gameDate: " + gameDate);
+            i++;
+            gameDate = new Date(games[i][0].start_time.split("T")[0]);
+        }
+        return i;
+    }
+
 
     render() {
-        let sortedGames = this.sortGamesByDate(this.state.games);
         return (
             <div>
-                {sortedGames.map((week, index) => (
+                {this.state.sortedGames.map((week, index) => (
                     <div key={index}>
                         {(() => {
+                            let open = this.state.currWeek == index ? true : false;
                             return (
-                                <Collapsible trigger={week[0].start_time.split("T")[0]}>
+                                <Collapsible trigger={week[0].start_time.split("T")[0]} open={open}>
                                     <CollapsibleContent games={week} teamsArray={this.state.teamsArray}/>
                                 </Collapsible>
                             )
-                            
-                            // let gameDate = game.start_time.split("T")[0];
-                            // let changed = false;
-                            // if(!currDate || currDate != gameDate){ 
-                            //     currDate = gameDate;
-                            //     changed = true;
-                            // }
-                            // let homeTeam = null;
-                            // let awayTeam = null;
-                            // this.state.teamsArray.forEach(element => {
-                            //     if(parseInt(game.home_team) === element.id)
-                            //         homeTeam = element;
-                            //     if(parseInt(game.away_team) === element.id)
-                            //         awayTeam = element;
-                            // });
-                            // if(changed) {
-                            //     return (
-                            //         <div>
-                            //             <h3>{currDate}</h3>
-                            //             <p>{awayTeam.team_name} @ {homeTeam.team_name}</p>
-                            //             {/* <h1>{game.away_team} @ {game.home_team}</h1> */}
-                            //         </div>  
-                            //     )
-                            // } else {
-                            //     return (
-                            //         <div>
-                            //             <p>{awayTeam.team_name} @ {homeTeam.team_name}</p>
-                            //             {/* <h1>{game.away_team} @ {game.home_team}</h1> */}
-                            //         </div>
-                                     
-                            //     )
-                            // } 
                         })()}
                     </div>
 				))}
@@ -111,12 +98,28 @@ class CollapsibleContent extends Component {
             teamsArray : props.teamsArray
         };
 
+        this.convertDateString = this.convertDateString.bind(this);
+
     }
 
+    convertDateString (str) {
+        let time = str.substring(0, str.length-1).split("T")[1];
+        time = time.substring(0, time.length-3);
+        let hour = time.split(":")[0];
+        if(hour == 12)
+            return time + " P.M.";
+        else if(hour < 12)
+            return time + " A.M.";
+        else if(hour == 0) 
+            return "12" + time.substring(2) + " A.M.";
+        else
+            return (hour%12) + time.substring(2) + " P.M.";
+        
+    }
 
     render () {
         return (
-            <div>
+            <div className="game-grid-container">
                 {this.state.games.map((game, index) => (
                     <div key={index}>
                         {(() => {
@@ -129,7 +132,12 @@ class CollapsibleContent extends Component {
                                     awayTeam = element;
                             });
                             return (
-                                <p>{homeTeam.team_name} @ {awayTeam.team_name}</p>
+                                <div className="game-grid-item"> 
+                                    <p>{this.convertDateString(game.start_time)}</p>
+                                    <label className="team-name">{awayTeam.team_name}</label> <br/>
+                                    <label className="team-name">{homeTeam.team_name}</label>
+                                </div>
+                                
                             )
                             
                         })()}
