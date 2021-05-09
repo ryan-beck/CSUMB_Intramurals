@@ -20,7 +20,7 @@ class TeamsTab extends Component {
 	  displayArray: [],
 	  searchtTextInput: " ",
 	  leagueArray: [],
-	  teamsArray: [],
+	  teamsArray: props.teamsArray,
 	  playerArray: [],
 	  modalShow: false,
 	  sportIsActive: props.sportIsActive
@@ -33,7 +33,6 @@ class TeamsTab extends Component {
   }
 
 	handleJoinTeam(event) {
-		//console.log(event.target.value)
 		var index;
 		var a = this.state.teamsArray;
 		for (index = 0; index < a.length; ++index) {
@@ -107,7 +106,7 @@ class TeamsTab extends Component {
 
 
 	componentDidMount() {
-		//console.log(this.props.props.match.params)
+
 		fetch("http://localhost:8000/api/getSports/")
 		  .then(res => res.json())
 		  .then(
@@ -137,19 +136,6 @@ class TeamsTab extends Component {
 			}
 		  )
 
-		  fetch("http://localhost:8000/api/getTeamsByLeague/" + this.props.props.match.params.sport + '/' + this.props.props.match.params.league)
-		  .then(res => res.json())
-		  .then(
-			(result) => {
-			  this.setState({
-				teamsArray: result,
-			  });
-			  console.log(this.state.teamsArray)
-			},
-			(error) => {
-			  console.log("Error in database call")
-			}
-		  )
 
 		  fetch("http://localhost:8000/api/getAccounts/")
 		  .then(res => res.json())
