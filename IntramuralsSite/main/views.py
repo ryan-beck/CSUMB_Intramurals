@@ -366,5 +366,8 @@ def getGamesByTeam(request, teamId):
 
 	return Response(game_serializer.data)
 
-
-
+@api_view(['DELETE'])
+def deleteTeam(request, teamId):
+	team = Team.objects.get(id=teamId)
+	team.delete()
+	return HttpResponse('deleted')

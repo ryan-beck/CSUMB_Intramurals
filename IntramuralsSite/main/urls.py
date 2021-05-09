@@ -27,5 +27,6 @@ urlpatterns = [
     path('getPlayersByTeamId/<str:teamId>/', views.getPlayersByTeamId, name='getPlayersByTeamId'),
     path('getTeamById/<str:teamId>/', views.getTeamById, name='getTeamById'),
     path('getGamesByTeam/<str:teamId>/', views.getGamesByTeam, name='getGamesByTeam'),
-    
+    path('deleteTeam/<str:teamId>/', views.deleteTeam, name='deleteTeam'),
+
 ]
