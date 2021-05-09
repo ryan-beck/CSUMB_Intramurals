@@ -44,11 +44,6 @@ class LeaguePage extends Component {
 		this.setState({
 		  teamsArray: result,
 		});
-		console.log("here");
-		console.log(this.state.teamsArray)
-	  },
-	  (error) => {
-		console.log("Error in database call")
 	  }
 	)
 
@@ -66,7 +61,6 @@ class LeaguePage extends Component {
         	this.setState({
 				league: res
 			});
-            console.log(this.state.league)
         });
   }
 
