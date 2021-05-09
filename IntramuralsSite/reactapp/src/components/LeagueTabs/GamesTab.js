@@ -54,8 +54,8 @@ class GamesTab extends Component {
     }
 
     getCurrWeek (games) {
-        // var now = new Date();
-        var now = new Date("2021-09-16");
+        var now = new Date();
+        // var now = new Date("2021-09-16");
         let i = 0;
         let gameDate = new Date(games[i][0].start_time.split("T")[0]);
         while (now > gameDate && i < games.length-1) {

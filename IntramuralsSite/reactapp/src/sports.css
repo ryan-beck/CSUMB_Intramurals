@@ -6,19 +6,31 @@
     font-size: 50px;
 }
 
-.primaryTitle {
-    text-align: center;
-}
+
 .leagueTitle {
-    padding-top: 170px;
+    padding-left: 200px;
     color: #444444;
-    font-weight: bolder;
     font-size: 50px;
+    display: flex;
+    
+
 }
 
-.secondaryTitle {
-    text-align: center;
+.editSpan {
+    float: right;
+    padding-right: 20px;
+    padding-bottom: 20px;
+    
 }
+
+.work{
+    clear: both;
+}
+
+.paddingLeague {
+    padding-top: 170px;
+}
+
 
 .Secondarytitle {
     text-align: center;
@@ -81,29 +93,11 @@
   font-weight: bold;
 }
 
-.league-grid-container {
-  display: grid;
-  grid-template-columns: auto auto;
-  background-color: #d3d3d3;
-  padding: 10px;
-}
-
-.league-grid-item {
-  background-color: #ffffff;
-  border: 1px solid rgba(0, 0, 0, 0.8);
-  padding: 15px;
-  font-size: 15px;
-  text-align: center;
-}
-
-.league-title {
-    text-align: left;
-}
-
 .logo {
     max-height: 75px;
     max-width: 75px;
     padding-right: 25px;
+    padding-top: 10px;
 }
 
 .adminSwitch {
@@ -136,26 +130,6 @@
   background-color: #ccc;
   -webkit-transition: .4s;
   transition: .4s;
-}
-
-.joinButton{
-    width:80px;
-    height:30px;
-    display: flex;
-    justify-content: flex-end;
-}
-
-.leaveButton {
-    width: 80px;
-    height: 30px;
-    display: flex;
-    justify-content: flex-end; 
-}
-
-.closedTag{
-    font-size:20px;
-    display: flex;
-    justify-content: flex-end;
 }
 
 .slider:before {

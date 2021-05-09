@@ -12,7 +12,6 @@ class CreateTeamForm extends Component {
             leagueId: props.leagueId,
             user: props.user,
             teamName: "",
-            isPrivate: false,
             playerLimit: 0
         }
 
@@ -40,15 +39,13 @@ class CreateTeamForm extends Component {
 
     submitHandler(event) {
         event.preventDefault();
-        this.setState({
-            isPrivate:document.getElementById("isPrivate").checked
-        });
+        var isTeamPrivate = document.getElementById("isPrivate").checked;
 
         let teamData = {
             team_name: this.state.teamName,
             league: this.state.leagueId,
             players: [this.state.user.id],
-            is_open: this.state.isPrivate,
+            is_open: isTeamPrivate,
             captain: this.state.user.id
           }
         axios({

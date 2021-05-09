@@ -51,15 +51,13 @@ class CreateTeamFormModal extends Component {
 			            </View>
 			        </View>
 		        </Modal>
-                <span class="editSpan">
                     <Pressable
                             style={styles.editButton}
                             onPress={() => this.setModalVisible(true)}
                         >
                             
-                                <Text style={styles.textStyle}>Add New Team</Text>
-                        </Pressable>
-                </span>
+                            <Text style={styles.textStyle}>Add New Team</Text>
+                    </Pressable>
 		        
 		    </View>
 		);
@@ -88,9 +86,6 @@ const styles = StyleSheet.create({
     buttonOpen: {
         backgroundColor: "#F194FF",
     },
-    buttonClose: {
-        
-    },
     textStyle: {
         color: "white",
         fontWeight: "bold",
@@ -111,8 +106,6 @@ const styles = StyleSheet.create({
     editButton: {
         borderRadius: 20,
         padding: 12,
-        elevation: 2,
-        float:"right",
         backgroundColor: "#00688B",
     }
 });
