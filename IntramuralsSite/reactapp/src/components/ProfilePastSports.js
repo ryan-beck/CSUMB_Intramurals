@@ -3,7 +3,7 @@ import { Component, useState, useEffect } from 'react';
 import {Accordion, Card, Button, Table} from 'react-bootstrap'
 
 
-class MySports extends Component {
+class ProfilePastSports extends Component {
 	constructor(props) {
     super(props);
 
@@ -16,7 +16,7 @@ class MySports extends Component {
   }
 
   componentWillMount() {
-    fetch("http://localhost:8000/api/getProfileInfoByUser/"+this.state.user.id).then(res => res.json()).then(
+    fetch("http://localhost:8000/api/getProfilePastInfoByUser/"+this.state.user.id).then(res => res.json()).then(
       (result) => {
         this.setState({
           eventsArray: result
@@ -53,6 +53,7 @@ class MySports extends Component {
 									<tr>
 										<th>vs</th>
 										<th>Time of Game</th>
+                                        <th>Outcome</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -61,6 +62,7 @@ class MySports extends Component {
 											<tr>
 												<td>{game.vs} </td>
 												<td>{game.gameTime}</td>
+                                                <td>{game.outcome}</td>
 											</tr>
 										
 									))}
@@ -80,6 +82,6 @@ class MySports extends Component {
 
 
 
-export default MySports;
+export default ProfilePastSports;
 
 
