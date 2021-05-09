@@ -37,7 +37,7 @@ class LeaguePage extends Component {
   }
 
   componentDidMount() {
-	fetch("http://localhost:8000/api/getTeamsByLeague/" + this.props.props.match.params.sport + '/' + this.props.props.match.params.league)
+	fetch("http://localhost:8000/api/getTeamsByLeague/" + this.props.props.match.params.id)
 	.then(res => res.json())
 	.then(
 	  (result) => {
@@ -124,7 +124,7 @@ class LeaguePage extends Component {
 						{ this.state.teamsArray != null ? <GamesTab leagueId={this.props.props.match.params.id} teamsArray={this.state.teamsArray} isAdminView={this.state.isAdminView}/> : null }
 					</TabPanel>
 					<TabPanel>
-						<StandingsTab/>
+						<StandingsTab leagueId={this.props.props.match.params.id} teamsArray={this.state.teamsArray}/>
 					</TabPanel>
 				</Tabs>
 			</div>

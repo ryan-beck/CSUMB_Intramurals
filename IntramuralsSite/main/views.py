@@ -344,13 +344,19 @@ def getEventsByUser(request, userId):
 	return Response(events)
 
 @api_view(['GET'])
-def getTeamsByLeague(request,sport,league):
-	print(sport,league)
-	sport_obj = Sport.objects.filter(sport_name=sport)
-	league_obj = League.objects.filter(sport=sport_obj[0],league_name=league)
-	team_data = Team.objects.filter(league=league_obj[0])
+def getTeamsByLeague(request,leagueId):
+	team_data = Team.objects.filter(league=leagueId)
+	team_data = sorted(team_data)[::-1]
 	team_serializer = TeamSerializer(team_data, context={'request': request}, many=True)
-	#print(team_serializer)
+
+	for i in range(len(team_serializer.data)):
+		totalGames = team_serializer.data[i]['wins'] + team_serializer.data[i]['losses'] + team_serializer.data[i]['ties']
+		wpt = "0.000"
+		if totalGames != 0:
+			winper = team_serializer.data[i]['wins'] / totalGames
+			wpt = "{:.3f}".format(winper)
+
+		team_serializer.data[i]['wpt'] = wpt
 
 	return Response(team_serializer.data)
 
