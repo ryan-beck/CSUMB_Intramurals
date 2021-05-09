@@ -3,7 +3,7 @@ import { Component } from 'react';
 import axios from "axios";
 import Collapsible from 'react-collapsible';
 
-import '../../style/GamesTab.css'
+import '../../style/GamesTab.css';
 import GenerateScheduleFormModal from "../Forms/GenerateScheduleFormModal";
 
 class GamesTab extends Component {

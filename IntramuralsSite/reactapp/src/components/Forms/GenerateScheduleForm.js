@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import axios from "axios"; 
 
+import '../../style/modal.css';
+
 class GenerateScheduleForm extends Component {
 
     constructor(props) {
@@ -60,32 +62,32 @@ class GenerateScheduleForm extends Component {
 
     render () {
         return (
-            <div class="sportForm">
-                <h2>Generate Game Schedule</h2>
+            <div className="sportForm">
+                <h2 className="modalText">Generate Game Schedule</h2>
                 <form onSubmit={this.submitHandler}>
-                    <label>How many total games will each team play?</label> <br/>
+                    <label className="modalText">How many total games will each team play?</label> <br/>
                     <input type="number" name="gameNum" value={this.state.gameNum} onChange={this.onChangeHandler}/> <br/>
                     
-                    <label>What day of the week will games be played?</label> <br/>
-                    <label class="dayPicker"><input name="gameDay" type="radio" value="0" onChange={this.onChangeHandler}/>Mon</label>
-                    <label class="dayPicker"><input name="gameDay" type="radio" value="1" onChange={this.onChangeHandler}/>Tue</label>
-                    <label class="dayPicker"><input name="gameDay" type="radio" value="2" onChange={this.onChangeHandler}/>Wed</label>
-                    <label class="dayPicker"><input name="gameDay" type="radio" value="3" onChange={this.onChangeHandler}/>Thu</label>
-                    <label class="dayPicker"><input name="gameDay" type="radio" value="4" onChange={this.onChangeHandler}/>Fri</label>
-                    <label class="dayPicker"><input name="gameDay" type="radio" value="5" onChange={this.onChangeHandler}/>Sat</label>
-                    <label class="dayPicker"><input name="gameDay" type="radio" value="6" onChange={this.onChangeHandler}/>Sun</label>
+                    <label className="modalText">What day of the week will games be played?</label> <br/>
+                    <label className="dayPicker modalText"><input name="gameDay" type="radio" value="0" onChange={this.onChangeHandler}/>Mon</label>
+                    <label className="dayPicker modalText"><input name="gameDay" type="radio" value="1" onChange={this.onChangeHandler}/>Tue</label>
+                    <label className="dayPicker modalText"><input name="gameDay" type="radio" value="2" onChange={this.onChangeHandler}/>Wed</label>
+                    <label className="dayPicker modalText"><input name="gameDay" type="radio" value="3" onChange={this.onChangeHandler}/>Thu</label>
+                    <label className="dayPicker modalText"><input name="gameDay" type="radio" value="4" onChange={this.onChangeHandler}/>Fri</label>
+                    <label className="dayPicker modalText"><input name="gameDay" type="radio" value="5" onChange={this.onChangeHandler}/>Sat</label>
+                    <label className="dayPicker modalText"><input name="gameDay" type="radio" value="6" onChange={this.onChangeHandler}/>Sun</label>
                     
                     <br/>
-                    <label>At what time will games begin?</label> <br/>
+                    <label className="modalText">At what time will games begin?</label> <br/>
                     <input type="time" name="startTime" value={this.state.startTime} onChange={this.onChangeHandler}/> <br/>
                     
-                    <label>About how long will each game take? (in minutes)</label> <br/>
+                    <label className="modalText">About how long will each game take? (in minutes)</label> <br/>
                     <input type="number" name="gameLength" value={this.state.gameLength} onChange={this.onChangeHandler}/> <br/>
 
-                    <label>How many games will each team play on gamedays?</label> <br/>
+                    <label className="modalText">How many games will each team play on gamedays?</label> <br/>
                     <input type="number" name="teamGamesPerDay" value={this.state.teamGamesPerDay} onChange={this.onChangeHandler}/>
 
-                    <input type="submit" value="Submit"/>
+                    <input className="submitHandler" type="submit" value="Submit"/>
                 </form>
             </div>
             
