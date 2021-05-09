@@ -34,6 +34,8 @@ class GamesTab extends Component {
     }
 
     sortGamesByDate (games) {
+        if(games.length == 0)
+            return []
         let res = {};
         games.forEach(element => {
             let date = element.start_time.split("T")[0];
@@ -54,6 +56,8 @@ class GamesTab extends Component {
     }
 
     getCurrWeek (games) {
+        if(games.length == 0)
+            return 0
         var now = new Date();
         // var now = new Date("2021-09-16");
         let i = 0;
@@ -71,18 +75,32 @@ class GamesTab extends Component {
     render() {
         return (
             <div>
-                {this.state.sortedGames.map((week, index) => (
-                    <div key={index}>
-                        {(() => {
-                            let open = this.state.currWeek == index ? true : false;
-                            return (
-                                <Collapsible trigger={week[0].start_time.split("T")[0]} open={open}>
-                                    <CollapsibleContent games={week} teamsArray={this.state.teamsArray}/>
-                                </Collapsible>
-                            )
-                        })()}
-                    </div>
-				))}
+                {(() => {
+                    if(this.state.sortedGames.length == 0){
+                        return (
+                            <h1>No games for this league yet</h1>
+                        )
+                    }
+                    else {
+                        return (
+                            <div> 
+                                {this.state.sortedGames.map((week, index) => (
+                                <div key={index}>
+                                    {(() => {
+                                        let open = this.state.currWeek == index ? true : false;
+                                        return (
+                                            <Collapsible trigger={week[0].start_time.split("T")[0]} open={open}>
+                                                <CollapsibleContent games={week} teamsArray={this.state.teamsArray}/>
+                                            </Collapsible>
+                                        )
+                                    })()}
+                                </div>
+                                ))}
+                            </div>
+                        )
+                    }
+                })()}
+
             </div>
         )
     }
