@@ -49,11 +49,15 @@ class TeamsTab extends Component {
 				})
 				.then(({data}) => {
 					console.log(data.status);
-					if(data.status == "PlayerExists") {
-						alert("You are already on a team in this League")
+					if(data.status == "FullTeam") {
+						alert("This team is full.")
 						return
-					}
+					} else if(data.status == "PlayerExists") {
+						alert("You are already on a team in this league.")
+						return
+					} 
 					window.location.reload();
+
 				});
 			}
 			

@@ -36,7 +36,7 @@ class League(models.Model):
     
 
 class Team(models.Model):
-    team_name = models.TextField(default="My Team")
+    team_name = models.TextField(default="My Team", max_length=16)
     league = models.ForeignKey(League, on_delete=models.CASCADE)
     players = models.ManyToManyField(Account)
     is_open = models.BooleanField()

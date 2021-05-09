@@ -50,3 +50,22 @@
 .no-games {
     text-align: center;
 }
+
+.captain-view {
+    float: right;
+    padding-right: 35px;
+}
+
+.delete-team {
+    border-radius: 20px;
+    padding: 8px;
+    color: white;
+    font-weight: bolder;
+    background-color: #e50000;
+
+    outline: none;
+    border-top-style: hidden;
+    border-right-style: hidden;
+    border-left-style: hidden;
+    border-bottom-style: hidden;
+}

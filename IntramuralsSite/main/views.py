@@ -21,11 +21,18 @@ def join_team(request):
 	user_id = request.data['user_id']
 	team_id = request.data['team_id']
 	user_account = Account.objects.get(id=user_id)
+
 	team_join = Team.objects.get(id=team_id)
 	serial_team = TeamSerializer(team_join)
 	league_id = serial_team.data['league']
+
+	league = League.objects.get(id=league_id)
+	league_serializer = LeagueSerializer(league)
 	teams_obj = Team.objects.filter(league=league_id)
 	serial_teams = TeamSerializer(teams_obj, context={'request': request}, many=True)
+
+	if(len(serial_team.data['players']) == league_serializer.data['player_limit']):
+		return JsonResponse({'status': 'FullTeam'})
 	for team in serial_teams.data:
 		if team['id'] != team_id:
 			if user_id in team['players']:
@@ -365,5 +372,8 @@ def getGamesByTeam(request, teamId):
 
 	return Response(game_serializer.data)
 
-
-
+@api_view(['DELETE'])
+def deleteTeam(request, teamId):
+	team = Team.objects.get(id=teamId)
+	team.delete()
+	return HttpResponse('deleted')
