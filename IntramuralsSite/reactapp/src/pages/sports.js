@@ -8,13 +8,12 @@ import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
+import TextField from '@material-ui/core/TextField';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 
 import FormLabel from '@material-ui/core/FormLabel';
-import CreateLeagueFormModal from '../components/CreateLeagueFormModal';
-import CreateSportFormModal from '../components/CreateSportFormModal';
-
-
-
+import CreateLeagueFormModal from '../components/Forms/CreateLeagueFormModal';
+import CreateSportFormModal from '../components/Forms/CreateSportFormModal';
 
 //import axios from "axios";
 
@@ -33,12 +32,14 @@ class SportsPage extends Component {
 	  leagueArray: [],
 	  user: props.user,
 	  isAdminView: false,
+	  radio_active: true,
     };
 
 	this.handleSearchChange = this.handleSearchChange.bind(this)
 	this.adminViewSwitch = this.adminViewSwitch.bind(this);
 	this.handleLeagueFormSubmit = this.handleLeagueFormSubmit.bind(this);
 	this.handleSportFormSubmit = this.handleSportFormSubmit.bind(this);
+	this.handleRadioChange = this.handleRadioChange.bind(this);
   }
 
 	componentDidMount() {
@@ -48,8 +49,10 @@ class SportsPage extends Component {
 			(result) => {
 			  this.setState({
 				sportsArray: result,
-				displayArray: result,
 			  });
+			  this.setState({
+				displayArray: this.state.sportsArray.filter(sport => sport.is_active)
+			  })
 			  console.log(this.state.sportsArray)
 			},
 			(error) => {
@@ -91,20 +94,37 @@ class SportsPage extends Component {
 		})
 	}
 
-
-	handleSearchChange(evt)  {
-		this.setState({
-		  SearchTextInput: evt.target.value
-		});
-
-		if(this.state.SearchTextInput !== " ") {
+	handleRadioChange(evt) {
+		if(evt.target.value == "Past") {
 			this.setState({
-			  displayArray: this.state.sportsArray.filter(sport => sport.sport_name.includes(this.state.SearchTextInput))
-			});
+				displayArray: this.state.sportsArray.filter(sport => !sport.is_active),
+				radio_active: false,
+			})
+		} else {
+			this.setState({
+				displayArray: this.state.sportsArray.filter(sport => sport.is_active),
+				radio_active:true,
+			})
 		}
-		//console.log(this.state.displayArray)
-		//console.log(this.state.SearchTextInput)
+	}
+
+	updateText(evt) {
+		this.setState({
+		  SearchTextInput: evt.target.value,
+		})
+	}
+
+	async handleSearchChange(evt)  {
+
+		await this.updateText(evt)
+
+		this.setState({
+			displayArray: this.state.sportsArray.filter(sport => sport.sport_name.toLowerCase().includes(this.state.SearchTextInput.toLowerCase()) && sport.is_active == this.state.radio_active)
+		})
 	};
+
+
+
 
 
 	render() {
@@ -123,7 +143,6 @@ class SportsPage extends Component {
 								  <span class="slider round"></span>
 								</label>
 							</div>
-							
 						)
 					}
 				})()}
@@ -133,24 +152,26 @@ class SportsPage extends Component {
 				<div class="searchdiv"> 
 					<div>
 					  <TextInput
-						value = {this.state.SearchTextInput}
+						value = {this.state.SearchTextInput || ''}
 						style={styles.input}
 						placeholder=" Search for Sports"
 						onChange = {this.handleSearchChange}
 					  />
 					  <FormControl component="fieldset">
-					  <RadioGroup row aria-label="position" name="position" defaultValue="top">
+					  <RadioGroup row aria-label="position" name="position" defaultValue="Active" >
 						<FormControlLabel
-						  value="top"
+						  value="Active"
 						  control={<Radio color="primary" />}
 						  label="Active"
 						  labelPlacement="bottom"
+						  onChange={this.handleRadioChange}
 						/>
 						<FormControlLabel
-						  value="start"
+						  value="Past"
 						  control={<Radio color="primary" />}
 						  label="Past"
 						  labelPlacement="bottom"
+						  onChange={this.handleRadioChange}
 						/>
 					  </RadioGroup>
 					</FormControl>
@@ -163,13 +184,13 @@ class SportsPage extends Component {
 						)
 					}
 				})()}
-				<Box >
+				<Box>
 					 <div className="grid-container">
 						{this.state.displayArray.map((sport, index) => (
 						  <div key={index}>
 							<div className="grid-item">
 							{(() => {
-								if (this.state.isAdminView) {
+								if (this.state.isAdminView && sport.is_active) {
 									return (
 									<div> <CreateLeagueFormModal sportId={sport.id} sportName={sport.sport_name} handleFormSubmit={this.handleLeagueFormSubmit}/> </div>
 									)
@@ -182,9 +203,9 @@ class SportsPage extends Component {
 							{this.state.leagueArray.map((league, index) => (
 							  <div key={index}>
 								{(() => {
-								if (sport.id === league.sport) {
+								if (sport.id == league.sport) {
 									return (
-									<div><a href={'/leagues/'+ sport.sport_name+'/'+league.league_name}><h5>{league.league_name}</h5></a></div>
+									<div><a href={'/leagues/'+ sport.sport_name+'/'+league.league_name+'/'+league.id+'/'+sport.id}><h5>{league.league_name}</h5></a></div>
 									)
 								} else {
 									return (

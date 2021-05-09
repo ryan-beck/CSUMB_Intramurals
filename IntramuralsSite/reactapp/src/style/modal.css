@@ -31,6 +31,10 @@
   	border-bottom-style: hidden;
 }
 
+.checkboxSpace{
+	padding-right: 5px;
+}
+
 .left {
     float: left;
 }   

@@ -1,13 +1,10 @@
 import React from "react";
-import { Component } from 'react';
-//import SearchTextInput from "../SearchBar";
+import { Component, Fragment } from 'react';
 import Box from '@material-ui/core/Box';
 import { TextInput } from "react-native";
-
-
-//import axios from "axios";
-
-import "../sports.css"
+import { Card } from 'react-bootstrap';
+import "../style/team.css"
+import axios from "axios";
 
 
 class TeamPage extends Component {
@@ -16,137 +13,163 @@ class TeamPage extends Component {
 
 
     this.state = {
-      sportsArray: [] ,
-	  teamsArray:[],
-	  searchtTextInput: " ",
-	  leagueArray: [],
-	  user: props.user,
-	  isAdminView: false,
-	  currTeam: {},
-	  currLeague: {},
-	  currSport: {},
-	  player: [],
+    	teamId: this.props.props.match.params.id,
+    	captainId: this.props.props.match.params.captainId,
+    	players: [],
+    	user: props.user,
+		isAdminView: false,
+		sportName:"",
+		leagueName: "",
+		gamesArray: [],
+		leagueId: null,
+		sportId: null
     };
 
-	//this.grabTeamData = this.grabTeamData.bind(this)
-	//this.grabLeaguebyID = this.grabLeaguebyID.bind(this)
-	//this.grabSportbyID = this.grabSportbyID.bind(this)
-
+    this.sortPlayers = this.sortPlayers.bind(this);
+    this.deleteHandler = this.deleteHandler.bind(this);
   }
 
-
-	componentDidMount() {
-		fetch("http://localhost:8000/api/getSports/")
-		  .then(res => res.json())
-		  .then(
-			(result) => {
-			  this.setState({
-				sportsArray: result,
-				displayArray: result,
-			  });
-			  console.log(this.state.sportsArray)
-			},
-			(error) => {
-			  console.log("Error in database call")
-			}
-		  )
-
-		fetch("http://localhost:8000/api/getLeagues/")
-		  .then(res => res.json())
-		  .then(
-			(result) => {
-			  this.setState({
-				leagueArray: result,
-			  });
-			  console.log(this.state.leagueArray)
-			},
-			(error) => {
-			  console.log("Error in database call")
-			}
-		  )
-
-		fetch("http://localhost:8000/api/getTeams/")
-		  .then(res => res.json())
-		  .then(
-			(result) => {
-			  this.setState({
-				teamsArray: result,
-			  });
-			  console.log(this.state.teamsArray)
-			  this.grabTeamData()
-			},
-			(error) => {
-			  console.log("Error in database call")
-			}
-		  )
-	}
-
-	grabTeamData() {
-		var i 
-		var array = this.state.teamsArray
-		for(i = 0; i < array.length; i++ ) {
-			if(array[i].id == this.props.props.match.params.id) {
-				this.setState({
-					currTeam: array[i],
-				})
-				this.grabLeaguebyID(this.state.currTeam.league)
-				break;
-			}
+  componentDidMount() {
+	fetch("http://localhost:8000/api/getPlayersByTeamId/"+this.state.teamId)
+		.then(res => res.json())
+		.then((res) => {
+			this.setState({
+				players: res
+			});
+			this.sortPlayers();
 		}
-		console.log(this.state.currTeam)
-	}
+	);
 
-	grabLeaguebyID(league_id) {
-		var i 
-		var array = this.state.leagueArray
-		for(i = 0; i < array.length; i++) {
-			if(array[i].id == league_id) {
-				this.setState({
-					currLeague: array[i],
-				})
-				this.grabSportbyID(this.state.currLeague.sport)
-				break;
-			}
+	fetch("http://localhost:8000/api/getTeamById/"+this.state.teamId)
+		.then(res => res.json())
+		.then((res) => {
+			this.setState({
+				leagueId: res.league
+			})
+
+			fetch("http://localhost:8000/api/getLeagueById/"+res.league)
+				.then(res => res.json())
+				.then((res) => {
+					this.setState({
+						leagueName: res.league_name,
+						sportId: res.sport
+					});
+					
+					fetch("http://localhost:8000/api/getSportById/"+res.sport)
+						.then(res => res.json())
+						.then((res) => {
+							
+							this.setState({
+								sportName: res.sport_name
+							});
+						}
+					);
+				}
+			);
 		}
-		console.log(this.state.currLeague)
-	}
+	);
 
-	grabSportbyID(sport_id) {
-		var i
-		var array = this.state.sportsArray
-		for(i = 0; i < array.length; i++) {
-			if(array[i].id == sport_id) {
-				this.setState({
-					currSport: array[i],
-				})
-				break;
-			}
+	fetch("http://localhost:8000/api/getGamesByTeam/"+this.state.teamId)
+		.then(res => res.json())
+		.then((res) => {
+			this.setState({
+				gamesArray: res
+			});
 		}
-		console.log(this.state.currSport)
-	}
+	);
+  }
 
-	//grabPlayersbyID() {
-	//	var i
-	//	var array = this.state.currTeam.players
-	//	for(i = 0; i < array.length; i++) {
-	//		if(array[i].id == sport_id) {
-	//			this.setState({
-	//				currSport: array[i],
-	//			})
-	//			break;
-	//		}
-	//	}
-	//	console.log(this.state.currSport)
-	//}
+  sortPlayers() {
+  	for(let i = 0; i < this.state.players.length; i++) {
+  		if(this.state.players[i].id == this.state.captainId) {
+  			var captain = this.state.players[i];
+  			this.state.players.splice(i, 1);
+  			this.state.players.unshift(captain)
+  			break
+  		}
+  	}
+  }
 
+  deleteHandler(event) {
+    axios({
+        method:'delete', 
+        url: 'http://localhost:8000/api/deleteTeam/'+this.state.teamId,
+    })
+    .then(({data}) => {
+        window.location = ('/leagues/'+ this.state.sportName+'/'+this.state.leagueName+'/'+this.state.leagueId+'/'+this.state.sportId);
+    });
+}
 
 	render() {
-		
 		return (
 			<Box>
-				<h1 className="title"> {this.props.props.match.params.team} </h1>
-				<h3 className="Secondarytitle"> {this.state.currSport.sport_name} : {this.state.currLeague.league_name} </h3>
-				<h4 className="teamlabel"> Players: </h4>
+				<h1 className="primaryTitle"> {this.props.props.match.params.team} </h1>
+				<label className="secondaryTitle"> {this.state.sportName} : {this.state.leagueName} </label>
+				{(() => {
+					if (this.state.user.id == this.state.captainId) {
+						return (
+							<Fragment>
+								<span className="captain-view">
+								<input name="deleteButton" className="delete-team" type="button" value="Delete This Team" onClick={this.deleteHandler}/>
+								</span>
+								<br/><br/>
+							</Fragment>
+						)
+					}
+				})()}
+				<div className="card_container">
+					<div className="team_card">
+						
+						<Card style={{ width: '30rem' }}>
+						  <Card.Body>
+							{this.state.players.map((player, index) => (
+								  <div key={index}>
+									{(() => {
+									if (player.id == this.state.captainId) {
+										return (
+											<div>
+												<Card.Title><img className="profile_pic" src={player.photo_url}/>{player.display_name}</Card.Title>
+												<Card.Subtitle className="mb-2 text-muted tester">Captain</Card.Subtitle>
+												<hr/>
+											</div>
+										)
+									} else {
+										return (
+											<Card.Text className="player_cards">
+												<img className="profile_pic" src={player.photo_url}/>{player.display_name}</Card.Text>
+										)
+									}
+									})()}
+								  </div>
+								))}
+						  </Card.Body>
+						</Card>
+					</div>
+					<div className="game_card">
+						<Card style={{ width: '45rem' }}>
+						  <Card.Body>
+						  	{(() => {
+								if (this.state.gamesArray.length == 0) {
+									return (
+										<div className="no-games"> 
+											<label>
+												There are currently no games to display.
+											</label>
+										</div>
+									);
+								}
+							})()}
+						  {this.state.gamesArray.map((game, index) => (
+								  <div key={index}>
+									<Card.Title>{game.home_name} vs {game.away_name}</Card.Title>
+									<Card.Subtitle className="mb-2 text-muted">{game.format_start_time}</Card.Subtitle>
+									<Card.Text> Score: {game.home_score}-{game.away_score} </Card.Text><hr/>
+								  </div>
+								))}
+						  </Card.Body>
+						</Card>
+					</div>
+				</div>
 			</Box>
 		)
 	}

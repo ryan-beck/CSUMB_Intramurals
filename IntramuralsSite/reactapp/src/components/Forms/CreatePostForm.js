@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from "axios"; 
-import { storage } from '../firebase';
-import '../style/modal.css'; 
+import { storage } from '../../firebase';
+import '../../style/modal.css'; 
 
 class CreatePostForm extends Component {
 
@@ -150,6 +150,9 @@ class CreatePostForm extends Component {
             );
         } 
         else {
+            if(this.state.post.media_url) {
+                this.state.mediaUrl = this.state.post.media_url;
+            }
             this.editPostDjango(newText);
         }
         

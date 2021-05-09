@@ -14,7 +14,6 @@ import TeamPage from "./pages/team";
 import logo from "./otterLogoTransparent.png"
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "./App.css";
-import CreateLeagueForm from './components/CreateLeagueForm.js'
 
 class LoginPage extends Component {
     componentDidMount() {
@@ -56,7 +55,7 @@ class LoginPage extends Component {
 				<div class="centered">
 					<img className="title-image" src={logo} alt="LoginLogo"/>
 					<label className="title">CSUMB Intramurals</label>
-					<p>Description.</p>
+					<p>A simple and lightweight application for organizing intramural sports at CSUMB.</p>
 				</div>
 			</div>
 
@@ -155,9 +154,8 @@ class App extends Component {
 			    <Switch>
 				    <Route exact path="/" render={() => this.ifUserSignedIn(MainPage)}/>
 				    <Route exact path="/sports" render={() => this.ifUserSignedIn(SportsPage)}/>
-					<Route exact path="/admin" render={() => this.ifUserSignedIn(CreateLeagueForm)}/>
-					<Route path="/leagues/:sport/:league" render={props => this.ifUserSignedIn(LeaguePage,{...props})}/>
-					<Route path="/team/:team/:id/" render={props => this.ifUserSignedIn(TeamPage,{...props})}/>
+					<Route path="/leagues/:sport/:league/:id/:sportId" render={props => this.ifUserSignedIn(LeaguePage,{...props})}/>
+					<Route path="/team/:team/:id/:captainId" render={props => this.ifUserSignedIn(TeamPage,{...props})}/>
 			    </Switch>
 		    </Router>
 		    

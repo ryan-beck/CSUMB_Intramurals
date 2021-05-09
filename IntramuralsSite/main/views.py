@@ -19,13 +19,28 @@ def index(request):
 
 @api_view(['POST'])
 def join_team(request):
-    user_id = request.data['user_id']
-    team_id = request.data['team_id']
-    user_account = Account.objects.get(id=user_id)
-    team = Team.objects.get(id=team_id)
-    team.players.add(user_account)
-    team.save()
-    return JsonResponse({'status': 'ok'})
+	user_id = request.data['user_id']
+	team_id = request.data['team_id']
+	user_account = Account.objects.get(id=user_id)
+
+	team_join = Team.objects.get(id=team_id)
+	serial_team = TeamSerializer(team_join)
+	league_id = serial_team.data['league']
+
+	league = League.objects.get(id=league_id)
+	league_serializer = LeagueSerializer(league)
+	teams_obj = Team.objects.filter(league=league_id)
+	serial_teams = TeamSerializer(teams_obj, context={'request': request}, many=True)
+
+	if(len(serial_team.data['players']) == league_serializer.data['player_limit']):
+		return JsonResponse({'status': 'FullTeam'})
+	for team in serial_teams.data:
+		if team['id'] != team_id:
+			if user_id in team['players']:
+				return JsonResponse({'status': 'PlayerExists'})
+	team_join.players.add(user_account)
+	team_join.save()
+	return JsonResponse({'status': 'ok'})
 
 @api_view(['POST'])
 def leave_team(request):
@@ -149,10 +164,7 @@ def generateGameSchedule(request):
 	
 	games = generateSchedule(teams, gameNum, leagueStart, gameLength, teamGamesPerDay)
 	for game in games:
-		# TODO: save games here when everything is finalized
-		# game.save()
-		print(game)
-	
+		game.save()
 	serializer = GameSerializer(games, context={'request': request}, many=True)
 	return Response(serializer.data)
 
@@ -248,6 +260,13 @@ def updateRecords(game):
 		game.away_team.wins += 1
 		game.home_team.save()
 		game.away_team.save()
+
+
+@api_view(['GET'])
+def getEventsByLeague(request, leagueId):
+	games = Game.objects.filter(league=leagueId)
+	game_serializer = GameSerializer(games, context={'request': request}, many=True)
+	return Response(game_serializer.data)
 
 @api_view(['GET'])
 def getEventsByUser(request, userId):
@@ -357,3 +376,64 @@ def editPost(request, postId):
 
 	return HttpResponse('updated')
 
+@api_view(['POST']) 
+def createTeam(request):
+	serializer = TeamSerializer(data=request.data)
+	if serializer.is_valid():
+		serializer.save()
+	return Response(serializer.data)
+
+@api_view(['GET'])
+def getTeamById(request, teamId):
+	team = Team.objects.get(id=teamId)
+	team_serializer = TeamSerializer(team, context={'request': request})
+	return Response(team_serializer.data)
+
+@api_view(['GET']) 
+def getLeagueById(request, leagueId):
+	league = League.objects.get(id=leagueId)
+	league_serializer = LeagueSerializer(league, context={'request': request})
+	return Response(league_serializer.data)
+
+@api_view(['GET']) 
+def getSportById(request, sportId):
+	sport = Sport.objects.get(id=sportId)
+	sport_serializer = SportSerializer(sport, context={'request': request})
+	return Response(sport_serializer.data)
+
+@api_view(['GET'])
+def getPlayersByTeamId(request, teamId):
+	team = Team.objects.get(id=teamId)
+	team_serializer = TeamSerializer(team, context={'request': request})
+
+	players = Account.objects.filter(id__in=team_serializer.data['players'])
+	player_serializer = AccountSerializer(players, context={'request': request}, many=True)
+	return Response(player_serializer.data)
+
+@api_view(['GET']) 
+def getGamesByTeam(request, teamId):
+	game_data = Game.objects.filter(home_team=teamId) | Game.objects.filter(away_team=teamId)
+	game_serializer = GameSerializer(game_data, context={'request': request}, many=True)
+
+	team_data = Team.objects.all()
+	team_serializer = TeamSerializer(team_data, context={'request': request}, many=True)
+
+	for i in range(len(team_serializer.data)):
+		for j in range(len(game_serializer.data)):
+			if team_serializer.data[i]['id'] == game_serializer.data[j]['home_team']:
+				game_serializer.data[j]['home_name'] = team_serializer.data[i]['team_name']
+			if team_serializer.data[i]['id'] == game_serializer.data[j]['away_team']:
+				game_serializer.data[j]['away_name'] = team_serializer.data[i]['team_name']
+			gameTime = dt.strptime(game_serializer.data[j]['start_time'], '%Y-%m-%dT%H:%M:%SZ')
+			strGameTime = gameTime.strftime("%m-%d-%Y %I:%M %p")
+
+			game_serializer.data[j]['format_start_time'] = strGameTime
+
+
+	return Response(game_serializer.data)
+
+@api_view(['DELETE'])
+def deleteTeam(request, teamId):
+	team = Team.objects.get(id=teamId)
+	team.delete()
+	return HttpResponse('deleted')

@@ -6,6 +6,32 @@
     font-size: 50px;
 }
 
+
+.leagueTitle {
+    padding-left: 200px;
+    color: #444444;
+    font-size: 50px;
+    display: flex;
+    
+
+}
+
+.editSpan {
+    float: right;
+    padding-right: 20px;
+    padding-bottom: 20px;
+    
+}
+
+.work{
+    clear: both;
+}
+
+.paddingLeague {
+    padding-top: 170px;
+}
+
+
 .Secondarytitle {
     text-align: center;
     padding-top: 10px;
@@ -42,16 +68,6 @@
     margin:30px;
 }
 
-.teamBox {
-    margin: 40px;
-    display: flex;
-    flex-wrap:wrap;
-    flex-direction:row;
-    padding:5px;
-    justify-content:flex-start;
-    justify-content:space-around;
-}
-
 .spacer{
 
 }
@@ -72,17 +88,16 @@
 .grid-item {
   background-color: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.8);
-  padding: 20px;
-  font-size: 30px;
+  font-size: 20px;
   text-align: center;
   font-weight: bold;
-  
 }
 
 .logo {
     max-height: 75px;
     max-width: 75px;
     padding-right: 25px;
+    padding-top: 10px;
 }
 
 .adminSwitch {
@@ -115,30 +130,6 @@
   background-color: #ccc;
   -webkit-transition: .4s;
   transition: .4s;
-}
-
-.buttonDisplay {
-    display: flex;
-    flex-direction: row;
-}
-
-.joinButton{
-    padding:20px;
-    width:80px;
-    height:30px;
-    margin-left:10px;
-}
-
-.leaveButton {
-    padding: 20px;
-    width: 80px;
-    height: 30px;
-    margin-left: 10px;
-}
-
-.closedTag{
-    margin-left:10px;
-    font-size:20px;
 }
 
 .slider:before {
