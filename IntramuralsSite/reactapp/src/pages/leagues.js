@@ -109,7 +109,7 @@ class LeaguePage extends Component {
 						
 					</TabPanel>
 					<TabPanel>
-						{ this.state.teamsArray != null ? <GamesTab leagueId={this.props.props.match.params.id} teamsArray={this.state.teamsArray}/> : null }
+						{ this.state.teamsArray != null ? <GamesTab leagueId={this.props.props.match.params.id} teamsArray={this.state.teamsArray} isAdminView={this.state.isAdminView}/> : null }
 					</TabPanel>
 					<TabPanel>
 						<StandingsTab/>

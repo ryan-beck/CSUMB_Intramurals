@@ -1,18 +1,16 @@
 import React, { Component } from "react";
 import { Alert, Modal, Text, Pressable, View, StyleSheet } from "react-native";
-import CreateTeamForm from './CreateTeamForm';
-
 
 import '../../style/leagueForm.css'
+import GenerateScheduleForm from "./GenerateScheduleForm";
 
-class CreateTeamFormModal extends Component {
+class GenerateScheduleFormModal extends Component {
 	constructor(props) {
 	    super(props);
 
 		this.state = {
 			modalVisible: false,
             leagueId: props.leagueId,
-            user: props.user
 		};
 
 		this.setModalVisible = this.setModalVisible.bind(this);
@@ -25,8 +23,9 @@ class CreateTeamFormModal extends Component {
 	    }));
 	}
 
-    handleFormSubmit (newSport) {
+    handleFormSubmit (games) {
         this.setModalVisible(false);
+        this.props.handleFormSubmit(games);
     }
 
 	render() {
@@ -41,7 +40,7 @@ class CreateTeamFormModal extends Component {
 				>
 					<View style={styles.centeredView}>
 			            <View style={styles.modalView}>
-			            	<CreateTeamForm handleFormSubmit={this.handleFormSubmit} leagueId={this.state.leagueId} user={this.state.user}/>
+			            	<GenerateScheduleForm handleFormSubmit={this.handleFormSubmit} leagueId={this.state.leagueId}/>
 			              	<Pressable
 			                	style={[styles.button, styles.buttonClose]}
 			                	onPress={() => this.setModalVisible(!modalVisible)}
@@ -56,7 +55,7 @@ class CreateTeamFormModal extends Component {
                             onPress={() => this.setModalVisible(true)}
                         >
                             
-                            <Text style={styles.textStyle}>Start a Team</Text>
+                            <Text style={styles.textStyle}>Generate Game Schedule</Text>
                     </Pressable>
 		        
 		    </View>
@@ -107,7 +106,8 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         padding: 12,
         backgroundColor: "#00688B",
+        width: 200
     }
 });
 
-export default CreateTeamFormModal;
+export default GenerateScheduleFormModal;
