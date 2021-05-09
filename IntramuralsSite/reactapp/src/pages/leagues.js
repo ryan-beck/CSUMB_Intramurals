@@ -24,14 +24,15 @@ class LeaguePage extends Component {
 		sportsArray: [] ,
 		displayArray: [],
 		searchtTextInput: " ",
-		leagueArray: [],
 		teamsArray: null,
 		playerArray: [],
 		isAdminView: false,
-		sportIsActive: null
+		sportIsActive: null,
+		league: {}
     };
 
     this.adminViewSwitch = this.adminViewSwitch.bind(this);
+    this.hasLeagueBegun = this.hasLeagueBegun.bind(this);
 
   }
 
@@ -58,6 +59,15 @@ class LeaguePage extends Component {
 				sportIsActive: res.is_active
 			});
         });
+
+    fetch('http://localhost:8000/api/getLeagueById/'+this.props.props.match.params.id)
+        .then(res => res.json())
+        .then((res) => {
+        	this.setState({
+				league: res
+			});
+            console.log(this.state.league)
+        });
   }
 
 	adminViewSwitch() {
@@ -66,11 +76,19 @@ class LeaguePage extends Component {
 		});
 	}
 
+	hasLeagueBegun() {
+		var parts =String(this.state.league.start_date).split('-');
+		var today = new Date();
+		var mydate = new Date(parts[0], parts[1] - 1, parts[2]);
+
+		return mydate <= today;
+	}
+
 	render() {
 		return (
 			<div className="paddingLeague">
 				{(() => {
-					if (this.state.sportIsActive) {
+					if (this.state.sportIsActive && !this.hasLeagueBegun()) {
 						return (
 							<span className="editSpan">
 								<CreateTeamFormModal user={this.state.user} leagueId={this.props.props.match.params.id}/> 
@@ -105,7 +123,7 @@ class LeaguePage extends Component {
 				
 					{/* TODO onclick for panels to update tab state*/}
 					<TabPanel>
-						{ this.state.sportIsActive != null && this.state.teamsArray != null ? <TeamsTab props={this.props.props} teamsArray={this.state.teamsArray} user={this.state.user} sportIsActive={this.state.sportIsActive}/> : null }
+						{ this.state.sportIsActive != null && this.state.teamsArray != null ? <TeamsTab props={this.props.props} teamsArray={this.state.teamsArray} user={this.state.user} sportIsActive={this.state.sportIsActive} leagueId={this.props.props.match.params.id}/> : null }
 						
 					</TabPanel>
 					<TabPanel>

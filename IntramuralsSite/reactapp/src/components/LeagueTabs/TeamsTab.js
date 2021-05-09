@@ -15,20 +15,22 @@ class TeamsTab extends Component {
 
 
     this.state = {
-	  user: props.user,
-      sportsArray: [] ,
-	  displayArray: [],
-	  searchtTextInput: " ",
-	  leagueArray: [],
-	  teamsArray: props.teamsArray,
-	  playerArray: [],
-	  modalShow: false,
-	  sportIsActive: props.sportIsActive
+    	leagueId: props.leagueId,
+		user: props.user,
+		sportsArray: [] ,
+		displayArray: [],
+		searchtTextInput: " ",
+		league: {},
+		teamsArray: props.teamsArray,
+		playerArray: [],
+		modalShow: false,
+		sportIsActive: props.sportIsActive
     };
 
 	this.handleJoinTeam = this.handleJoinTeam.bind(this)
 	this.checkTeam = this.checkTeam.bind(this)
 	this.handleLeaveTeam = this.handleLeaveTeam.bind(this)
+	this.hasLeagueBegun = this.hasLeagueBegun.bind(this)
 
   }
 
@@ -106,46 +108,22 @@ class TeamsTab extends Component {
 	}
 
 
-
-
-
 	componentDidMount() {
 
-		fetch("http://localhost:8000/api/getSports/")
+		fetch("http://localhost:8000/api/getLeagueById/" + this.state.leagueId)
 		  .then(res => res.json())
 		  .then(
-			(result) => {
+			(res) => {
 			  this.setState({
-				sportsArray: result,
-				displayArray: result,
+				league: res,
 			  });
-			  console.log(this.state.sportsArray)
-			},
-			(error) => {
-			  console.log("Error in database call")
 			}
 		  )
-
-		fetch("http://localhost:8000/api/getLeagues/")
-		  .then(res => res.json())
-		  .then(
-			(result) => {
-			  this.setState({
-				leagueArray: result,
-			  });
-			  console.log(this.state.leagueArray)
-			},
-			(error) => {
-			  console.log("Error in database call")
-			}
-		  )
-
 
 		  fetch("http://localhost:8000/api/getAccounts/")
 		  .then(res => res.json())
 		  .then(
 			(result) => {
-			  console.log(result)
 			  this.setState({
 					playerArray: result,
 			  })
@@ -154,6 +132,14 @@ class TeamsTab extends Component {
 			  console.log("Error in database call")
 			}
 		  )
+	}
+
+	hasLeagueBegun() {
+		var parts =String(this.state.league.start_date).split('-');
+		var today = new Date();
+		var mydate = new Date(parts[0], parts[1] - 1, parts[2]);
+
+		return mydate <= today;
 	}
 
 	render() {
@@ -166,7 +152,7 @@ class TeamsTab extends Component {
 						<div>
 							<h4 className="league-title"><a href={'/team/'+ team.team_name +'/'+ team.id+'/'+ team.captain}><u>{team.team_name}</u></a></h4>
 							{(() => {
-								if(this.state.sportIsActive) {
+								if(this.state.sportIsActive && !this.hasLeagueBegun()) {
 									if (this.checkTeam(team.id)) {
 										return (
 										<div className="closedTag">  <Button className="joinButton" size="sm" onClick={this.handleLeaveTeam} value={team.id} > Leave? </Button>   </div>
