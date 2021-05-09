@@ -194,6 +194,13 @@ def generateSchedule(teams, gameNum, leagueStart, gameLength, teamGamesPerDay):
 		teams = [teams[0]] + [teams[-1]] + teams[1:-1]
 	return games
 
+@api_view(['GET'])
+def getEventsByLeague(request, leagueId):
+	games = Game.objects.filter(league=leagueId)
+	game_serializer = GameSerializer(games, context={'request': request}, many=True)
+	return Response(game_serializer.data)
+
+
 	
 @api_view(['GET'])
 def getEventsByUser(request, userId):

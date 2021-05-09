@@ -7,6 +7,7 @@ urlpatterns = [
     path('getLeagues/', views.getLeagueList, name='getLeague'),
     path('getTeams/', views.getTeamList, name='getTeam'),
     path('getPosts/', views.getPosts, name='getPosts'),
+    path('getEventsByLeague/<str:leagueId>', views.getEventsByLeague, name='getEventsByLeague'),
     path('getEventsByUser/<str:userId>/', views.getEventsByUser, name='getEventsByUser'),
     path('getAccountByEmail/<str:email>/', views.getAccountByEmail, name='getAccountByEmail'),
     path('joinTeam/', views.join_team, name='join_team'),
