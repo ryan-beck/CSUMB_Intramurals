@@ -64,7 +64,7 @@ class CreateTeamForm extends Component {
                 <h2 className="modalText">Add a New Team</h2>
                 <form onSubmit={this.submitHandler}>
                     <label className="modalText checkboxSpace">Team Name</label>
-                    <input type="text" name="teamName" value={this.state.teamName} onChange={this.onChangeHandler} required/> <br/><br/>
+                    <input type="text" maxLength="16" name="teamName" value={this.state.teamName} onChange={this.onChangeHandler} required/> <br/><br/>
                     <label className="modalText checkboxSpace">Would you like this team to be invite only?</label>
                     <input type="checkbox" id="isPrivate" value={this.state.isPrivate} onChange={this.onChangeHandler}/> <br/><br/>
                     <input className="submitHandler right" type="submit" value="Submit"/>
