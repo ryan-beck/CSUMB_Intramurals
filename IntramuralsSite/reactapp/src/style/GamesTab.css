@@ -29,3 +29,13 @@
 .team-name {
     font-size: 25px;
 }
+
+.no-games-div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.no-games {
+    text-align: center;
+}

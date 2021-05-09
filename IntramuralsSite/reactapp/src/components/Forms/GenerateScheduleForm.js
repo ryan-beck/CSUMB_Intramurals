@@ -1,15 +1,13 @@
 import React, { Component } from 'react';
 import axios from "axios"; 
 
-import '../style/sportForm.css'
-
 class GenerateScheduleForm extends Component {
 
     constructor(props) {
         super(props);
 
         this.state = {
-            leagueId: 1,
+            leagueId: props.leagueId,
             gameNum: "",
             gameDay: "",
             startTime: "",
@@ -55,7 +53,7 @@ class GenerateScheduleForm extends Component {
         })
         .then(({data}) => {
             console.log(data);
-            // this.props.handleFormSubmit(gameData);
+            this.props.handleFormSubmit(data);
         });
     }
     
