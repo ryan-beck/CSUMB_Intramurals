@@ -310,6 +310,12 @@ def createTeam(request):
 		serializer.save()
 	return Response(serializer.data)
 
+@api_view(['GET'])
+def getTeamById(request, teamId):
+	team = Team.objects.get(id=teamId)
+	team_serializer = TeamSerializer(team, context={'request': request})
+	return Response(team_serializer.data)
+
 @api_view(['GET']) 
 def getLeagueById(request, leagueId):
 	league = League.objects.get(id=leagueId)
@@ -321,4 +327,37 @@ def getSportById(request, sportId):
 	sport = Sport.objects.get(id=sportId)
 	sport_serializer = SportSerializer(sport, context={'request': request})
 	return Response(sport_serializer.data)
+
+@api_view(['GET'])
+def getPlayersByTeamId(request, teamId):
+	team = Team.objects.get(id=teamId)
+	team_serializer = TeamSerializer(team, context={'request': request})
+
+	players = Account.objects.filter(id__in=team_serializer.data['players'])
+	player_serializer = AccountSerializer(players, context={'request': request}, many=True)
+	return Response(player_serializer.data)
+
+@api_view(['GET']) 
+def getGamesByTeam(request, teamId):
+	game_data = Game.objects.filter(home_team=teamId) | Game.objects.filter(away_team=teamId)
+	game_serializer = GameSerializer(game_data, context={'request': request}, many=True)
+
+	team_data = Team.objects.all()
+	team_serializer = TeamSerializer(team_data, context={'request': request}, many=True)
+
+	for i in range(len(team_serializer.data)):
+		for j in range(len(game_serializer.data)):
+			if team_serializer.data[i]['id'] == game_serializer.data[j]['home_team']:
+				game_serializer.data[j]['home_name'] = team_serializer.data[i]['team_name']
+			if team_serializer.data[i]['id'] == game_serializer.data[j]['away_team']:
+				game_serializer.data[j]['away_name'] = team_serializer.data[i]['team_name']
+			gameTime = dt.strptime(game_serializer.data[j]['start_time'], '%Y-%m-%dT%H:%M:%SZ')
+			strGameTime = gameTime.strftime("%m-%d-%Y %I:%M %p")
+
+			game_serializer.data[j]['format_start_time'] = strGameTime
+
+
+	return Response(game_serializer.data)
+
+
 
