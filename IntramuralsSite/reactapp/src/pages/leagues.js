@@ -75,7 +75,7 @@ class LeaguePage extends Component {
 		var today = new Date();
 		var mydate = new Date(parts[0], parts[1] - 1, parts[2]);
 
-		return mydate <= today;
+		return mydate < today;
 	}
 
 	render() {
@@ -97,9 +97,9 @@ class LeaguePage extends Component {
 						<Fragment>
 							<div className="adminSwitch">
 								<label>Toggle Admin View</label><br/>
-								<label class="switch">
+								<label className="switch">
 								  <input type="checkbox" onClick={this.adminViewSwitch}/>
-								  <span class="slider round"></span>
+								  <span className="slider round"></span>
 								</label>
 							</div>
 							<br/><br/>

@@ -140,7 +140,7 @@ class TeamsTab extends Component {
 		var today = new Date();
 		var mydate = new Date(parts[0], parts[1] - 1, parts[2]);
 
-		return mydate <= today;
+		return mydate < today;
 	}
 
 	deleteHandler(teamId) {
