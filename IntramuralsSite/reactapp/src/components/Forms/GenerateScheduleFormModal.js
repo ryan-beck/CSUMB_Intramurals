@@ -50,6 +50,7 @@ class GenerateScheduleFormModal extends Component {
 			            </View>
 			        </View>
 		        </Modal>
+                <span className="gameSpan">
                     <Pressable
                             style={styles.editButton}
                             onPress={() => this.setModalVisible(true)}
@@ -57,7 +58,7 @@ class GenerateScheduleFormModal extends Component {
                             
                             <Text style={styles.textStyle}>Generate Game Schedule</Text>
                     </Pressable>
-		        
+		        </span>
 		    </View>
 		);
 	}
@@ -106,7 +107,7 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         padding: 12,
         backgroundColor: "#00688B",
-        width: 200
+        width: 300
     }
 });
 

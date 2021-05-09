@@ -89,7 +89,7 @@ class GamesTab extends Component {
                     if(this.state.sortedGames.length == 0){
                         return (
                             <div className="no-games-div"> 
-                                <h1 className="no-games">No games for this league yet</h1>
+                                <h1>No games for this league yet.</h1>
                                 {(() => {
                                     if(this.props.isAdminView) {
                                         return (

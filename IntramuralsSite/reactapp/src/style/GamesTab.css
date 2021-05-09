@@ -36,11 +36,8 @@
 }
 
 .no-games-div {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-.no-games {
+  padding-top: 20px;
+    font-size: 20px;
     text-align: center;
+    font-weight: bold;
 }
