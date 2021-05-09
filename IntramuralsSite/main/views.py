@@ -156,8 +156,7 @@ def generateGameSchedule(request):
 	
 	games = generateSchedule(teams, gameNum, leagueStart, gameLength, teamGamesPerDay)
 	for game in games:
-		print(game)
-	# TODO: save games here when everything is finalized
+		game.save()
 	serializer = GameSerializer(games, context={'request': request}, many=True)
 	return Response(serializer.data)
 

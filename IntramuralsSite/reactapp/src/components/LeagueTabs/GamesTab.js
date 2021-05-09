@@ -172,8 +172,11 @@ class CollapsibleContent extends Component {
                             return (
                                 <div className="game-grid-item"> 
                                     <p>{this.convertDateString(game.start_time)}</p>
-                                    <label className="team-name">{awayTeam.team_name}</label> <br/>
-                                    <label className="team-name">{homeTeam.team_name}</label>
+                                    <label className="team-name">{awayTeam.team_name}</label> 
+                                    <label className="team-score">{game.away_score}</label>
+                                    <br/>
+                                    <label className="team-name">{homeTeam.team_name} </label>
+                                    <label className="team-score">{game.home_score}</label>
                                 </div>
                                 
                             )
