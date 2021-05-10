@@ -119,13 +119,11 @@ input:checked + .homeSlider:before {
 }
 
 .sidenav-game {
-	text-align: left;
-	padding-left: 30px;
-	font-weight: 600;
+	padding-left: 40px;
+	font-weight: 525;
 
 }
 
 .sidenav-date {
 	text-align: center;
-
 }

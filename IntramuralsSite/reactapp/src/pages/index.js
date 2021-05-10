@@ -83,7 +83,7 @@ class MainPage extends Component {
 						}
 					})()}
 					{this.state.posts.reverse().map((post, index) => (
-						<div key={index} className="post">
+						<div key={index}>
 							{(() => {
 								if (this.state.isAdminView && post.owner==this.state.user.id) {
 									return (
