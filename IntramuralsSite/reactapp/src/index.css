@@ -9,12 +9,12 @@
   padding-top: 20px;
   border-radius:50px;
   border: 2px solid;
-  text-align: center;
 }
 
 .sidenav-title {
   font-weight: bolder;
   font-size: 20px;
+  text-align: center;
 }
 
 .post-title {
@@ -45,15 +45,6 @@
   margin-right: 30%; /* Same as the width of the sidenav */
   font-size: 28px; /* Increased text to enable scrolling */
   padding: 170px 30px;
-}
-
-ul {
-  padding-left: 100px;
-}
-
-li span {
-  position: relative;
-  left: -40px;
 }
 
 .homeAdminTitle {
@@ -125,4 +116,16 @@ input:checked + .homeSlider:before {
 
 .homeSlider.round:before {
   border-radius: 50%;
+}
+
+.sidenav-game {
+	text-align: left;
+	padding-left: 30px;
+	font-weight: 600;
+
+}
+
+.sidenav-date {
+	text-align: center;
+
 }

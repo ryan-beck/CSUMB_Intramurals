@@ -119,7 +119,8 @@ class MainPage extends Component {
 					))}
 				</div>
 				<div className="sidenav">
-					<label className="sidenav-title">Upcoming Games</label>
+					<div className="sidenav-title">
+					<label >Upcoming Games</label></div>
 					{(() => {
 						if (this.state.events.length == 0) {
 							return (
@@ -133,10 +134,8 @@ class MainPage extends Component {
 					})()}
 					{this.state.events.map((event, index) => (
 						<div key={index}>
-							<label>{event.gameTitle}</label>
-							<ul>
-								<li><span>{event.gameTime}</span></li>
-							</ul>
+							<label className="sidenav-game">{event.gameTitle}</label>
+								<div className="sidenav-date">{event.gameTime}</div>
 						</div>
 					))}
 				</div>
