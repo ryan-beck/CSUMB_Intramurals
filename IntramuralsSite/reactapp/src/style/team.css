@@ -1,11 +1,13 @@
+.beginning {
+    padding-top: 170px;
+}
+
 .primaryTitle {
     padding-left:100px;
-    padding-top: 170px;
     color: #444444;
     font-weight: bolder;
     font-size: 50px;
 }
-
 
 .secondaryTitle {
     padding-left:100px;
@@ -68,4 +70,10 @@
     border-right-style: hidden;
     border-left-style: hidden;
     border-bottom-style: hidden;
+}
+
+.record {
+    float: right;
+    padding-right: 40px;
+    font-size: 18px;
 }
