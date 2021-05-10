@@ -22,7 +22,8 @@ class TeamPage extends Component {
 		leagueName: "",
 		gamesArray: [],
 		leagueId: null,
-		sportId: null
+		sportId: null,
+		team: {}
     };
 
     this.sortPlayers = this.sortPlayers.bind(this);
@@ -44,6 +45,7 @@ class TeamPage extends Component {
 		.then(res => res.json())
 		.then((res) => {
 			this.setState({
+				team: res,
 				leagueId: res.league
 			})
 
@@ -102,9 +104,12 @@ class TeamPage extends Component {
 
 	render() {
 		return (
-			<Box>
+			<Box className="beginning">
+			<div>
+				<label className="record"><b>Wins:</b> {this.state.team.wins}<br/> <b>Losses:</b> {this.state.team.losses}<br/> <b>Ties:</b> {this.state.team.ties}</label>
 				<h1 className="primaryTitle"> {this.props.props.match.params.team} </h1>
 				<label className="secondaryTitle"> {this.state.sportName} : {this.state.leagueName} </label>
+				</div>
 				{(() => {
 					if (this.state.user.id == this.state.captainId) {
 						return (

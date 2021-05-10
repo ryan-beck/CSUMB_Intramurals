@@ -63,7 +63,7 @@ class Team(models.Model):
             otherWinPrct = other.wins / (other.wins + other.losses + other.ties)
         else:
             otherWinPrct = 0
-            
+
         if thisWinPrct != otherWinPrct:
             return thisWinPrct > otherWinPrct
         
