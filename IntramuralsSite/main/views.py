@@ -200,14 +200,73 @@ def generateSchedule(teams, gameNum, leagueStart, gameLength, teamGamesPerDay):
 		teams = [teams[0]] + [teams[-1]] + teams[1:-1]
 	return games
 
+@api_view(['POST'])
+def generatePlayoffs(request):
+	leagueId = request.data['leagueId']
+	startDay = request.data['startDay']
+	#int representing day of week, 0 Monday, 6 Sunday
+	gameDay = int(request.data['gameDay'])
+	#time that games will begin, in minutes
+	startTime = request.data['startTime'].split(":")
+	startTime = int(startTime[0])*60 + int(startTime[1])
+	#length of each game, in minutes
+	gameLength = int(request.data['gameLength'])
+	#games to be played by each team per day
+	teamGamesPerDay = int(request.data['teamGamesPerDay'])
+	isBracket = request.data['isBracket']
+	teamNum = request.data['teamNum']
+
+	playoffTeams = getPlayoffTeams(leagueId, teamNum)
+	
+	if not isBracket:
+		# round robin style tournament
+		# should be able to use the normal game schedule function
+		# games = generateSchedule(playoffTeams, len(playoffTeams)-1, startDay, gameLength, teamGamesPerDay)
+		pass
+	else:
+		# bracket tournament
+		pass
+
+# def generateBracket():
+
+
+def getPlayoffTeams(leagueId, numTeams):
+	allTeams = Team.objects.filter(league=leagueId)
+	ranked = sorted(allTeams)[::-1]
+	cutoff = ranked[:numTeams]
+	return cutoff
+
+
+def updateRecords(game):
+	if game.home_score == game.away_score:
+		game.home_team.ties += 1
+		game.away_team.ties += 1
+		game.home_team.save()
+		game.away_team.save()
+		# for player in (list(game.home_team.players.all()) + list(game.away_team.players.all())):
+		# 	player.ties += 1
+		# 	player.save()
+	
+	elif game.home_score > game.away_score:
+		game.home_team.wins += 1
+		game.away_team.losses += 1
+		game.home_team.save()
+		game.away_team.save()
+
+
+	else:
+		game.home_team.losses += 1
+		game.away_team.wins += 1
+		game.home_team.save()
+		game.away_team.save()
+
+
 @api_view(['GET'])
 def getEventsByLeague(request, leagueId):
 	games = Game.objects.filter(league=leagueId)
 	game_serializer = GameSerializer(games, context={'request': request}, many=True)
 	return Response(game_serializer.data)
 
-
-	
 @api_view(['GET'])
 def getEventsByUser(request, userId):
 	# grab teams based on userId
@@ -285,13 +344,19 @@ def getEventsByUser(request, userId):
 	return Response(events)
 
 @api_view(['GET'])
-def getTeamsByLeague(request,sport,league):
-	print(sport,league)
-	sport_obj = Sport.objects.filter(sport_name=sport)
-	league_obj = League.objects.filter(sport=sport_obj[0],league_name=league)
-	team_data = Team.objects.filter(league=league_obj[0])
+def getTeamsByLeague(request,leagueId):
+	team_data = Team.objects.filter(league=leagueId)
+	team_data = sorted(team_data)[::-1]
 	team_serializer = TeamSerializer(team_data, context={'request': request}, many=True)
-	#print(team_serializer)
+
+	for i in range(len(team_serializer.data)):
+		totalGames = team_serializer.data[i]['wins'] + team_serializer.data[i]['losses'] + team_serializer.data[i]['ties']
+		wpt = "0.000"
+		if totalGames != 0:
+			winper = team_serializer.data[i]['wins'] / totalGames
+			wpt = "{:.3f}".format(winper)
+
+		team_serializer.data[i]['wpt'] = wpt
 
 	return Response(team_serializer.data)
 

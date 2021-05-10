@@ -37,11 +37,6 @@
 }
 
 .no-games-div {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-.no-games {
+    padding-top: 20px;
     text-align: center;
 }

@@ -24,30 +24,26 @@ class LeaguePage extends Component {
 		sportsArray: [] ,
 		displayArray: [],
 		searchtTextInput: " ",
-		leagueArray: [],
 		teamsArray: null,
 		playerArray: [],
 		isAdminView: false,
-		sportIsActive: null
+		sportIsActive: null,
+		league: {}
     };
 
     this.adminViewSwitch = this.adminViewSwitch.bind(this);
+    this.hasLeagueBegun = this.hasLeagueBegun.bind(this);
 
   }
 
   componentDidMount() {
-	fetch("http://localhost:8000/api/getTeamsByLeague/" + this.props.props.match.params.sport + '/' + this.props.props.match.params.league)
+	fetch("http://localhost:8000/api/getTeamsByLeague/" + this.props.props.match.params.id)
 	.then(res => res.json())
 	.then(
 	  (result) => {
 		this.setState({
 		  teamsArray: result,
 		});
-		console.log("here");
-		console.log(this.state.teamsArray)
-	  },
-	  (error) => {
-		console.log("Error in database call")
 	  }
 	)
 
@@ -58,6 +54,14 @@ class LeaguePage extends Component {
 				sportIsActive: res.is_active
 			});
         });
+
+    fetch('http://localhost:8000/api/getLeagueById/'+this.props.props.match.params.id)
+        .then(res => res.json())
+        .then((res) => {
+        	this.setState({
+				league: res
+			});
+        });
   }
 
 	adminViewSwitch() {
@@ -66,11 +70,19 @@ class LeaguePage extends Component {
 		});
 	}
 
+	hasLeagueBegun() {
+		var parts =String(this.state.league.start_date).split('-');
+		var today = new Date();
+		var mydate = new Date(parts[0], parts[1] - 1, parts[2]);
+
+		return mydate < today;
+	}
+
 	render() {
 		return (
 			<div className="paddingLeague">
 				{(() => {
-					if (this.state.sportIsActive) {
+					if (this.state.sportIsActive && !this.hasLeagueBegun()) {
 						return (
 							<span className="editSpan">
 								<CreateTeamFormModal user={this.state.user} leagueId={this.props.props.match.params.id}/> 
@@ -85,9 +97,9 @@ class LeaguePage extends Component {
 						<Fragment>
 							<div className="adminSwitch">
 								<label>Toggle Admin View</label><br/>
-								<label class="switch">
+								<label className="switch">
 								  <input type="checkbox" onClick={this.adminViewSwitch}/>
-								  <span class="slider round"></span>
+								  <span className="slider round"></span>
 								</label>
 							</div>
 							<br/><br/>
@@ -105,14 +117,14 @@ class LeaguePage extends Component {
 				
 					{/* TODO onclick for panels to update tab state*/}
 					<TabPanel>
-						{ this.state.sportIsActive != null && this.state.teamsArray != null ? <TeamsTab props={this.props.props} teamsArray={this.state.teamsArray} user={this.state.user} sportIsActive={this.state.sportIsActive}/> : null }
+						{ this.state.sportIsActive != null && this.state.teamsArray != null ? <TeamsTab props={this.props.props} teamsArray={this.state.teamsArray} user={this.state.user} sportIsActive={this.state.sportIsActive} leagueId={this.props.props.match.params.id} isAdminView={this.state.isAdminView}/> : null }
 						
 					</TabPanel>
 					<TabPanel>
 						{ this.state.teamsArray != null ? <GamesTab leagueId={this.props.props.match.params.id} teamsArray={this.state.teamsArray} isAdminView={this.state.isAdminView}/> : null }
 					</TabPanel>
 					<TabPanel>
-						<StandingsTab/>
+						<StandingsTab leagueId={this.props.props.match.params.id} teamsArray={this.state.teamsArray}/>
 					</TabPanel>
 				</Tabs>
 			</div>

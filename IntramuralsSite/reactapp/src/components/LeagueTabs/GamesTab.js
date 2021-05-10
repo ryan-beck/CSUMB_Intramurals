@@ -3,7 +3,7 @@ import { Component } from 'react';
 import axios from "axios";
 import Collapsible from 'react-collapsible';
 
-import '../../style/GamesTab.css'
+import '../../style/GamesTab.css';
 import GenerateScheduleFormModal from "../Forms/GenerateScheduleFormModal";
 
 class GamesTab extends Component {
@@ -122,7 +122,7 @@ class GamesTab extends Component {
                     if(this.state.sortedGames.length == 0){
                         return (
                             <div className="no-games-div"> 
-                                <h1 className="no-games">No games for this league yet</h1>
+                                <label>No games for this league yet.</label>
                                 {(() => {
                                     if(this.props.isAdminView) {
                                         return (
