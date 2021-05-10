@@ -3,7 +3,7 @@ import { Alert, Modal, Text, Pressable, View, StyleSheet } from "react-native";
 import CreateSportForm from './CreateSportForm';
 
 
-import '../style/leagueForm.css'
+import '../../style/leagueForm.css'
 
 class CreateSportFormModal extends Component {
 	constructor(props) {
@@ -50,12 +50,14 @@ class CreateSportFormModal extends Component {
 			            </View>
 			        </View>
 		        </Modal>
-                <span class="editSpan">
+                <span className="sportSpan">
                     <Pressable
-                        onPress={() => this.setModalVisible(true)}
-                    >
-                       <button>Add new sport</button>
-                    </Pressable>
+                            style={styles.editButton}
+                            onPress={() => this.setModalVisible(true)}
+                        >
+                            
+                                <Text style={styles.textStyle}>Add New Sport</Text>
+                        </Pressable>
                 </span>
 		        
 		    </View>
@@ -98,6 +100,19 @@ const styles = StyleSheet.create({
         textAlign: "center",
         color: "white",
         fontWeight: "bolder"
+    },
+    textStyle: {
+        color: "white",
+        fontWeight: "bold",
+        textAlign: "center",
+        fontSize: 15
+    },
+    editButton: {
+        borderRadius: 20,
+        padding: 12,
+        elevation: 2,
+        float:"right",
+        backgroundColor: "#00688B",
     }
 });
 

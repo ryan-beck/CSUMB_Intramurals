@@ -1,0 +1,41 @@
+.Collapsible__trigger {
+  display: block;
+  font-weight: bold;
+  text-decoration: none;
+  position: relative;
+  border: 1px solid white;
+  padding: 10px;
+  background-color: #d3d3d3;
+  color: #444444;
+  text-align: center;
+}
+
+
+.game-grid-container {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    background-color: #ffffff;
+    padding: 10px;
+}
+  
+.game-grid-item {
+    background-color: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.8);
+    padding: 15px;
+    font-size: 15px;
+    text-align: left;
+}
+
+.team-name {
+    font-size: 25px;
+}
+
+.team-score {
+    font-size: 20px;
+    float: right;
+}
+
+.no-games-div {
+    padding-top: 20px;
+    text-align: center;
+}

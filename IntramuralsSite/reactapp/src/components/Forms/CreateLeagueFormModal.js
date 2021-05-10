@@ -1,11 +1,8 @@
 import React, { Component } from "react";
 import { Alert, Modal, Text, Pressable, View, StyleSheet } from "react-native";
 import CreateLeagueForm from './CreateLeagueForm';
-import add from '../assets/add.png';
-import edit from '../assets/pencil.png';
-import remove from '../assets/delete.png';
 
-import '../style/leagueForm.css'
+import '../../style/leagueForm.css'
 
 class CreateLeagueFormModal extends Component {
 	constructor(props) {
@@ -55,18 +52,14 @@ class CreateLeagueFormModal extends Component {
 			            </View>
 			        </View>
 		        </Modal>
-                <span class="editSpan">
+                <span className="addLeague">
                     <Pressable
+                        style={styles.editButton}
                         onPress={() => this.setModalVisible(true)}
                     >
-                        <img class="editIcon" src={add}></img>
+                        
+                            <Text style={styles.addLeagueText}>Add League</Text>
                     </Pressable>
-                    {/* <Pressable>
-                        <img class="editIcon" src={edit}></img>
-                    </Pressable>
-                    <Pressable>
-                        <img class="editIcon" src={remove}></img>
-                    </Pressable> */}
                 </span>
 		        
 		    </View>
@@ -109,6 +102,19 @@ const styles = StyleSheet.create({
         textAlign: "center",
         color: "white",
         fontWeight: "bolder"
+    },
+    addLeagueText: {
+        color: "white",
+        fontWeight: "bold",
+        textAlign: "center",
+        fontSize: 15
+    },
+    editButton: {
+        borderRadius: 20,
+        padding: 10,
+        elevation: 2,
+        float:"right",
+        backgroundColor: "#00688B",
     }
 });
 

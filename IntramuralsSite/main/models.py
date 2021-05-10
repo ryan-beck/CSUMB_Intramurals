@@ -4,7 +4,10 @@ class Account(models.Model):
     email = models.TextField(unique=True)
     display_name = models.TextField()
     photo_url = models.TextField()
-    is_admin = models.BooleanField(default=False) 
+    is_admin = models.BooleanField(default=False)
+    wins = models.IntegerField(default=0)
+    losses = models.IntegerField(default=0)
+    ties = models.IntegerField(default=0)
 
     def __str__(self):
         return self.email + " (" + str(self.id) + ")"
@@ -24,29 +27,90 @@ class League(models.Model):
     league_name = models.TextField()
     start_date = models.DateField()
     end_date = models.DateField()
+    player_limit = models.IntegerField(null=True)
     # registration dates:
     # TODO: maybe add constraints on these dates
     reg_start_date = models.DateField()
     reg_end_date = models.DateField()
+    
 
     def __str__(self):
         return self.sport.sport_name +": "+ self.league_name + " (" + str(self.id) + ")"
     
 
 class Team(models.Model):
-    team_name = models.TextField(default="My Team")
+    team_name = models.TextField(default="My Team", max_length=16)
     league = models.ForeignKey(League, on_delete=models.CASCADE)
     players = models.ManyToManyField(Account)
-
+    wins = models.IntegerField(default=0)
+    losses = models.IntegerField(default=0)
+    ties = models.IntegerField(default=0)
+    is_open = models.BooleanField()
+    captain = models.ForeignKey(Account, on_delete=models.CASCADE, related_name="Captain", null=True)
     def __str__(self):
         return self.team_name + " (" + str(self.id) + ")"
+
+    def __gt__(self, other):
+        thisTotalGames = self.wins + self.losses + self.ties
+        otherTotalGames = other.wins + other.losses + other.ties
+
+        if thisTotalGames != 0:
+            thisWinPrct = self.wins / (self.wins + self.losses + self.ties)
+        else:
+            thisWinPrct = 0
+
+        if otherTotalGames != 0:
+            otherWinPrct = other.wins / (other.wins + other.losses + other.ties)
+        else:
+            otherWinPrct = 0
+            
+        if thisWinPrct != otherWinPrct:
+            return thisWinPrct > otherWinPrct
+        
+        thisHome = Game.objects.filter(home_team=self, away_team=other)
+        thisAway = Game.objects.filter(home_team=other, away_team=self)
+        
+        thisWins = 0
+        otherWins = 0
+        for game in thisHome:
+            if game.home_score > game.away_score:
+                thisWins += 1
+            elif game.home_score < game.away_score:
+                otherWins += 1
+        for game in thisAway:
+            if game.home_score > game.away_score:
+                otherWins += 1
+            elif game.home_score < game.away_score:
+                thisWins += 1
+        if thisWins != otherWins:
+            return thisWins > otherWins
+
+        thisScore = 0
+        otherScore = 0
+        for game in thisHome:
+            thisScore += game.home_score
+            otherScore += game.away_score
+        for game in thisAway:
+            thisScore += game.away_score
+            otherScore += game.home_score
+        return thisScore > otherScore
+
     
 
 class Game(models.Model):
     league = models.ForeignKey(League, on_delete=models.CASCADE)
-    start_time = models.DateField()
+    start_time = models.DateTimeField()
     home_team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='home_team')
     away_team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='away_team')
     home_score = models.IntegerField(null=True)
     away_score = models.IntegerField(null=True)
 
+    def __str__(self):
+        return " ".join(str(self.league).split()[:2]) + ": " + self.home_team.team_name + " vs. " + self.away_team.team_name + " " + str(self.start_time)
+
+
+class Post(models.Model):
+    text = models.TextField(blank=True)
+    media_url = models.TextField(blank=True)
+    owner = models.ForeignKey(Account, on_delete=models.CASCADE)
+    posted_date = models.DateTimeField()
