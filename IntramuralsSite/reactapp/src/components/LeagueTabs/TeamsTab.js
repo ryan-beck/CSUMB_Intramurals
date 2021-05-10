@@ -156,7 +156,19 @@ class TeamsTab extends Component {
 	render() {
 		return (
 			<Box> 
+				{(() => {
+					if (this.state.teamsArray.length == 0) {
+						return (
+							<div className="no-team"> 
+								<label>
+									There are no teams to display.
+								</label>
+							</div>
+						);
+					}
+				})()}
 				<div className="league-grid-container">
+				
 				{this.state.teamsArray.map((team, index) => (
 					  <div key={index}>
 					  <div className="league-grid-item">

@@ -18,3 +18,7 @@ td, th {
 tr:nth-child(even) {
   background-color: #dddddd;
 }
+
+.no-standing {
+	text-align: center;
+}

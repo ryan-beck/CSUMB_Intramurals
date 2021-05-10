@@ -15,6 +15,17 @@ class StandingsTab extends Component {
     render() {
         return (
             <div>
+                {(() => {
+                    if (this.state.teamsArray.length == 0) {
+                        return (
+                            <div className="no-standing">
+                                <label>
+                                    There is no league data to display.
+                                </label>
+                            </div>
+                        );
+                    }
+                })()}
                 <table className="tableFormat">
                 <thead>
                   <tr>
@@ -27,6 +38,7 @@ class StandingsTab extends Component {
                   </tr>
                 </thead>
                 <tbody>
+                
                   {this.state.teamsArray.map((team, index) => (
                     <tr key={index}>
                             <td>{index+1}</td>
