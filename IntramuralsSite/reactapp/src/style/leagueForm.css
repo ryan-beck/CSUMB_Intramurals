@@ -17,3 +17,10 @@
 	padding-top: 10px;
 	padding-bottom: 10px;
 }
+.gameSpan {
+    display: flex;
+    flex-direction: row;
+    align-self: center;
+    padding-top: 10px;
+    
+}

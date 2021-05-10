@@ -1,5 +1,5 @@
 import React from "react";
-import { Component } from 'react';
+import { Component, Fragment } from 'react';
 import Box from '@material-ui/core/Box';
 import Button from 'react-bootstrap/Button';
 
@@ -15,20 +15,23 @@ class TeamsTab extends Component {
 
 
     this.state = {
-	  user: props.user,
-      sportsArray: [] ,
-	  displayArray: [],
-	  searchtTextInput: " ",
-	  leagueArray: [],
-	  teamsArray: props.teamsArray,
-	  playerArray: [],
-	  modalShow: false,
-	  sportIsActive: props.sportIsActive
+    	leagueId: props.leagueId,
+		user: props.user,
+		sportsArray: [] ,
+		displayArray: [],
+		searchtTextInput: " ",
+		league: {},
+		teamsArray: props.teamsArray,
+		playerArray: [],
+		modalShow: false,
+		sportIsActive: props.sportIsActive
     };
 
-	this.handleJoinTeam = this.handleJoinTeam.bind(this)
-	this.checkTeam = this.checkTeam.bind(this)
-	this.handleLeaveTeam = this.handleLeaveTeam.bind(this)
+	this.handleJoinTeam = this.handleJoinTeam.bind(this);
+	this.checkTeam = this.checkTeam.bind(this);
+	this.handleLeaveTeam = this.handleLeaveTeam.bind(this);
+	this.hasLeagueBegun = this.hasLeagueBegun.bind(this);
+	this.deleteHandler = this.deleteHandler.bind(this);
 
   }
 
@@ -106,46 +109,22 @@ class TeamsTab extends Component {
 	}
 
 
-
-
-
 	componentDidMount() {
 
-		fetch("http://localhost:8000/api/getSports/")
+		fetch("http://localhost:8000/api/getLeagueById/" + this.state.leagueId)
 		  .then(res => res.json())
 		  .then(
-			(result) => {
+			(res) => {
 			  this.setState({
-				sportsArray: result,
-				displayArray: result,
+				league: res,
 			  });
-			  console.log(this.state.sportsArray)
-			},
-			(error) => {
-			  console.log("Error in database call")
 			}
 		  )
-
-		fetch("http://localhost:8000/api/getLeagues/")
-		  .then(res => res.json())
-		  .then(
-			(result) => {
-			  this.setState({
-				leagueArray: result,
-			  });
-			  console.log(this.state.leagueArray)
-			},
-			(error) => {
-			  console.log("Error in database call")
-			}
-		  )
-
 
 		  fetch("http://localhost:8000/api/getAccounts/")
 		  .then(res => res.json())
 		  .then(
 			(result) => {
-			  console.log(result)
 			  this.setState({
 					playerArray: result,
 			  })
@@ -156,17 +135,59 @@ class TeamsTab extends Component {
 		  )
 	}
 
+	hasLeagueBegun() {
+		var parts =String(this.state.league.start_date).split('-');
+		var today = new Date();
+		var mydate = new Date(parts[0], parts[1] - 1, parts[2]);
+
+		return mydate < today;
+	}
+
+	deleteHandler(teamId) {
+	    axios({
+	        method:'delete', 
+	        url: 'http://localhost:8000/api/deleteTeam/'+teamId,
+	    })
+	    .then(({data}) => {
+	        window.location.reload(); 
+	    });
+	}
+
 	render() {
 		return (
 			<Box> 
+				{(() => {
+					if (this.state.teamsArray.length == 0) {
+						return (
+							<div className="no-team"> 
+								<label>
+									There are no teams to display.
+								</label>
+							</div>
+						);
+					}
+				})()}
 				<div className="league-grid-container">
+				
 				{this.state.teamsArray.map((team, index) => (
 					  <div key={index}>
 					  <div className="league-grid-item">
 						<div>
-							<h4 className="league-title"><a href={'/team/'+ team.team_name +'/'+ team.id+'/'+ team.captain}><u>{team.team_name}</u></a></h4>
 							{(() => {
-								if(this.state.sportIsActive) {
+								if (this.props.isAdminView) {
+									return (
+									<Fragment>
+										<span className="admin-view-delete">
+											<input name="deleteButton" className="deleteTeam" type="button" value="Delete This Team" onClick={() => this.deleteHandler(team.id)}/>
+										</span>
+										</Fragment>
+									)
+								}
+							})()}
+							<h4 className="league-title"><a href={'/team/'+ team.team_name +'/'+ team.id+'/'+ team.captain}><u>{team.team_name}</u></a></h4>
+							
+							{(() => {
+								if(this.state.sportIsActive && !this.hasLeagueBegun()) {
 									if (this.checkTeam(team.id)) {
 										return (
 										<div className="closedTag">  <Button className="joinButton" size="sm" onClick={this.handleLeaveTeam} value={team.id} > Leave? </Button>   </div>

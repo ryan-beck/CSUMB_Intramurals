@@ -45,15 +45,25 @@ class Team(models.Model):
     wins = models.IntegerField(default=0)
     losses = models.IntegerField(default=0)
     ties = models.IntegerField(default=0)
-    player_limit = models.IntegerField(null=True)
     is_open = models.BooleanField()
     captain = models.ForeignKey(Account, on_delete=models.CASCADE, related_name="Captain", null=True)
     def __str__(self):
         return self.team_name + " (" + str(self.id) + ")"
 
     def __gt__(self, other):
-        thisWinPrct = self.wins / (self.wins + self.losses + self.ties)
-        otherWinPrct = other.wins / (other.wins + other.losses + other.ties)
+        thisTotalGames = self.wins + self.losses + self.ties
+        otherTotalGames = other.wins + other.losses + other.ties
+
+        if thisTotalGames != 0:
+            thisWinPrct = self.wins / (self.wins + self.losses + self.ties)
+        else:
+            thisWinPrct = 0
+
+        if otherTotalGames != 0:
+            otherWinPrct = other.wins / (other.wins + other.losses + other.ties)
+        else:
+            otherWinPrct = 0
+            
         if thisWinPrct != otherWinPrct:
             return thisWinPrct > otherWinPrct
         
