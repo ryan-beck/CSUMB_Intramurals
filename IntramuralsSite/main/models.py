@@ -67,8 +67,8 @@ class Team(models.Model):
         if thisWinPrct != otherWinPrct:
             return thisWinPrct > otherWinPrct
         
-        thisHome = Game.objects.filter(home_team=self, away_team=other)
-        thisAway = Game.objects.filter(home_team=other, away_team=self)
+        thisHome = Game.objects.filter(home_team=self, away_team=other).exclude(home_score__isnull=True, away_score__isnull=True)
+        thisAway = Game.objects.filter(home_team=other, away_team=self).exclude(home_score__isnull=True, away_score__isnull=True)      
         
         thisWins = 0
         otherWins = 0
@@ -93,7 +93,10 @@ class Team(models.Model):
         for game in thisAway:
             thisScore += game.away_score
             otherScore += game.home_score
-        return thisScore > otherScore
+        if thisScore != otherScore:
+            return thisScore > otherScore
+        
+        return self.losses < other.losses
 
     
 

@@ -22,6 +22,7 @@ class GamesTab extends Component {
         this.getCurrWeek = this.getCurrWeek.bind(this);
         this.handleGenerationFormSubmit = this.handleGenerationFormSubmit.bind(this);
         this.updateGameScoreState = this.updateGameScoreState.bind(this);
+        this.submitGameScores = this.submitGameScores.bind(this);
     }
 
 
@@ -110,8 +111,16 @@ class GamesTab extends Component {
         
     }
 
-    handleAdminSwitch () {
-
+    submitGameScores() {
+        axios({
+            method:'put', 
+            url: 'http://localhost:8000/api/updateScores/' + this.state.leagueId, 
+            data: [].concat(...this.state.sortedGames)
+        })
+        .then(({data}) => {
+            // console.log(data);
+            window.location.reload();
+        });
     }
 
 
@@ -134,6 +143,25 @@ class GamesTab extends Component {
                         )
                     }
                     else {
+                        if(this.props.isAdminView) {
+                            return (
+                                <div> 
+                                    <button onClick={this.submitGameScores}>Save Edit</button>
+                                    {this.state.sortedGames.map((week, index) => (
+                                        <div key={index}>
+                                            {(() => {
+                                                let open = this.state.currWeek == index ? true : false;
+                                                return (
+                                                    <Collapsible trigger={week[0].start_time.split("T")[0]} open={open}>
+                                                        <CollapsibleContent games={this.state.sortedGames} weekIndex={index} teamsArray={this.state.teamsArray} isAdminView={this.props.isAdminView} update={this.updateGameScoreState}/>
+                                                    </Collapsible>
+                                                )
+                                            })()}
+                                        </div>
+                                    ))}
+                                </div>
+                            )
+                        }
                         return (
                             <div> 
                                 {this.state.sortedGames.map((week, index) => (
