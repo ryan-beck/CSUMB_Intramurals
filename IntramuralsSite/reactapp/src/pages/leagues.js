@@ -86,7 +86,7 @@ class LeaguePage extends Component {
 		return (
 			<div className="paddingLeague">
 				{(() => {
-					if (this.state.sportIsActive && !this.hasLeagueBegun()) {
+					if (this.state.sportIsActive && !this.hasLeagueBegun() || this.state.isAdminView) {
 						return (
 							<span className="editSpan">
 								<CreateTeamFormModal user={this.state.user} leagueId={this.props.props.match.params.id}/> 
