@@ -1,12 +1,6 @@
 .tableFormat {
 	width: 100%;
-
-}
-
-table {
-  font-family: arial, sans-serif;
-  border-collapse: collapse;
-  width: 100%;
+	font-family: arial, sans-serif;
 }
 
 td, th {

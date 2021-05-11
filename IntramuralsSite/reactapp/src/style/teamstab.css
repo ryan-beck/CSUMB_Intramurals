@@ -3,6 +3,7 @@
   grid-template-columns: auto auto;
   background-color: #d3d3d3;
   padding: 10px;
+  grid-gap: 10px;
 }
 
 .league-grid-item {
@@ -11,6 +12,7 @@
   padding: 15px;
   font-size: 15px;
   text-align: center;
+  border-radius: 20px;
 }
 
 .league-title {

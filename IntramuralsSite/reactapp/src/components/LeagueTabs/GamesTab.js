@@ -24,6 +24,7 @@ class GamesTab extends Component {
         this.updateGameScoreState = this.updateGameScoreState.bind(this);
         this.submitGameScores = this.submitGameScores.bind(this);
         this.cancelEdit = this.cancelEdit.bind(this);
+        this.formatCollapsibleDate = this.formatCollapsibleDate.bind(this);
     }
 
 
@@ -64,7 +65,7 @@ class GamesTab extends Component {
         let res = {};
         games.forEach(element => {
             let date = fromPost ? element.start_time.split(" ")[0]: element.start_time.split("T")[0];
-            console.log("date: " + date);
+
             if(!res[date])
                 res[date] = [element];
             else
@@ -130,6 +131,11 @@ class GamesTab extends Component {
         window.location.reload();
     }
 
+    formatCollapsibleDate(date) {
+        var parts =String(date).split('-');
+        return parts[1]+'-'+parts[2]+'-'+parts[0]
+    }
+
 
     render() {
         return (
@@ -162,8 +168,9 @@ class GamesTab extends Component {
                                         <div key={index}>
                                             {(() => {
                                                 let open = this.state.currWeek == index ? true : false;
+                                                let date = this.formatCollapsibleDate(week[0].start_time.split("T")[0])
                                                 return (
-                                                    <Collapsible trigger={week[0].start_time.split("T")[0]} open={open}>
+                                                    <Collapsible trigger={date} open={open}>
                                                         <CollapsibleContent games={this.state.sortedGames} weekIndex={index} teamsArray={this.state.teamsArray} isAdminView={this.props.isAdminView} update={this.updateGameScoreState}/>
                                                     </Collapsible>
                                                 )
@@ -179,8 +186,9 @@ class GamesTab extends Component {
                                 <div key={index}>
                                     {(() => {
                                         let open = this.state.currWeek == index ? true : false;
+                                        let date = this.formatCollapsibleDate(week[0].start_time.split("T")[0])
                                         return (
-                                            <Collapsible trigger={week[0].start_time.split("T")[0]} open={open}>
+                                            <Collapsible trigger={date} open={open}>
                                                 <CollapsibleContent games={this.state.sortedGames} weekIndex={index} teamsArray={this.state.teamsArray} isAdminView={this.props.isAdminView} update={this.updateGameScoreState}/>
                                             </Collapsible>
                                         )

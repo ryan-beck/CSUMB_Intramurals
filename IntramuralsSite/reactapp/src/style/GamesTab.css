@@ -1,20 +1,20 @@
 .Collapsible__trigger {
   display: block;
   font-weight: bold;
-  text-decoration: none;
   position: relative;
   border: 1px solid white;
   padding: 10px;
-  background-color: #d3d3d3;
-  color: #444444;
+  background-color: #00688B;
+  color: white;
   text-align: center;
+  border-radius: 20px;
 }
 
 
 .game-grid-container {
     display: grid;
     grid-template-columns: auto auto auto auto;
-    background-color: #ffffff;
+    background-color: #d3d3d3;
     padding: 10px;
     grid-gap: 10px;
 }

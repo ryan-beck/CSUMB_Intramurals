@@ -65,7 +65,7 @@ class LeaguePage extends Component {
 				league: res
 			});
         });
-        console.log("state: "+this.state.tabIndex)
+
   }
 
 	adminViewSwitch() {
