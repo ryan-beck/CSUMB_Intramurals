@@ -241,36 +241,66 @@ def updateRecords(game, first_entry, prev_home, prev_away):
 
 	home_team = game.home_team
 	away_team = game.away_team
+	home_players = home_team.players.all()
+	away_players = away_team.players.all()
 
 	# if scores were previously entered, deduct wins/losses accordingly
 	if not first_entry:
 		if prev_home == prev_away:
 			home_team.ties -= 1
 			away_team.ties -= 1
+			home_players = updatePlayerRecords(home_players, 0, -1)
+			away_players = updatePlayerRecords(away_players, 0, -1)
 		elif prev_home > prev_away:
 			home_team.wins -= 1
 			away_team.losses -= 1
+			home_players = updatePlayerRecords(home_players, 1, -1)
+			away_players = updatePlayerRecords(away_players, 2, -1)
 		else:
 			home_team.losses -= 1
 			away_team.wins -= 1
+			home_players = updatePlayerRecords(home_players, 2, -1)
+			away_players = updatePlayerRecords(away_players, 1, -1)
 
 	if game.home_score == game.away_score:
 		home_team.ties += 1
 		away_team.ties += 1
-		# for player in (list(game.home_team.players.all()) + list(game.away_team.players.all())):
-		# 	player.ties += 1
-		# 	player.save()
+		home_players = updatePlayerRecords(home_players, 0, 1)
+		away_players = updatePlayerRecords(away_players, 0, 1)
 	
 	elif game.home_score > game.away_score:
 		home_team.wins += 1
 		away_team.losses += 1
+		home_players = updatePlayerRecords(home_players, 1, 1)
+		away_players = updatePlayerRecords(away_players, 2, 1)
 
 	else:
 		home_team.losses += 1
 		away_team.wins += 1
+		home_players = updatePlayerRecords(home_players, 2, 1)
+		away_players = updatePlayerRecords(away_players, 1, 1)
 
 	home_team.save()
 	away_team.save()
+	for player in home_players:
+		player.save()
+	for player in away_players:
+		player.save()
+
+# field: 0 = ties, 1 = wins, 2 = losses
+# delta: change in value
+def updatePlayerRecords(players, field, delta):
+	for player in players:
+		if field == 0:
+			player.ties += delta
+		elif field == 1:
+			player.wins += delta
+		elif field == 2:
+			player.losses += delta
+
+	return players
+		
+
 
 @api_view(['PUT'])
 def updateScores(request, leagueId):
