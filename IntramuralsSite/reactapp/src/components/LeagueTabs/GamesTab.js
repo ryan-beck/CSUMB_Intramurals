@@ -131,7 +131,7 @@ class GamesTab extends Component {
 
     render() {
         return (
-            <div>
+            <div className="bottomSpacing">
                 {(() => {
                     if(this.state.sortedGames.length == 0){
                         return (
