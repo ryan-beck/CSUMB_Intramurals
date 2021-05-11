@@ -237,39 +237,54 @@ def getPlayoffTeams(leagueId, numTeams):
 	return cutoff
 
 
-def updateRecords(game):
+def updateRecords(game, first_entry, prev_home, prev_away):
+
+	home_team = game.home_team
+	away_team = game.away_team
+
+	# if scores were previously entered, deduct wins/losses accordingly
+	if not first_entry:
+		if prev_home == prev_away:
+			home_team.ties -= 1
+			away_team.ties -= 1
+		elif prev_home > prev_away:
+			home_team.wins -= 1
+			away_team.losses -= 1
+		else:
+			home_team.losses -= 1
+			away_team.wins -= 1
+
 	if game.home_score == game.away_score:
-		game.home_team.ties += 1
-		game.away_team.ties += 1
-		game.home_team.save()
-		game.away_team.save()
+		home_team.ties += 1
+		away_team.ties += 1
 		# for player in (list(game.home_team.players.all()) + list(game.away_team.players.all())):
 		# 	player.ties += 1
 		# 	player.save()
 	
 	elif game.home_score > game.away_score:
-		game.home_team.wins += 1
-		game.away_team.losses += 1
-		game.home_team.save()
-		game.away_team.save()
-
+		home_team.wins += 1
+		away_team.losses += 1
 
 	else:
-		game.home_team.losses += 1
-		game.away_team.wins += 1
-		game.home_team.save()
-		game.away_team.save()
+		home_team.losses += 1
+		away_team.wins += 1
+
+	home_team.save()
+	away_team.save()
 
 @api_view(['PUT'])
 def updateScores(request, leagueId):
 	games = request.data
 	for game in games:
-		game_obj = Game.objects.get(id=game['id'])
-		game_obj.home_score = game['home_score']
-		game_obj.away_score = game['away_score']
-		game_obj.save()
-	# serializer = GameSerializer(games, context={'request': request}, many=True)
-	# return Response(serializer.data)
+		if game['away_score'] and game['home_score']:
+			game_obj = Game.objects.get(id=game['id'])
+			first_entry = not game_obj.home_score and not game_obj.away_score
+			prev_home = game_obj.home_score
+			prev_away = game_obj.away_score
+			game_obj.home_score = game['home_score']
+			game_obj.away_score = game['away_score']
+			updateRecords(game_obj, first_entry, prev_home, prev_away)
+			game_obj.save()
 	return JsonResponse({'status': 'ok'})
 
 @api_view(['GET'])
