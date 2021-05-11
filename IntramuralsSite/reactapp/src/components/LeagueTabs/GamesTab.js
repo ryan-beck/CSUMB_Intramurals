@@ -119,6 +119,7 @@ class GamesTab extends Component {
         })
         .then(({data}) => {
             // console.log(data);
+            localStorage.setItem('default', 1);
             window.location.reload();
         });
     }

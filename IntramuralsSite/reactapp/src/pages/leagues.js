@@ -28,7 +28,8 @@ class LeaguePage extends Component {
 		playerArray: [],
 		isAdminView: false,
 		sportIsActive: null,
-		league: {}
+		league: {},
+		tabIndex: parseInt(localStorage.getItem('default')) || 0
     };
 
     this.adminViewSwitch = this.adminViewSwitch.bind(this);
@@ -37,6 +38,8 @@ class LeaguePage extends Component {
   }
 
   componentDidMount() {
+  	localStorage.setItem('default', 0);    
+
 	fetch("http://localhost:8000/api/getTeamsByLeague/" + this.props.props.match.params.id)
 	.then(res => res.json())
 	.then(
@@ -62,6 +65,7 @@ class LeaguePage extends Component {
 				league: res
 			});
         });
+        console.log("state: "+this.state.tabIndex)
   }
 
 	adminViewSwitch() {
@@ -107,7 +111,7 @@ class LeaguePage extends Component {
 						)
 					}
 				})()}
-				<Tabs>
+				<Tabs defaultIndex={this.state.tabIndex}>
 				
 					<TabList>
 						<Tab>Teams</Tab>
