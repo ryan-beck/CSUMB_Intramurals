@@ -55,7 +55,7 @@ class GenerateScheduleForm extends Component {
         })
         .then(({data}) => {
             console.log(data);
-            this.props.handleFormSubmit(data);
+            this.props.handleFormSubmit();
         });
     }
     

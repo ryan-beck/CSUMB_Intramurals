@@ -23,9 +23,9 @@ class GenerateScheduleFormModal extends Component {
 	    }));
 	}
 
-    handleFormSubmit (games) {
+    handleFormSubmit () {
         this.setModalVisible(false);
-        this.props.handleFormSubmit(games);
+        this.props.handleFormSubmit();
     }
 
 	render() {
