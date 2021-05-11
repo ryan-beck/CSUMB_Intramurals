@@ -55,7 +55,8 @@ class GenerateScheduleForm extends Component {
         })
         .then(({data}) => {
             console.log(data);
-            this.props.handleFormSubmit();
+            localStorage.setItem('default', 1);
+            window.location.reload();
         });
     }
     

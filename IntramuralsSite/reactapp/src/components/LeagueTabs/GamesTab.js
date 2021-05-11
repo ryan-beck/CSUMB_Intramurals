@@ -20,9 +20,9 @@ class GamesTab extends Component {
 
         this.sortGamesByDate = this.sortGamesByDate.bind(this);
         this.getCurrWeek = this.getCurrWeek.bind(this);
-        this.handleGenerationFormSubmit = this.handleGenerationFormSubmit.bind(this);
         this.updateGameScoreState = this.updateGameScoreState.bind(this);
         this.submitGameScores = this.submitGameScores.bind(this);
+        this.cancelEdit = this.cancelEdit.bind(this);
     }
 
 
@@ -48,10 +48,6 @@ class GamesTab extends Component {
             return true;
         return !this.props.isAdminView;
         
-    }
-
-    handleGenerationFormSubmit () {
-        window.location.reload();
     }
 
     sortGamesByDate (games, fromPost) {
@@ -116,8 +112,14 @@ class GamesTab extends Component {
         })
         .then(({data}) => {
             // console.log(data);
+            localStorage.setItem('default', 1);
             window.location.reload();
         });
+    }
+
+    cancelEdit() {
+        localStorage.setItem('default', 1);
+        window.location.reload();
     }
 
 
@@ -132,7 +134,7 @@ class GamesTab extends Component {
                                 {(() => {
                                     if(this.props.isAdminView) {
                                         return (
-                                            <GenerateScheduleFormModal handleFormSubmit={this.handleGenerationFormSubmit} leagueId={this.state.leagueId}/>
+                                            <GenerateScheduleFormModal leagueId={this.state.leagueId}/>
                                         )
                                     }
                                 })()}   
@@ -143,7 +145,11 @@ class GamesTab extends Component {
                         if(this.props.isAdminView) {
                             return (
                                 <div> 
-                                    <button onClick={this.submitGameScores}>Save Edit</button>
+                                    <div className="gameButtonFormat">
+                                        <button className="scoreButtons saveButton" onClick={this.submitGameScores}>Save Edit</button>
+                                        <label className="buttonSpacing"></label>
+                                        <button className="scoreButtons cancelButton" onClick={this.cancelEdit}>Cancel Edit</button>
+                                    </div>
                                     {this.state.sortedGames.map((week, index) => (
                                         <div key={index}>
                                             {(() => {
@@ -230,7 +236,7 @@ class CollapsibleContent extends Component {
                                         <p>{this.convertDateString(game.start_time)}</p>
                                         <label className="team-name">{awayTeam.team_name}</label> 
                                         <input className="team-score" type="text" placeholder={this.props.games[this.props.weekIndex][index].away_score} onChange={e => this.props.update(this.props.weekIndex, index, false, e.target.value)}></input>
-                                        <br/>
+                                        <br/><hr/>
                                         <label className="team-name">{homeTeam.team_name} </label>
                                         <input className="team-score" type="text" placeholder={this.props.games[this.props.weekIndex][index].home_score} onChange={e => this.props.update(this.props.weekIndex, index, true, e.target.value)} ></input>
                                     </div>
@@ -241,7 +247,7 @@ class CollapsibleContent extends Component {
                                     <p>{this.convertDateString(game.start_time)}</p>
                                     <label className="team-name">{awayTeam.team_name}</label> 
                                     <label className="team-score">{game.away_score}</label>
-                                    <br/>
+                                    <br/><hr/>
                                     <label className="team-name">{homeTeam.team_name} </label>
                                     <label className="team-score">{game.home_score}</label>
                                 </div>

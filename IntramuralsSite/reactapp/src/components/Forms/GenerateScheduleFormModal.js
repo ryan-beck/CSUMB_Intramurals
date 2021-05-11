@@ -14,7 +14,6 @@ class GenerateScheduleFormModal extends Component {
 		};
 
 		this.setModalVisible = this.setModalVisible.bind(this);
-        this.handleFormSubmit = this.handleFormSubmit.bind(this);
 	}
 
 	setModalVisible (visible) {
@@ -23,10 +22,6 @@ class GenerateScheduleFormModal extends Component {
 	    }));
 	}
 
-    handleFormSubmit () {
-        this.setModalVisible(false);
-        this.props.handleFormSubmit();
-    }
 
 	render() {
 		const { modalVisible } = this.state;
@@ -40,7 +35,7 @@ class GenerateScheduleFormModal extends Component {
 				>
 					<View style={styles.centeredView}>
 			            <View style={styles.modalView}>
-			            	<GenerateScheduleForm handleFormSubmit={this.handleFormSubmit} leagueId={this.state.leagueId}/>
+			            	<GenerateScheduleForm leagueId={this.state.leagueId}/>
 			              	<Pressable
 			                	style={[styles.button, styles.buttonClose]}
 			                	onPress={() => this.setModalVisible(!modalVisible)}
