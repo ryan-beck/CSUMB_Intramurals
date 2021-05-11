@@ -308,7 +308,7 @@ def updateScores(request, leagueId):
 	for game in games:
 		if game['away_score'] and game['home_score']:
 			game_obj = Game.objects.get(id=game['id'])
-			first_entry = not game_obj.home_score and not game_obj.away_score
+			first_entry = not game_obj.home_score or not game_obj.away_score
 			prev_home = game_obj.home_score
 			prev_away = game_obj.away_score
 			game_obj.home_score = game['home_score']
