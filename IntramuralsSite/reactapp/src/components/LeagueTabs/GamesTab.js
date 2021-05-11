@@ -20,7 +20,6 @@ class GamesTab extends Component {
 
         this.sortGamesByDate = this.sortGamesByDate.bind(this);
         this.getCurrWeek = this.getCurrWeek.bind(this);
-        this.handleGenerationFormSubmit = this.handleGenerationFormSubmit.bind(this);
         this.updateGameScoreState = this.updateGameScoreState.bind(this);
         this.submitGameScores = this.submitGameScores.bind(this);
         this.cancelEdit = this.cancelEdit.bind(this);
@@ -32,7 +31,7 @@ class GamesTab extends Component {
         .then(res => res.json())
         .then((res) => {
             var data = this.sortGamesByDate(res);
-            let currWeek = this.getCurrWeek(data, false);
+            let currWeek = this.getCurrWeek(data);
         	this.setState({
         		sortedGames: [...data],
                 currWeek: currWeek,
@@ -49,13 +48,6 @@ class GamesTab extends Component {
             return true;
         return !this.props.isAdminView;
         
-    }
-
-    handleGenerationFormSubmit (games) {
-        let data = this.sortGamesByDate(games, true);
-        this.setState({
-            sortedGames: data,
-        })
     }
 
     sortGamesByDate (games, fromPost) {
@@ -142,7 +134,7 @@ class GamesTab extends Component {
                                 {(() => {
                                     if(this.props.isAdminView) {
                                         return (
-                                            <GenerateScheduleFormModal handleFormSubmit={this.handleGenerationFormSubmit} leagueId={this.state.leagueId}/>
+                                            <GenerateScheduleFormModal leagueId={this.state.leagueId}/>
                                         )
                                     }
                                 })()}   
@@ -210,20 +202,18 @@ class CollapsibleContent extends Component {
 
     }
 
-    // TODO: need to fix this
     convertDateString (str) {
-        // let time = fromPost ? str.split(" ")[1] : str.substring(0, str.length-1).split("T")[1];
-        // time = time.substring(0, time.length-3);
-        // let hour = time.split(":")[0];
-        // if(hour == 12)
-        //     return time + " P.M.";
-        // else if(hour < 12)
-        //     return time + " A.M.";
-        // else if(hour == 0) 
-        //     return "12" + time.substring(2) + " A.M.";
-        // else
-        //     return (hour%12) + time.substring(2) + " P.M.";
-        return str;
+        let time = str.substring(0, str.length-1).split("T")[1];
+        time = time.substring(0, time.length-3);
+        let hour = time.split(":")[0];
+        if(hour == 12)
+            return time + " P.M.";
+        else if(hour < 12)
+            return time + " A.M.";
+        else if(hour == 0) 
+            return "12" + time.substring(2) + " A.M.";
+        else
+            return (hour%12) + time.substring(2) + " P.M.";
     }
 
     render () {
