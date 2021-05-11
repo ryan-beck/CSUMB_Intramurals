@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 from pathlib import Path
 import os
+# import dj_database_url
+import django_on_heroku
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,7 +28,7 @@ SECRET_KEY = '!%9wwut$i*bma#u!!jyw@2_ig#s+(*@16r5d)9cvg$uv@%iz*s'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '0.0.0.0']
+ALLOWED_HOSTS = ['localhost', '0.0.0.0', 'https://csumb-intramurals.herokuapp.com/',]
 
 
 # Application definition
@@ -60,6 +62,7 @@ MIDDLEWARE = [
 CORS_ORIGIN_WHITELIST = (
   'http://localhost:3000', 
   'http://127.0.0.1:3000',
+  'https://csumb-intramurals.herokuapp.com',
 )
 
 CORS_ORIGIN_ALLOW_ALL = True
@@ -97,6 +100,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
+    # 'default': dj_database_url.config(default=os.getenv('DATABASE_URL'))
 }
 
 
@@ -145,3 +149,5 @@ STATICFILES_DIRS = [
 SESSION_SAVE_EVERY_REQUEST = True
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+
+django_on_heroku.settings(locals())
