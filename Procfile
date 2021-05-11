@@ -1,1 +1,1 @@
-web: gunicorn IntramuralsSite.wsgi
+web: gunicorn IntramuralsSite.wsgi:application
