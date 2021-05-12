@@ -98,20 +98,23 @@ WSGI_APPLICATION = 'IntramuralsSite.wsgi.application'
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': BASE_DIR / 'db.sqlite3',
-    # }
-    # 'default': dj_database_url.config(default=os.getenv('DATABASE_URL'))
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'df60cksif9vsj4',
-        'USER': 'ssyiwrorzeoyfe',
-        'PASSWORD': 'aeade012f3d39815838292ee152c4116e8f72c27ae8ddc74df446a696dd94a14',
-        'HOST': 'ec2-18-215-111-67.compute-1.amazonaws.com',
-        'PORT': '5432',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
+    # 'default': dj_database_url.config()
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.postgresql',
+    #     'NAME': 'df60cksif9vsj4',
+    #     'USER': 'ssyiwrorzeoyfe',
+    #     'PASSWORD': 'aeade012f3d39815838292ee152c4116e8f72c27ae8ddc74df446a696dd94a14',
+    #     'HOST': 'ec2-18-215-111-67.compute-1.amazonaws.com',
+    #     'PORT': '5432',
+    # }
 }
+
+db_from_env = dj_database_url.config(conn_max_age=600)
+DATABASES['default'].update(db_from_env)
 
 
 # Password validation
