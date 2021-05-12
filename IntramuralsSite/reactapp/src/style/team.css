@@ -55,7 +55,7 @@
 
 .captain-view {
     float: right;
-    padding-right: 35px;
+    padding-right: 20px;
 }
 
 .delete-team {
@@ -72,8 +72,30 @@
     border-bottom-style: hidden;
 }
 
+.delete-player {
+    border-radius: 20px;
+    font-size: 15px;
+    padding: 5px;
+    color: white;
+    font-weight: bolder;
+    background-color: #e50000;
+    float: right;
+
+    outline: none;
+    border-top-style: hidden;
+    border-right-style: hidden;
+    border-left-style: hidden;
+    border-bottom-style: hidden;
+}
+
 .record {
     float: right;
     padding-right: 40px;
     font-size: 18px;
+}
+
+.addPlayer {
+    float: right;
+    padding-right: 35px;
+    padding-bottom: 20px;
 }
