@@ -6,6 +6,8 @@ import { Card } from 'react-bootstrap';
 import "../style/team.css"
 import axios from "axios";
 
+import AddPlayerFormModal from '../components/Forms/AddPlayerFormModal';
+
 
 class TeamPage extends Component {
 	constructor(props) {
@@ -17,13 +19,13 @@ class TeamPage extends Component {
     	captainId: this.props.props.match.params.captainId,
     	players: [],
     	user: props.user,
-		isAdminView: false,
 		sportName:"",
 		leagueName: "",
 		gamesArray: [],
 		leagueId: null,
 		sportId: null,
-		team: {}
+		team: {},
+		playerCapacity: 0
     };
 
     this.sortPlayers = this.sortPlayers.bind(this);
@@ -54,7 +56,8 @@ class TeamPage extends Component {
 				.then((res) => {
 					this.setState({
 						leagueName: res.league_name,
-						sportId: res.sport
+						sportId: res.sport,
+						playerCapacity: res.player_limit
 					});
 					
 					fetch("http://localhost:8000/api/getSportById/"+res.sport)
@@ -108,15 +111,24 @@ class TeamPage extends Component {
 			<div>
 				<label className="record"><b>Wins:</b> {this.state.team.wins}<br/> <b>Losses:</b> {this.state.team.losses}<br/> <b>Ties:</b> {this.state.team.ties}</label>
 				<h1 className="primaryTitle"> {this.props.props.match.params.team} </h1>
-				<label className="secondaryTitle"> {this.state.sportName} : {this.state.leagueName} </label>
+				<label className="secondaryTitle"> {this.state.sportName}: {this.state.leagueName} </label>
 				</div>
+				{(() => {
+					if(this.state.user.is_admin) {
+						return (
+							<div className="addPlayer">
+								<AddPlayerFormModal leagueId={this.state.leagueId} teamId={this.state.teamId} teamFull={this.state.playerCapacity == this.state.players.length}/>
+							</div>
+						)
+					}
+				})()}
 				{(() => {
 					if (this.state.user.id == this.state.captainId) {
 						return (
 							<Fragment>
-								<span className="captain-view">
+								<div className="captain-view">
 								<input name="deleteButton" className="delete-team" type="button" value="Delete This Team" onClick={this.deleteHandler}/>
-								</span>
+								</div>
 								<br/><br/>
 							</Fragment>
 						)

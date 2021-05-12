@@ -125,6 +125,8 @@ def getPosts(request):
 
 @api_view(['GET'])
 def getAccountByEmail(request, email):
+	if not Account.objects.filter(email=email):
+		return JsonResponse({"status":"DoesNotExist"})
 	account = Account.objects.get(email=email)
 	serializer = AccountSerializer(instance=account)
 	return Response(serializer.data)
@@ -453,3 +455,12 @@ def deleteTeam(request, teamId):
 	team = Team.objects.get(id=teamId)
 	team.delete()
 	return HttpResponse('deleted')
+
+@api_view(['PUT'])
+def addPlayer(request, teamId):
+	team = Team.objects.get(id=teamId)
+	serializer = TeamSerializer(team, data=request.data)
+	if serializer.is_valid():
+		serializer.save()
+
+	return HttpResponse('updated')
