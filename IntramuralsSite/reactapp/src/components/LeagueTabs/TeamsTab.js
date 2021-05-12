@@ -32,6 +32,7 @@ class TeamsTab extends Component {
 	this.handleLeaveTeam = this.handleLeaveTeam.bind(this);
 	this.hasLeagueBegun = this.hasLeagueBegun.bind(this);
 	this.deleteHandler = this.deleteHandler.bind(this);
+	this.handleJoinWithPassword = this.handleJoinWithPassword(this);
 
   }
 
@@ -85,6 +86,10 @@ class TeamsTab extends Component {
 			}
 			
 		}
+	}
+
+	handleJoinWithPassword(event) {
+		
 	}
 
 	checkTeam(teamID) {
@@ -186,11 +191,11 @@ class TeamsTab extends Component {
 								if(this.state.sportIsActive && !this.hasLeagueBegun()) {
 									if (this.checkTeam(team.id)) {
 										return (
-										<div className="closedTag">  <Button className="joinButton" size="sm" onClick={this.handleLeaveTeam} value={team.id} > Leave? </Button>   </div>
+										<div className="closedTag">  <Button className="joinButton" size="sm" onClick={this.handleLeaveTeam} value={team.id}> Leave?</Button>   </div>
 										)
 									} else if(!team.is_open) {
 										return(
-										<div className="closedTag"> <i> Closed </i> </div>
+										<div className="closedTag"> <Button  size="sm" onClick={this.handleJoinWithPassword} value={team.id} > Join With Password </Button></div>
 										)
 									} else  {
 										return (
