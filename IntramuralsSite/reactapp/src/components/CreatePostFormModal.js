@@ -1,23 +1,20 @@
 import React, { Component } from "react";
 import { Alert, Modal, Text, Pressable, View, StyleSheet } from "react-native";
-import CreateTeamForm from './CreateTeamForm';
+import CreatePostForm from './CreatePostForm';
+import edit from '../assets/pencil.png';
 
-
-import '../../style/leagueForm.css'
-
-class CreateTeamFormModal extends Component {
+class CreatePostFormModal extends Component {
 	constructor(props) {
 	    super(props);
 
 		this.state = {
 			modalVisible: false,
-            leagueId: props.leagueId,
-            user: props.user,
-            playerExists: props.playerExists
+            userId: props.userId,
+            post: props.post,
+            isCreating: props.create
 		};
 
 		this.setModalVisible = this.setModalVisible.bind(this);
-        this.handleFormSubmit = this.handleFormSubmit.bind(this);
 	}
 
 	setModalVisible (visible) {
@@ -26,10 +23,6 @@ class CreateTeamFormModal extends Component {
 	    }));
 	}
 
-    handleFormSubmit () {
-        this.setModalVisible(false);
-    }
-
 	render() {
 		const { modalVisible } = this.state;
 		return (
@@ -37,14 +30,17 @@ class CreateTeamFormModal extends Component {
 				<Modal
 					animationType="slide"
 					visible={ modalVisible }
+					onRequestClose={() => {
+						Alert.alert("Modal is closed.");
+						this.setModalVisible(!modalVisible);
+					}}
 					presentationStyle="formSheet"
 					transparent={true}
 				>
 					<View style={styles.centeredView}>
 			            <View style={styles.modalView}>
-			            	<CreateTeamForm handleFormSubmit={this.handleFormSubmit} leagueId={this.state.leagueId} user={this.state.user} playerExists={this.props.playerExists}/>
+			            	<CreatePostForm userId={this.state.userId} post={this.state.post} create={this.state.isCreating}/>
 			              	<Pressable
-			                	style={[styles.button, styles.buttonClose]}
 			                	onPress={() => this.setModalVisible(!modalVisible)}
 			              	>
 			                	<Text style={styles.textStyle}>Cancel</Text>
@@ -53,14 +49,26 @@ class CreateTeamFormModal extends Component {
 			        </View>
 		        </Modal>
                 <span>
-                    <Pressable
+                    {this.state.isCreating ? (
+                        <Pressable
+                            style={styles.addButton}
+                            onPress={() => this.setModalVisible(true)}
+                        >
+                            
+                                <Text style={styles.textStyle}>Add a Post</Text>
+                        </Pressable>
+                    )
+                    : (
+                        <Pressable
                             style={styles.editButton}
                             onPress={() => this.setModalVisible(true)}
                         >
                             
-                            <Text style={styles.textStyle}>Add New Team</Text>
-                    </Pressable>
-                </span>
+                                <Text style={styles.textStyle}>Edit Post</Text>
+                        </Pressable>
+                    )}
+                    
+                </span> 
 		    </View>
 		);
 	}
@@ -81,35 +89,27 @@ const styles = StyleSheet.create({
         padding: 35,
         alignItems: "center"
     },
-    button: {
-        borderRadius: 5,
-        padding: 10,
-    },
-    buttonOpen: {
-        backgroundColor: "#F194FF",
-    },
-    textStyle: {
-        color: "white",
-        fontWeight: "bold",
-        textAlign: "center"
-    },
-    modalText: {
-        marginBottom: 15,
-        textAlign: "center",
-        color: "white",
-        fontWeight: "bolder"
-    },
     textStyle: {
         color: "white",
         fontWeight: "bold",
         textAlign: "center",
         fontSize: 15
     },
+    addButton: {
+        borderRadius: 20,
+        padding: 10,
+        elevation: 2,
+        float:"left",
+        backgroundColor: "#00688B",
+        width: 500
+    },
     editButton: {
         borderRadius: 20,
-        padding: 12,
+        padding: 10,
+        elevation: 2,
+        float:"right",
         backgroundColor: "#00688B",
     }
 });
 
-export default CreateTeamFormModal;
+export default CreatePostFormModal;

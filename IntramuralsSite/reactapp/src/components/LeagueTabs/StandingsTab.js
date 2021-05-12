@@ -13,7 +13,6 @@ class StandingsTab extends Component {
     }
 
     render() {
-        console.log(this.state.teamsArray)
         return (
             <div>
                 {(() => {

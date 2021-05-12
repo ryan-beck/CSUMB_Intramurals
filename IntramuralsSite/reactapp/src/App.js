@@ -11,6 +11,7 @@ import MainPage from "./pages";
 import SportsPage from "./pages/sports";
 import LeaguePage from "./pages/leagues";
 import TeamPage from "./pages/team";
+import ProfilePage from "./pages/profile";
 import logo from "./otterLogoTransparent.png"
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "./App.css";
@@ -51,16 +52,16 @@ class LoginPage extends Component {
     render() {
         return (
         	<Fragment>
-			<div class="split left">
-				<div class="centered">
+			<div className="split left">
+				<div className="centered">
 					<img className="title-image" src={logo} alt="LoginLogo"/>
 					<label className="title">CSUMB Intramurals</label>
 					<p>A simple and lightweight application for organizing intramural sports at CSUMB.</p>
 				</div>
 			</div>
 
-			<div class="split right">
-				<div class="centered">
+			<div className="split right">
+				<div className="centered">
 					<label className="login-text">Use Your CSUMB Account to Login!</label>
 					<br/><br/><br/>
 					<div id="loginButton">Sign in with Google</div>
@@ -154,6 +155,7 @@ class App extends Component {
 			    <Switch>
 				    <Route exact path="/" render={() => this.ifUserSignedIn(MainPage)}/>
 				    <Route exact path="/sports" render={() => this.ifUserSignedIn(SportsPage)}/>
+					<Route exact path="/profile" render={() => this.ifUserSignedIn(ProfilePage)}/>
 					<Route path="/leagues/:sport/:league/:id/:sportId" render={props => this.ifUserSignedIn(LeaguePage,{...props})}/>
 					<Route path="/team/:team/:id/:captainId" render={props => this.ifUserSignedIn(TeamPage,{...props})}/>
 			    </Switch>
