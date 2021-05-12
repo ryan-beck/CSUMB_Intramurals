@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',
+    'whitenoise.runserver_nostatic',
 ]
 
 MIDDLEWARE = [
@@ -53,6 +54,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 # CORS_ALLOWED_ORIGINS = [
@@ -103,10 +105,10 @@ DATABASES = {
     # 'default': dj_database_url.config(default=os.getenv('DATABASE_URL'))
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'd64rlgu7m4d4up',
-        'USER': 'jpvwfithikookv',
-        'PASSWORD': 'fb5173c4ef10dd747ea00e65d6cf97b1d8979e74876334fa2d7094b9122ace8d',
-        'HOST': 'ec2-3-215-57-87.compute-1.amazonaws.com',
+        'NAME': 'df60cksif9vsj4',
+        'USER': 'ssyiwrorzeoyfe',
+        'PASSWORD': 'aeade012f3d39815838292ee152c4116e8f72c27ae8ddc74df446a696dd94a14',
+        'HOST': 'ec2-18-215-111-67.compute-1.amazonaws.com',
         'PORT': '5432',
     }
 }
