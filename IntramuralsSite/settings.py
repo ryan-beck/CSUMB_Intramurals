@@ -96,11 +96,19 @@ WSGI_APPLICATION = 'IntramuralsSite.wsgi.application'
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': BASE_DIR / 'db.sqlite3',
+    # }
     # 'default': dj_database_url.config(default=os.getenv('DATABASE_URL'))
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'd64rlgu7m4d4up',
+        'USER': '    jpvwfithikookv',
+        'PASSWORD': 'fb5173c4ef10dd747ea00e65d6cf97b1d8979e74876334fa2d7094b9122ace8d',
+        'HOST': 'ec2-3-215-57-87.compute-1.amazonaws.com',
+        'PORT': '5432',
+    }
 }
 
 

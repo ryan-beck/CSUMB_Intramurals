@@ -26,14 +26,14 @@ class MainPage extends Component {
 	}
 
     componentDidMount() {
-    	fetch('http://localhost:8000/api/getEventsByUser/'+this.state.user.id)
+    	fetch('http://csumb-intramurals.herokuapp.com/api/getEventsByUser/'+this.state.user.id)
         .then(res => res.json())
         .then((res) => {
         	this.setState({
         		events: res
         	});
         });
-        fetch('http://localhost:8000/api/getPosts/')
+        fetch('http://csumb-intramurals.herokuapp.com/api/getPosts/')
         .then(res => res.json())
         .then((res) => {
 			this.setState({
