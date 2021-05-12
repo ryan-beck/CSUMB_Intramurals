@@ -7,8 +7,8 @@ import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 
-import MySports from "../components/ProfileMySports";
-import ProfilePastSports from "../components/ProfilePastSports";
+import CurrentProfile from "../components/ProfileTabs/CurrentProfile";
+import PastProfile from "../components/ProfileTabs/PastProfile";
 import "../style/profile.css"
 
 
@@ -47,36 +47,25 @@ class ProfilePage extends Component {
       teamsArray: [],
       UpcomingGames: [],
       user: props.user,
-      eventsArray: [],
+      outcomes: {},
     }
 
     this.handleTabChange = this.handleTabChange.bind(this)
   }
 
-  // componentWillMount() {
-  //   fetch("http://localhost:8000/api/getTeamsByUser/"+this.state.user.id).then(res => res.json()).then(
-  //     (result) => {
-  //       this.setState({
-  //         teamsArray: result
-  //       });
-  //       console.log(this.state.teamsArray)
-  //     },
-  //     (error) => {
-  //       console.log("Error in database call")
-  //     }
-  //   )
-  //   fetch("http://localhost:8000/api/getGamesByUser/"+this.state.user.id).then(res => res.json()).then(
-  //     (result) => {
-  //       this.setState({
-  //         eventsArray: result
-  //       });
-  //       console.log(this.state.eventsArray)
-  //     },
-  //     (error) => {
-  //       console.log("Error in database call")
-  //     }
-  //   )
-  // }
+  componentWillMount() {
+    fetch("http://localhost:8000/api/getWinLossByUser/"+this.state.user.id).then(res => res.json()).then(
+      (result) => {
+        this.setState({
+          outcomes: result
+        });
+        console.log(this.state.outcomes)
+      },
+      (error) => {
+        console.log("Error in database call")
+      }
+    )
+  }
 
   handleTabChange (event, newValue) {
     this.setState({
@@ -90,6 +79,10 @@ class ProfilePage extends Component {
     const { classes } = this.props;
 		return (
       <div class = "title">
+        <div>
+          <h1>{this.state.user.display_name}</h1>
+          <h6><i>Overall Record: {this.state.outcomes.wins} - {this.state.outcomes.losses} - {this.state.outcomes.ties}</i></h6>
+        </div>
         <Paper className={classes.root}>
           <Tabs
             value={this.state.value}
@@ -102,10 +95,10 @@ class ProfilePage extends Component {
             <Tab label="Past Teams" />
           </Tabs>
           <TabPanel value={this.state.value} index={0}>
-            <MySports  user = {this.state.user} ></MySports>
+            <CurrentProfile  user = {this.state.user} ></CurrentProfile>
           </TabPanel>
           <TabPanel value={this.state.value} index={1}>
-          <ProfilePastSports user = {this.state.user} ></ProfilePastSports>
+          <PastProfile user = {this.state.user} ></PastProfile>
           </TabPanel>
         </Paper>
       </div>

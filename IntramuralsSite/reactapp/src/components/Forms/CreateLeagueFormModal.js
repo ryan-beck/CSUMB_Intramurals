@@ -1,16 +1,17 @@
 import React, { Component } from "react";
 import { Alert, Modal, Text, Pressable, View, StyleSheet } from "react-native";
-import CreateSportForm from './CreateSportForm';
+import CreateLeagueForm from './CreateLeagueForm';
 
+import '../../style/leagueForm.css'
 
-import '../style/leagueForm.css'
-
-class CreateSportFormModal extends Component {
+class CreateLeagueFormModal extends Component {
 	constructor(props) {
 	    super(props);
 
 		this.state = {
 			modalVisible: false,
+            sportId: props.sportId,
+            sportName: props.sportName
 		};
 
 		this.setModalVisible = this.setModalVisible.bind(this);
@@ -23,9 +24,9 @@ class CreateSportFormModal extends Component {
 	    }));
 	}
 
-    handleFormSubmit (newSport) {
+    handleFormSubmit (newLeague) {
         this.setModalVisible(false);
-        this.props.handleFormSubmit(newSport);
+        this.props.handleFormSubmit(newLeague);
     }
 
 	render() {
@@ -40,7 +41,8 @@ class CreateSportFormModal extends Component {
 				>
 					<View style={styles.centeredView}>
 			            <View style={styles.modalView}>
-			            	<CreateSportForm handleFormSubmit={this.handleFormSubmit}/>
+			            	<CreateLeagueForm sportId={this.state.sportId} sportName={this.state.sportName} 
+                            handleFormSubmit={this.handleFormSubmit}/>
 			              	<Pressable
 			                	style={[styles.button, styles.buttonClose]}
 			                	onPress={() => this.setModalVisible(!modalVisible)}
@@ -50,14 +52,14 @@ class CreateSportFormModal extends Component {
 			            </View>
 			        </View>
 		        </Modal>
-                <span class="editSpan">
+                <span className="addLeague">
                     <Pressable
-                            style={styles.editButton}
-                            onPress={() => this.setModalVisible(true)}
-                        >
-                            
-                                <Text style={styles.textStyle}>Add New Sport</Text>
-                        </Pressable>
+                        style={styles.editButton}
+                        onPress={() => this.setModalVisible(true)}
+                    >
+                        
+                            <Text style={styles.addLeagueText}>Add League</Text>
+                    </Pressable>
                 </span>
 		        
 		    </View>
@@ -101,7 +103,7 @@ const styles = StyleSheet.create({
         color: "white",
         fontWeight: "bolder"
     },
-    textStyle: {
+    addLeagueText: {
         color: "white",
         fontWeight: "bold",
         textAlign: "center",
@@ -109,11 +111,11 @@ const styles = StyleSheet.create({
     },
     editButton: {
         borderRadius: 20,
-        padding: 12,
+        padding: 10,
         elevation: 2,
         float:"right",
         backgroundColor: "#00688B",
     }
 });
 
-export default CreateSportFormModal;
+export default CreateLeagueFormModal;

@@ -54,6 +54,7 @@ class ProfilePastSports extends Component {
 										<th>vs</th>
 										<th>Time of Game</th>
                                         <th>Outcome</th>
+										<th>Score</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -63,6 +64,7 @@ class ProfilePastSports extends Component {
 												<td>{game.vs} </td>
 												<td>{game.gameTime}</td>
                                                 <td>{game.outcome}</td>
+												<td>{game.home_score} - {game.away_score}</td>
 											</tr>
 										
 									))}

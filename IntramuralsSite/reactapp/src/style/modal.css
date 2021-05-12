@@ -31,6 +31,10 @@
   	border-bottom-style: hidden;
 }
 
+.checkboxSpace{
+	padding-right: 5px;
+}
+
 .left {
     float: left;
 }   
@@ -64,4 +68,8 @@ input[type=file]::file-selector-button {
 	background-color: white;
 	font-weight: bold;
 	color: #00688B;
+}
+
+.dayPicker {
+	padding-right: 15px;
 }
