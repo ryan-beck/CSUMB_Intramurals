@@ -7,7 +7,8 @@ import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 
-import MySports from "../components/ProfileMySports";
+import CurrentProfile from "../components/ProfileTabs/CurrentProfile";
+import PastProfile from "../components/ProfileTabs/PastProfile";
 import "../style/profile.css"
 
 
@@ -46,9 +47,24 @@ class ProfilePage extends Component {
       teamsArray: [],
       UpcomingGames: [],
       user: props.user,
+      outcomes: {},
     }
 
     this.handleTabChange = this.handleTabChange.bind(this)
+  }
+
+  componentWillMount() {
+    fetch("http://localhost:8000/api/getWinLossByUser/"+this.state.user.id).then(res => res.json()).then(
+      (result) => {
+        this.setState({
+          outcomes: result
+        });
+        console.log(this.state.outcomes)
+      },
+      (error) => {
+        console.log("Error in database call")
+      }
+    )
   }
 
   handleTabChange (event, newValue) {
@@ -57,24 +73,16 @@ class ProfilePage extends Component {
     })
   };
 
-	componentDidMount() {
-        fetch("http://localhost:8000/api/getTeamsByUser/"+this.state.user.id).then(res => res.json()).then(
-			(result) => {
-				this.setState({
-					teamsArray: result
-				});
-				console.log(this.state.teamsArray)
-			},
-			(error) => {
-				console.log("Error in database call")
-			}
-		)
-	}
+	
 
   render() {
     const { classes } = this.props;
 		return (
       <div class = "title">
+        <div>
+          <h1>{this.state.user.display_name}</h1>
+          <h6><i>Overall Record: {this.state.outcomes.wins} - {this.state.outcomes.losses} - {this.state.outcomes.ties}</i></h6>
+        </div>
         <Paper className={classes.root}>
           <Tabs
             value={this.state.value}
@@ -83,14 +91,14 @@ class ProfilePage extends Component {
             textColor="primary"
             centered
           >
-            <Tab label="My Teams" />
-            <Tab label="My Games" />
+            <Tab label="Current Teams" />
+            <Tab label="Past Teams" />
           </Tabs>
           <TabPanel value={this.state.value} index={0}>
-            <MySports teamsArray={this.state.teamsArray} user = {this.state.user} ></MySports>
+            <CurrentProfile  user = {this.state.user} ></CurrentProfile>
           </TabPanel>
           <TabPanel value={this.state.value} index={1}>
-          insert games tab here
+          <PastProfile user = {this.state.user} ></PastProfile>
           </TabPanel>
         </Paper>
       </div>

@@ -11,10 +11,8 @@ import MainPage from "./pages";
 import SportsPage from "./pages/sports";
 import LeaguePage from "./pages/leagues";
 import TeamPage from "./pages/team";
+import ProfilePage from "./pages/profile";
 import logo from "./otterLogoTransparent.png"
-import CreateSportForm from "./components/CreateSportForm";
-import ProfilePage from "./pages/profile"
-import CreateLeagueFormModal from "./components/CreateLeagueFormModal";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "./App.css";
 
@@ -157,8 +155,7 @@ class App extends Component {
 			    <Switch>
 				    <Route exact path="/" render={() => this.ifUserSignedIn(MainPage)}/>
 				    <Route exact path="/sports" render={() => this.ifUserSignedIn(SportsPage)}/>
-					<Route exact path="/admin" render={() => this.ifUserSignedIn(CreateSportForm)} />
-					<Route exact path="/profile" render={() => this.ifUserSignedIn(ProfilePage)} />
+					<Route exact path="/profile" render={() => this.ifUserSignedIn(ProfilePage)}/>
 					<Route path="/leagues/:sport/:league/:id/:sportId" render={props => this.ifUserSignedIn(LeaguePage,{...props})}/>
 					<Route path="/team/:team/:id/:captainId" render={props => this.ifUserSignedIn(TeamPage,{...props})}/>
 			    </Switch>
