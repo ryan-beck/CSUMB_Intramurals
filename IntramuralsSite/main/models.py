@@ -47,6 +47,7 @@ class Team(models.Model):
     ties = models.IntegerField(default=0)
     is_open = models.BooleanField()
     captain = models.ForeignKey(Account, on_delete=models.CASCADE, related_name="Captain", null=True)
+    password = models.TextField(max_length=16, null=True, blank=True)
     def __str__(self):
         return self.team_name + " (" + str(self.id) + ")"
 
