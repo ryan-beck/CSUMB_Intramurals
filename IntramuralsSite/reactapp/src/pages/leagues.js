@@ -29,7 +29,8 @@ class LeaguePage extends Component {
 		isAdminView: false,
 		sportIsActive: null,
 		league: {},
-		tabIndex: parseInt(localStorage.getItem('default')) || 0
+		tabIndex: parseInt(localStorage.getItem('default')) || 0,
+		playerExists: false
     };
 
     this.adminViewSwitch = this.adminViewSwitch.bind(this);
@@ -47,6 +48,15 @@ class LeaguePage extends Component {
 		this.setState({
 		  teamsArray: result,
 		});
+
+		for(let i = 0; i < result.length; i++) {
+			if(result[i].players.includes(this.state.user.id)) {
+				this.setState({
+				  playerExists: true,
+				});
+				break;
+			}
+	    }
 	  }
 	)
 
@@ -65,7 +75,6 @@ class LeaguePage extends Component {
 				league: res
 			});
         });
-
   }
 
 	adminViewSwitch() {
@@ -89,7 +98,7 @@ class LeaguePage extends Component {
 					if (this.state.sportIsActive && !this.hasLeagueBegun() || this.state.isAdminView) {
 						return (
 							<span className="editSpan">
-								<CreateTeamFormModal user={this.state.user} leagueId={this.props.props.match.params.id}/> 
+								<CreateTeamFormModal user={this.state.user} leagueId={this.props.props.match.params.id} playerExists={this.state.playerExists}/> 
 							</span>
 						)
 					}

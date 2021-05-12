@@ -3,10 +3,18 @@
 	font-family: arial, sans-serif;
 }
 
-td, th {
+th {
   border: 1px solid #dddddd;
   text-align: left;
   padding: 8px;
+  font-size: 20px;
+}
+
+td {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+  font-size: 15px;
 }
 
 tr:nth-child(even) {
