@@ -62,7 +62,7 @@ class AddPlayerForm extends Component {
 
         axios({
             method:'put', 
-            url: 'http://localhost:8000/api/addPlayer/'+this.state.teamId+'/', 
+            url: 'http://localhost:8000/api/editPlayers/'+this.state.teamId+'/', 
             data: teamData
         })
         .then(({data}) => {

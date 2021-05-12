@@ -29,6 +29,6 @@ urlpatterns = [
     path('getGamesByTeam/<str:teamId>/', views.getGamesByTeam, name='getGamesByTeam'),
     path('deleteTeam/<str:teamId>/', views.deleteTeam, name='deleteTeam'),
     path('updateScores/<str:leagueId>', views.updateScores, name='updateScores'),
-    path('addPlayer/<str:teamId>/', views.addPlayer, name='addPlayer'),
+    path('editPlayers/<str:teamId>/', views.editPlayers, name='editPlayers'),
 
 ]

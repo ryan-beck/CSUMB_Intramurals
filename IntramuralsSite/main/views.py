@@ -457,7 +457,7 @@ def deleteTeam(request, teamId):
 	return HttpResponse('deleted')
 
 @api_view(['PUT'])
-def addPlayer(request, teamId):
+def editPlayers(request, teamId):
 	team = Team.objects.get(id=teamId)
 	serializer = TeamSerializer(team, data=request.data)
 	if serializer.is_valid():

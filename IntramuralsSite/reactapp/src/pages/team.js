@@ -30,6 +30,7 @@ class TeamPage extends Component {
 
     this.sortPlayers = this.sortPlayers.bind(this);
     this.deleteHandler = this.deleteHandler.bind(this);
+    this.deletePlayerHandler = this.deletePlayerHandler.bind(this);
   }
 
   componentDidMount() {
@@ -103,7 +104,32 @@ class TeamPage extends Component {
     .then(({data}) => {
         window.location = ('/leagues/'+ this.state.sportName+'/'+this.state.leagueName+'/'+this.state.leagueId+'/'+this.state.sportId);
     });
-}
+	}
+
+	deletePlayerHandler(playerId) {
+		for(let i = 0; i < this.state.team.players.length; i++) {
+			if(this.state.team.players[i] == playerId) {
+				this.state.team.players.splice(i,1);
+			}
+		}
+
+		let teamData = {
+            team_name: this.state.team.team_name,
+            league: this.state.team.league,
+            players: this.state.team.players,
+            is_open: this.state.team.is_open,
+            captain: this.state.team.captain
+        } 
+
+        axios({
+            method:'put', 
+            url: 'http://localhost:8000/api/editPlayers/'+this.state.teamId+'/', 
+            data: teamData
+        })
+        .then(({data}) => {
+            window.location.reload();
+        });
+	}
 
 	render() {
 		return (
@@ -142,20 +168,42 @@ class TeamPage extends Component {
 							{this.state.players.map((player, index) => (
 								  <div key={index}>
 									{(() => {
-									if (player.id == this.state.captainId) {
-										return (
-											<div>
-												<Card.Title><img className="profile_pic" src={player.photo_url}/>{player.display_name}</Card.Title>
-												<Card.Subtitle className="mb-2 text-muted tester">Captain</Card.Subtitle>
-												<hr/>
-											</div>
-										)
-									} else {
-										return (
-											<Card.Text className="player_cards">
-												<img className="profile_pic" src={player.photo_url}/>{player.display_name}</Card.Text>
-										)
-									}
+										if(this.state.user.is_admin || this.state.user.id == this.state.captainId) {
+											if (player.id == this.state.captainId) {
+												return (
+													<div>
+														<Card.Title><img className="profile_pic" src={player.photo_url}/>{player.display_name}</Card.Title>
+														<Card.Subtitle className="mb-2 text-muted tester">Captain</Card.Subtitle>
+														<hr/>
+													</div>
+												)
+											} else {
+												return (
+													<Card.Text className="player_cards">
+														<img className="profile_pic" src={player.photo_url}/>
+														{player.display_name}
+														<input name="deletePlayerButton" className="delete-player" type="button" value="Remove" onClick={()=>{this.deletePlayerHandler(player.id)}}/>
+													</Card.Text>
+												)
+											}
+										} else {
+											if (player.id == this.state.captainId) {
+												return (
+													<div>
+														<Card.Title><img className="profile_pic" src={player.photo_url}/>{player.display_name}</Card.Title>
+														<Card.Subtitle className="mb-2 text-muted tester">Captain</Card.Subtitle>
+														<hr/>
+													</div>
+												)
+											} else {
+												return (
+													<Card.Text className="player_cards">
+														<img className="profile_pic" src={player.photo_url}/>
+														{player.display_name}
+													</Card.Text>
+												)
+											}
+										}
 									})()}
 								  </div>
 								))}
