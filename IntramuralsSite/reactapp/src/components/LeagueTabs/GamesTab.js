@@ -14,12 +14,16 @@ class GamesTab extends Component {
             leagueId: props.leagueId,
             teamsArray : this.props.teamsArray, 
             sortedGames: [],
-            currWeek: 0
+            currWeek: 0, 
+            isEditing: false
         };
 
         this.sortGamesByDate = this.sortGamesByDate.bind(this);
         this.getCurrWeek = this.getCurrWeek.bind(this);
-        this.handleGenerationFormSubmit = this.handleGenerationFormSubmit.bind(this);
+        this.updateGameScoreState = this.updateGameScoreState.bind(this);
+        this.submitGameScores = this.submitGameScores.bind(this);
+        this.cancelEdit = this.cancelEdit.bind(this);
+        this.formatCollapsibleDate = this.formatCollapsibleDate.bind(this);
     }
 
 
@@ -27,19 +31,24 @@ class GamesTab extends Component {
         fetch('http://localhost:8000/api/getEventsByLeague/'+this.state.leagueId)
         .then(res => res.json())
         .then((res) => {
-            let sortedGames = this.sortGamesByDate(res);
-            let currWeek = this.getCurrWeek(sortedGames, false);
+            var data = this.sortGamesByDate(res);
+            let currWeek = this.getCurrWeek(data);
         	this.setState({
-        		sortedGames: sortedGames,
-                currWeek: currWeek
+        		sortedGames: [...data],
+                currWeek: currWeek,
         	});
         });
     }
 
-    handleGenerationFormSubmit (games) {
-        this.setState({
-            sortedGames: this.sortGamesByDate(games, true)
-        })
+    shouldComponentUpdate(nextProps, nexState) {
+        if(this.props.isAdminView && !nextProps.isAdminView && this.state.isEditing) {
+            alert("Error: scores were not submitted");
+            window.location.reload();
+        }
+        if(this.props.isAdminView != nextProps.isAdminView)
+            return true;
+        return !this.props.isAdminView;
+        
     }
 
     sortGamesByDate (games, fromPost) {
@@ -48,7 +57,7 @@ class GamesTab extends Component {
         let res = {};
         games.forEach(element => {
             let date = fromPost ? element.start_time.split(" ")[0]: element.start_time.split("T")[0];
-            console.log("date: " + date);
+
             if(!res[date])
                 res[date] = [element];
             else
@@ -81,10 +90,48 @@ class GamesTab extends Component {
         return i;
     }
 
+    updateGameScoreState (week, game, isHomeScore, score) {
+        this.setState({
+            isEditing: true
+        });
+        const games = [...this.state.sortedGames];
+        if(isHomeScore)
+            games[week][game].home_score = score;
+        else
+            games[week][game].away_score = score;
+        
+        
+        console.log(this.state.sortedGames[week][game]);
+        
+    }
+
+    submitGameScores() {
+        axios({
+            method:'put', 
+            url: 'http://localhost:8000/api/updateScores/' + this.state.leagueId, 
+            data: [].concat(...this.state.sortedGames)
+        })
+        .then(({data}) => {
+            // console.log(data);
+            localStorage.setItem('default', 1);
+            window.location.reload();
+        });
+    }
+
+    cancelEdit() {
+        localStorage.setItem('default', 1);
+        window.location.reload();
+    }
+
+    formatCollapsibleDate(date) {
+        var parts =String(date).split('-');
+        return parts[1]+'-'+parts[2]+'-'+parts[0]
+    }
+
 
     render() {
         return (
-            <div>
+            <div className="bottomSpacing">
                 {(() => {
                     if(this.state.sortedGames.length == 0){
                         return (
@@ -93,7 +140,7 @@ class GamesTab extends Component {
                                 {(() => {
                                     if(this.props.isAdminView) {
                                         return (
-                                            <GenerateScheduleFormModal handleFormSubmit={this.handleGenerationFormSubmit} leagueId={this.state.leagueId}/>
+                                            <GenerateScheduleFormModal leagueId={this.state.leagueId}/>
                                         )
                                     }
                                 })()}   
@@ -101,15 +148,40 @@ class GamesTab extends Component {
                         )
                     }
                     else {
+                        if(this.props.isAdminView) {
+                            return (
+                                <div> 
+                                    <div className="gameButtonFormat">
+                                        <button className="scoreButtons saveButton" onClick={this.submitGameScores}>Save Edit</button>
+                                        <label className="buttonSpacing"></label>
+                                        <button className="scoreButtons cancelButton" onClick={this.cancelEdit}>Cancel Edit</button>
+                                    </div>
+                                    {this.state.sortedGames.map((week, index) => (
+                                        <div key={index}>
+                                            {(() => {
+                                                let open = this.state.currWeek == index ? true : false;
+                                                let date = this.formatCollapsibleDate(week[0].start_time.split("T")[0])
+                                                return (
+                                                    <Collapsible trigger={date} open={open}>
+                                                        <CollapsibleContent games={this.state.sortedGames} weekIndex={index} teamsArray={this.state.teamsArray} isAdminView={this.props.isAdminView} update={this.updateGameScoreState}/>
+                                                    </Collapsible>
+                                                )
+                                            })()}
+                                        </div>
+                                    ))}
+                                </div>
+                            )
+                        }
                         return (
                             <div> 
                                 {this.state.sortedGames.map((week, index) => (
                                 <div key={index}>
                                     {(() => {
                                         let open = this.state.currWeek == index ? true : false;
+                                        let date = this.formatCollapsibleDate(week[0].start_time.split("T")[0])
                                         return (
-                                            <Collapsible trigger={week[0].start_time.split("T")[0]} open={open}>
-                                                <CollapsibleContent games={week} teamsArray={this.state.teamsArray}/>
+                                            <Collapsible trigger={date} open={open}>
+                                                <CollapsibleContent games={this.state.sortedGames} weekIndex={index} teamsArray={this.state.teamsArray} isAdminView={this.props.isAdminView} update={this.updateGameScoreState}/>
                                             </Collapsible>
                                         )
                                     })()}
@@ -131,7 +203,6 @@ class CollapsibleContent extends Component {
         super(props);
 
         this.state = {
-            games : props.games,
             teamsArray : props.teamsArray
         };
 
@@ -139,26 +210,24 @@ class CollapsibleContent extends Component {
 
     }
 
-    // TODO: need to fix this
     convertDateString (str) {
-        // let time = fromPost ? str.split(" ")[1] : str.substring(0, str.length-1).split("T")[1];
-        // time = time.substring(0, time.length-3);
-        // let hour = time.split(":")[0];
-        // if(hour == 12)
-        //     return time + " P.M.";
-        // else if(hour < 12)
-        //     return time + " A.M.";
-        // else if(hour == 0) 
-        //     return "12" + time.substring(2) + " A.M.";
-        // else
-        //     return (hour%12) + time.substring(2) + " P.M.";
-        return str;
+        let time = str.substring(0, str.length-1).split("T")[1];
+        time = time.substring(0, time.length-3);
+        let hour = time.split(":")[0];
+        if(hour == 12)
+            return time + " P.M.";
+        else if(hour < 12)
+            return time + " A.M.";
+        else if(hour == 0) 
+            return "12" + time.substring(2) + " A.M.";
+        else
+            return (hour%12) + time.substring(2) + " P.M.";
     }
 
     render () {
         return (
             <div className="game-grid-container">
-                {this.state.games.map((game, index) => (
+                {this.props.games[this.props.weekIndex].map((game, index) => (
                     <div key={index}>
                         {(() => {
                             let homeTeam = null;
@@ -169,12 +238,24 @@ class CollapsibleContent extends Component {
                                 if(parseInt(game.away_team) === element.id)
                                     awayTeam = element;
                             });
+                            if(this.props.isAdminView) {
+                                return (
+                                    <div className="game-grid-item"> 
+                                        <p>{this.convertDateString(game.start_time)}</p>
+                                        <label className="team-name">{awayTeam.team_name}</label> 
+                                        <input className="team-score" type="text" placeholder={this.props.games[this.props.weekIndex][index].away_score} onChange={e => this.props.update(this.props.weekIndex, index, false, e.target.value)}></input>
+                                        <br/><hr/>
+                                        <label className="team-name">{homeTeam.team_name} </label>
+                                        <input className="team-score" type="text" placeholder={this.props.games[this.props.weekIndex][index].home_score} onChange={e => this.props.update(this.props.weekIndex, index, true, e.target.value)} ></input>
+                                    </div>
+                                )
+                            }
                             return (
                                 <div className="game-grid-item"> 
                                     <p>{this.convertDateString(game.start_time)}</p>
                                     <label className="team-name">{awayTeam.team_name}</label> 
                                     <label className="team-score">{game.away_score}</label>
-                                    <br/>
+                                    <br/><hr/>
                                     <label className="team-name">{homeTeam.team_name} </label>
                                     <label className="team-score">{game.home_score}</label>
                                 </div>

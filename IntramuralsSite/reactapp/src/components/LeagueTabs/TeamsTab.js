@@ -40,8 +40,6 @@ class TeamsTab extends Component {
 		var a = this.state.teamsArray;
 		for (index = 0; index < a.length; ++index) {
 			if(a[index].id == event.target.value) {
-				console.log(a[index].id)
-				console.log(this.state.user.id)
 				axios({
 					method:'post',
 					url: 'http://localhost:8000/api/joinTeam/',
@@ -72,8 +70,6 @@ class TeamsTab extends Component {
 		var a = this.state.teamsArray;
 		for (index = 0; index < a.length; ++index) {
 			if(a[index].id == event.target.value) {
-				console.log(a[index].id)
-				console.log(this.state.user.id)
 				axios({
 					method:'post',
 					url: 'http://localhost:8000/api/leaveTeam/',
@@ -184,7 +180,7 @@ class TeamsTab extends Component {
 									)
 								}
 							})()}
-							<h4 className="league-title"><a href={'/team/'+ team.team_name +'/'+ team.id+'/'+ team.captain}><u>{team.team_name}</u></a></h4>
+							<h4 className="league-title"><a href={'/team/'+ team.team_name +'/'+ team.id+'/'+ team.captain+'/'}><u>{team.team_name}</u></a></h4>
 							
 							{(() => {
 								if(this.state.sportIsActive && !this.hasLeagueBegun()) {

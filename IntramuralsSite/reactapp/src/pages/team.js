@@ -6,6 +6,8 @@ import { Card } from 'react-bootstrap';
 import "../style/team.css"
 import axios from "axios";
 
+import AddPlayerFormModal from '../components/Forms/AddPlayerFormModal';
+
 
 class TeamPage extends Component {
 	constructor(props) {
@@ -17,16 +19,18 @@ class TeamPage extends Component {
     	captainId: this.props.props.match.params.captainId,
     	players: [],
     	user: props.user,
-		isAdminView: false,
 		sportName:"",
 		leagueName: "",
 		gamesArray: [],
 		leagueId: null,
-		sportId: null
+		sportId: null,
+		team: {},
+		playerCapacity: 0
     };
 
     this.sortPlayers = this.sortPlayers.bind(this);
     this.deleteHandler = this.deleteHandler.bind(this);
+    this.deletePlayerHandler = this.deletePlayerHandler.bind(this);
   }
 
   componentDidMount() {
@@ -44,6 +48,7 @@ class TeamPage extends Component {
 		.then(res => res.json())
 		.then((res) => {
 			this.setState({
+				team: res,
 				leagueId: res.league
 			})
 
@@ -52,7 +57,8 @@ class TeamPage extends Component {
 				.then((res) => {
 					this.setState({
 						leagueName: res.league_name,
-						sportId: res.sport
+						sportId: res.sport,
+						playerCapacity: res.player_limit
 					});
 					
 					fetch("http://localhost:8000/api/getSportById/"+res.sport)
@@ -98,20 +104,57 @@ class TeamPage extends Component {
     .then(({data}) => {
         window.location = ('/leagues/'+ this.state.sportName+'/'+this.state.leagueName+'/'+this.state.leagueId+'/'+this.state.sportId);
     });
-}
+	}
+
+	deletePlayerHandler(playerId) {
+		for(let i = 0; i < this.state.team.players.length; i++) {
+			if(this.state.team.players[i] == playerId) {
+				this.state.team.players.splice(i,1);
+			}
+		}
+
+		let teamData = {
+            team_name: this.state.team.team_name,
+            league: this.state.team.league,
+            players: this.state.team.players,
+            is_open: this.state.team.is_open,
+            captain: this.state.team.captain
+        } 
+
+        axios({
+            method:'put', 
+            url: 'http://localhost:8000/api/editPlayers/'+this.state.teamId+'/', 
+            data: teamData
+        })
+        .then(({data}) => {
+            window.location.reload();
+        });
+	}
 
 	render() {
 		return (
-			<Box>
+			<Box className="beginning">
+			<div>
+				<label className="record"><b>Wins:</b> {this.state.team.wins}<br/> <b>Losses:</b> {this.state.team.losses}<br/> <b>Ties:</b> {this.state.team.ties}</label>
 				<h1 className="primaryTitle"> {this.props.props.match.params.team} </h1>
-				<label className="secondaryTitle"> {this.state.sportName} : {this.state.leagueName} </label>
+				<label className="secondaryTitle"> {this.state.sportName}: {this.state.leagueName} </label>
+				</div>
+				{(() => {
+					if(this.state.user.is_admin) {
+						return (
+							<div className="addPlayer">
+								<AddPlayerFormModal leagueId={this.state.leagueId} teamId={this.state.teamId} teamFull={this.state.playerCapacity == this.state.players.length}/>
+							</div>
+						)
+					}
+				})()}
 				{(() => {
 					if (this.state.user.id == this.state.captainId) {
 						return (
 							<Fragment>
-								<span className="captain-view">
+								<div className="captain-view">
 								<input name="deleteButton" className="delete-team" type="button" value="Delete This Team" onClick={this.deleteHandler}/>
-								</span>
+								</div>
 								<br/><br/>
 							</Fragment>
 						)
@@ -125,20 +168,42 @@ class TeamPage extends Component {
 							{this.state.players.map((player, index) => (
 								  <div key={index}>
 									{(() => {
-									if (player.id == this.state.captainId) {
-										return (
-											<div>
-												<Card.Title><img className="profile_pic" src={player.photo_url}/>{player.display_name}</Card.Title>
-												<Card.Subtitle className="mb-2 text-muted tester">Captain</Card.Subtitle>
-												<hr/>
-											</div>
-										)
-									} else {
-										return (
-											<Card.Text className="player_cards">
-												<img className="profile_pic" src={player.photo_url}/>{player.display_name}</Card.Text>
-										)
-									}
+										if(this.state.user.is_admin || this.state.user.id == this.state.captainId) {
+											if (player.id == this.state.captainId) {
+												return (
+													<div>
+														<Card.Title><img className="profile_pic" src={player.photo_url}/>{player.display_name}</Card.Title>
+														<Card.Subtitle className="mb-2 text-muted tester">Captain</Card.Subtitle>
+														<hr/>
+													</div>
+												)
+											} else {
+												return (
+													<Card.Text className="player_cards">
+														<img className="profile_pic" src={player.photo_url}/>
+														{player.display_name}
+														<input name="deletePlayerButton" className="delete-player" type="button" value="Remove" onClick={()=>{this.deletePlayerHandler(player.id)}}/>
+													</Card.Text>
+												)
+											}
+										} else {
+											if (player.id == this.state.captainId) {
+												return (
+													<div>
+														<Card.Title><img className="profile_pic" src={player.photo_url}/>{player.display_name}</Card.Title>
+														<Card.Subtitle className="mb-2 text-muted tester">Captain</Card.Subtitle>
+														<hr/>
+													</div>
+												)
+											} else {
+												return (
+													<Card.Text className="player_cards">
+														<img className="profile_pic" src={player.photo_url}/>
+														{player.display_name}
+													</Card.Text>
+												)
+											}
+										}
 									})()}
 								  </div>
 								))}

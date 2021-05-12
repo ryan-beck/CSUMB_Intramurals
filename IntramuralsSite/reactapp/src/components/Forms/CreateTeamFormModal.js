@@ -12,7 +12,8 @@ class CreateTeamFormModal extends Component {
 		this.state = {
 			modalVisible: false,
             leagueId: props.leagueId,
-            user: props.user
+            user: props.user,
+            playerExists: props.playerExists
 		};
 
 		this.setModalVisible = this.setModalVisible.bind(this);
@@ -25,7 +26,7 @@ class CreateTeamFormModal extends Component {
 	    }));
 	}
 
-    handleFormSubmit (newSport) {
+    handleFormSubmit () {
         this.setModalVisible(false);
     }
 
@@ -41,7 +42,7 @@ class CreateTeamFormModal extends Component {
 				>
 					<View style={styles.centeredView}>
 			            <View style={styles.modalView}>
-			            	<CreateTeamForm handleFormSubmit={this.handleFormSubmit} leagueId={this.state.leagueId} user={this.state.user}/>
+			            	<CreateTeamForm handleFormSubmit={this.handleFormSubmit} leagueId={this.state.leagueId} user={this.state.user} playerExists={this.props.playerExists}/>
 			              	<Pressable
 			                	style={[styles.button, styles.buttonClose]}
 			                	onPress={() => this.setModalVisible(!modalVisible)}
@@ -51,14 +52,15 @@ class CreateTeamFormModal extends Component {
 			            </View>
 			        </View>
 		        </Modal>
+                <span>
                     <Pressable
                             style={styles.editButton}
                             onPress={() => this.setModalVisible(true)}
                         >
                             
-                            <Text style={styles.textStyle}>Start a Team</Text>
+                            <Text style={styles.textStyle}>Add New Team</Text>
                     </Pressable>
-		        
+                </span>
 		    </View>
 		);
 	}

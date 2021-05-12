@@ -1,25 +1,34 @@
 .Collapsible__trigger {
   display: block;
   font-weight: bold;
-  text-decoration: none;
   position: relative;
   border: 1px solid white;
   padding: 10px;
-  background-color: #d3d3d3;
-  color: #444444;
+  background-color: #00688B;
+  color: white;
   text-align: center;
+  border-radius: 20px;
+  transition: transform .5s;
+
 }
 
+.Collapsible__trigger:hover {
+  -ms-transform: scale(1.15); /* IE 9 */
+  -webkit-transform: scale(1.15); /* Safari 3-8 */
+  transform: scale(1.15); 
+}
 
 .game-grid-container {
     display: grid;
     grid-template-columns: auto auto auto auto;
-    background-color: #ffffff;
+    background-color: #d3d3d3;
     padding: 10px;
+    grid-gap: 10px;
 }
   
 .game-grid-item {
     background-color: #ffffff;
+    border-radius: 20px;
     border: 1px solid rgba(0, 0, 0, 0.8);
     padding: 15px;
     font-size: 15px;
@@ -27,15 +36,53 @@
 }
 
 .team-name {
-    font-size: 25px;
+    font-size: 20px;
+    font-weight: 600;
 }
 
 .team-score {
     font-size: 20px;
     float: right;
+    width: 50px;
+}
+
+.scoreButtons {
+  border-radius: 20px;
+  padding: 8px;
+
+  outline: none;
+  border-top-style: hidden;
+  border-right-style: hidden;
+  border-left-style: hidden;
+  border-bottom-style: hidden;
+}
+
+.saveButton {
+  font-weight: bold;
+  background-color: #00688B;
+  color: white;
+}
+
+.cancelButton {
+  font-weight: 500;
+  background-color: #e4e4e4;
+}
+
+.gameButtonFormat {
+  padding-left: 25px;
+  padding-bottom: 5px;
+  padding-top: 5px;
+}
+
+.buttonSpacing {
+  padding-right: 10px;
 }
 
 .no-games-div {
     padding-top: 20px;
     text-align: center;
+}
+
+.bottomSpacing {
+  padding-bottom: 50px;
 }

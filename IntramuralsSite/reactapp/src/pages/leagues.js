@@ -28,7 +28,9 @@ class LeaguePage extends Component {
 		playerArray: [],
 		isAdminView: false,
 		sportIsActive: null,
-		league: {}
+		league: {},
+		tabIndex: parseInt(localStorage.getItem('default')) || 0,
+		playerExists: false
     };
 
     this.adminViewSwitch = this.adminViewSwitch.bind(this);
@@ -37,6 +39,8 @@ class LeaguePage extends Component {
   }
 
   componentDidMount() {
+  	localStorage.setItem('default', 0);    
+
 	fetch("http://localhost:8000/api/getTeamsByLeague/" + this.props.props.match.params.id)
 	.then(res => res.json())
 	.then(
@@ -44,6 +48,15 @@ class LeaguePage extends Component {
 		this.setState({
 		  teamsArray: result,
 		});
+
+		for(let i = 0; i < result.length; i++) {
+			if(result[i].players.includes(this.state.user.id)) {
+				this.setState({
+				  playerExists: true,
+				});
+				break;
+			}
+	    }
 	  }
 	)
 
@@ -82,10 +95,10 @@ class LeaguePage extends Component {
 		return (
 			<div className="paddingLeague">
 				{(() => {
-					if (this.state.sportIsActive && !this.hasLeagueBegun()) {
+					if (this.state.sportIsActive && !this.hasLeagueBegun() || this.state.isAdminView) {
 						return (
 							<span className="editSpan">
-								<CreateTeamFormModal user={this.state.user} leagueId={this.props.props.match.params.id}/> 
+								<CreateTeamFormModal user={this.state.user} leagueId={this.props.props.match.params.id} playerExists={this.state.playerExists}/> 
 							</span>
 						)
 					}
@@ -107,7 +120,7 @@ class LeaguePage extends Component {
 						)
 					}
 				})()}
-				<Tabs>
+				<Tabs defaultIndex={this.state.tabIndex}>
 				
 					<TabList>
 						<Tab>Teams</Tab>

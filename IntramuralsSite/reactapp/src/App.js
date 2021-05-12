@@ -54,16 +54,16 @@ class LoginPage extends Component {
     render() {
         return (
         	<Fragment>
-			<div class="split left">
-				<div class="centered">
+			<div className="split left">
+				<div className="centered">
 					<img className="title-image" src={logo} alt="LoginLogo"/>
 					<label className="title">CSUMB Intramurals</label>
 					<p>A simple and lightweight application for organizing intramural sports at CSUMB.</p>
 				</div>
 			</div>
 
-			<div class="split right">
-				<div class="centered">
+			<div className="split right">
+				<div className="centered">
 					<label className="login-text">Use Your CSUMB Account to Login!</label>
 					<br/><br/><br/>
 					<div id="loginButton">Sign in with Google</div>

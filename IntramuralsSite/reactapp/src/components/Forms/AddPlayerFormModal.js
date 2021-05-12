@@ -1,16 +1,16 @@
 import React, { Component } from "react";
 import { Alert, Modal, Text, Pressable, View, StyleSheet } from "react-native";
+import AddPlayerForm from './AddPlayerForm';
+
 
 import '../../style/leagueForm.css'
-import GenerateScheduleForm from "./GenerateScheduleForm";
 
-class GenerateScheduleFormModal extends Component {
+class AddPlayerFormModal extends Component {
 	constructor(props) {
 	    super(props);
 
 		this.state = {
 			modalVisible: false,
-            leagueId: props.leagueId,
 		};
 
 		this.setModalVisible = this.setModalVisible.bind(this);
@@ -21,7 +21,6 @@ class GenerateScheduleFormModal extends Component {
 	        modalVisible: visible
 	    }));
 	}
-
 
 	render() {
 		const { modalVisible } = this.state;
@@ -35,7 +34,7 @@ class GenerateScheduleFormModal extends Component {
 				>
 					<View style={styles.centeredView}>
 			            <View style={styles.modalView}>
-			            	<GenerateScheduleForm leagueId={this.state.leagueId}/>
+			            	<AddPlayerForm user={this.props.user} teamId={this.props.teamId} teamFull={this.props.teamFull} setModalVisible={this.setModalVisible}/>
 			              	<Pressable
 			                	style={[styles.button, styles.buttonClose]}
 			                	onPress={() => this.setModalVisible(!modalVisible)}
@@ -45,15 +44,13 @@ class GenerateScheduleFormModal extends Component {
 			            </View>
 			        </View>
 		        </Modal>
-                <span className="gameSpan">
                     <Pressable
                             style={styles.editButton}
                             onPress={() => this.setModalVisible(true)}
                         >
                             
-                            <Text style={styles.textStyle}>Generate Game Schedule</Text>
+                            <Text style={styles.textStyle}>Add Player</Text>
                     </Pressable>
-		        </span>
 		    </View>
 		);
 	}
@@ -102,8 +99,7 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         padding: 12,
         backgroundColor: "#00688B",
-        width: 300
     }
 });
 
-export default GenerateScheduleFormModal;
+export default AddPlayerFormModal;

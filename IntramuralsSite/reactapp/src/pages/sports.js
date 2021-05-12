@@ -138,9 +138,9 @@ class SportsPage extends Component {
 						return (
 							<div className="adminSwitch">
 								<label>Toggle Admin View</label><br/>
-								<label class="switch">
+								<label className="switch">
 								  <input type="checkbox" onClick={this.adminViewSwitch}/>
-								  <span class="slider round"></span>
+								  <span className="slider round"></span>
 								</label>
 							</div>
 						)
@@ -149,7 +149,7 @@ class SportsPage extends Component {
 				
 				</span>
 				<br/><br/>
-				<div class="searchdiv"> 
+				<div className="searchdiv"> 
 					<div>
 					  <TextInput
 						value = {this.state.SearchTextInput || ''}
