@@ -3,7 +3,7 @@ import { Component, Fragment } from 'react';
 import Box from '@material-ui/core/Box';
 import Button from 'react-bootstrap/Button';
 
-
+import JoinPasswordFormModal from '../Forms/JoinPasswordFormModal';
 import axios from "axios";
 
 import "../../style/teamstab.css"
@@ -40,8 +40,6 @@ class TeamsTab extends Component {
 		var a = this.state.teamsArray;
 		for (index = 0; index < a.length; ++index) {
 			if(a[index].id == event.target.value) {
-				console.log(a[index].id)
-				console.log(this.state.user.id)
 				axios({
 					method:'post',
 					url: 'http://localhost:8000/api/joinTeam/',
@@ -72,8 +70,6 @@ class TeamsTab extends Component {
 		var a = this.state.teamsArray;
 		for (index = 0; index < a.length; ++index) {
 			if(a[index].id == event.target.value) {
-				console.log(a[index].id)
-				console.log(this.state.user.id)
 				axios({
 					method:'post',
 					url: 'http://localhost:8000/api/leaveTeam/',
@@ -184,17 +180,19 @@ class TeamsTab extends Component {
 									)
 								}
 							})()}
-							<h4 className="league-title"><a href={'/team/'+ team.team_name +'/'+ team.id+'/'+ team.captain}><u>{team.team_name}</u></a></h4>
+							<h4 className="league-title"><a href={'/team/'+ team.team_name +'/'+ team.id+'/'+ team.captain+'/'}><u>{team.team_name}</u></a></h4>
 							
 							{(() => {
 								if(this.state.sportIsActive && !this.hasLeagueBegun()) {
 									if (this.checkTeam(team.id)) {
 										return (
-										<div className="closedTag">  <Button className="joinButton" size="sm" onClick={this.handleLeaveTeam} value={team.id} > Leave? </Button>   </div>
+										<div className="closedTag">  <Button className="joinButton" size="sm" onClick={this.handleLeaveTeam} value={team.id}> Leave?</Button>   </div>
 										)
 									} else if(!team.is_open) {
 										return(
-										<div className="closedTag"> <i> Closed </i> </div>
+										<div className="closedTag">
+											<JoinPasswordFormModal user={this.state.user} teamId={team.id} teamFull={team.players.length == this.state.league.player_limit}/>
+										</div>
 										)
 									} else  {
 										return (

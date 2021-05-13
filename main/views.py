@@ -124,7 +124,24 @@ def getPosts(request):
 	return Response(posts_serializer.data)
 
 @api_view(['GET'])
+def getPosts(request):
+	data = Post.objects.all()
+
+	posts_serializer = PostSerializer(data, context={'request': request}, many=True)
+	
+	for i in range(len(posts_serializer.data)):
+		user = Account.objects.get(id=posts_serializer.data[i]['owner'])
+		posts_serializer.data[i]['display_name'] = user.display_name
+
+		date = dt.strptime(posts_serializer.data[i]['posted_date'], '%Y-%m-%dT%H:%M:%SZ')
+		posts_serializer.data[i]['posted_date'] = date.strftime("%m-%d-%Y %I:%M %p")
+		
+	return Response(posts_serializer.data)
+
+@api_view(['GET'])
 def getAccountByEmail(request, email):
+	if not Account.objects.filter(email=email):
+		return JsonResponse({"status":"DoesNotExist"})
 	account = Account.objects.get(email=email)
 	serializer = AccountSerializer(instance=account)
 	return Response(serializer.data)
@@ -400,6 +417,181 @@ def getEventsByUser(request, userId):
 	return Response(events)
 
 @api_view(['GET'])
+def getProfileInfoByUser(request, userId):
+	# grab teams based on userId
+	team_data = Team.objects.filter(players=userId)
+	team_serializer = TeamSerializer(team_data, context={'request': request}, many=True)
+
+	# grab league ids and team ids from the list of teams
+	team_ids = []
+	league_ids = []
+	for i in range(len(team_serializer.data)):
+		if team_serializer.data[i]["league"] not in league_ids:
+			league_ids.append(team_serializer.data[i]["league"])
+		if team_serializer.data[i]["id"] not in team_ids:
+			team_ids.append(team_serializer.data[i]["id"])
+	
+	# grab leagues from list of league ids
+	league_data = League.objects.filter(id__in=league_ids)
+	league_serializer = LeagueSerializer(league_data, context={'request': request}, many=True)
+
+	# grab sport ids from list of leagues
+	sport_ids = []
+	for i in range(len(league_serializer.data)):
+		if league_serializer.data[i]["sport"] not in sport_ids:
+			sport_ids.append(league_serializer.data[i]["sport"])
+
+	# grab sports from list of sport ids
+	sport_data = Sport.objects.filter(id__in=sport_ids)
+	sport_serializer = SportSerializer(sport_data, context={'request': request}, many=True)
+
+	# grab games from team_ids
+	game_data = Game.objects.filter(home_team__in=team_ids) | Game.objects.filter(away_team__in=team_ids)
+	game_serializer = GameSerializer(game_data, context={'request': request}, many=True)
+
+	#put together events to be able to return one list
+	upcoming_games = []
+
+	for team in team_serializer.data:
+		team_name = team['team_name']
+		league = League.objects.get(pk=team['league'])
+		league_name = league.league_name
+		vs = ''
+		outcome = ''
+		score = ''
+
+		if league.end_date > dt.today().date():
+			upcoming_game_data = []
+			past_game_data = []
+			for game in game_serializer.data:
+				if game['home_team'] == team['id'] or game['away_team'] == team['id']:
+					home_score = game['home_score']
+					away_score = game['away_score']
+					gameTime = dt.strptime(game['start_time'], '%Y-%m-%dT%H:%M:%SZ')
+					if gameTime >= dt.today():
+						if game['home_team'] == team['id']:
+							other_team = Team.objects.get(pk=game['away_team'])
+							vs = other_team.team_name
+						elif game['away_team'] == team['id']:
+							other_team = Team.objects.get(pk=game['home_team'])
+							vs = other_team.team_name
+						strGameTime = gameTime.strftime("%m-%d-%Y %I:%M %p")
+						pair = {'gameTime': strGameTime, 'vs':vs}
+						upcoming_game_data.append(pair)
+					elif gameTime < dt.today():
+						if game['home_team'] == team['id']:
+							other_team = Team.objects.get(pk=game['away_team'])
+							vs = other_team.team_name
+							if game['home_score'] > game['away_score']:
+								outcome = 'W'
+							elif game['home_score'] < game['away_score']:
+								outcome = 'L'
+							else:
+								outcome = 'T'
+						elif game['away_team'] == team['id']:
+							other_team = Team.objects.get(pk=game['home_team'])
+							vs = other_team.team_name
+							if game['home_score'] > game['away_score']:
+								outcome = 'L'
+							elif game['home_score'] < game['away_score']:
+								outcome = 'W'
+							else:
+								outcome = 'T'
+						strGameTime = gameTime.strftime("%m-%d-%Y %I:%M %p")
+						pair = {'gameTime': strGameTime, 'vs':vs, 'outcome':outcome,
+						'home_score': home_score, 'away_score': away_score}
+						past_game_data.append(pair)
+			pair = {'team_name': team_name,
+					'league_name':league_name, 
+					'upcoming_game_data': upcoming_game_data,
+					'past_game_data': past_game_data}
+			upcoming_games.append(pair)
+				
+	return Response(upcoming_games)
+
+
+@api_view(['GET'])
+def getProfilePastInfoByUser(request, userId):
+	# grab teams based on userId
+	team_data = Team.objects.filter(players=userId)
+	team_serializer = TeamSerializer(team_data, context={'request': request}, many=True)
+
+	# grab league ids and team ids from the list of teams
+	team_ids = []
+	league_ids = []
+	for i in range(len(team_serializer.data)):
+		if team_serializer.data[i]["league"] not in league_ids:
+			league_ids.append(team_serializer.data[i]["league"])
+		if team_serializer.data[i]["id"] not in team_ids:
+			team_ids.append(team_serializer.data[i]["id"])
+	
+	# grab leagues from list of league ids
+	league_data = League.objects.filter(id__in=league_ids)
+	league_serializer = LeagueSerializer(league_data, context={'request': request}, many=True)
+
+	# grab sport ids from list of leagues
+	sport_ids = []
+	for i in range(len(league_serializer.data)):
+		if league_serializer.data[i]["sport"] not in sport_ids:
+			sport_ids.append(league_serializer.data[i]["sport"])
+
+	# grab sports from list of sport ids
+	sport_data = Sport.objects.filter(id__in=sport_ids)
+	sport_serializer = SportSerializer(sport_data, context={'request': request}, many=True)
+
+	# grab games from team_ids
+	game_data = Game.objects.filter(home_team__in=team_ids) | Game.objects.filter(away_team__in=team_ids)
+	game_serializer = GameSerializer(game_data, context={'request': request}, many=True)
+
+	#put together events to be able to return one list
+	upcoming_games = []
+
+	for team in team_serializer.data:
+		team_name = team['team_name']
+		league = League.objects.get(pk=team['league'])
+		league_name = league.league_name
+		vs = ''
+		outcome = ''
+		leagueTime = league.end_date # dt.strptime(league.end_date, '%Y-%m-%dT%H:%M:%SZ')
+		
+		if leagueTime < dt.today().date():
+			game_data = []
+			for game in game_serializer.data:
+				if game['home_team'] == team['id'] or game['away_team'] == team['id']:
+					gameTime = dt.strptime(game['start_time'], '%Y-%m-%dT%H:%M:%SZ')
+					home_score = game['home_score']
+					away_score = game['away_score']
+					#if user is on the home team
+					if game['home_team'] == team['id']:
+						other_team = Team.objects.get(pk=game['away_team'])
+						vs = other_team.team_name
+						if game['home_score'] > game['away_score']:
+							outcome = 'W'
+						elif game['home_score'] < game['away_score']:
+							outcome = 'L'
+						else:
+							outcome = 'T'
+					# if user is on the away team
+					elif game['away_team'] == team['id']:
+						other_team = Team.objects.get(pk=game['home_team'])
+						vs = other_team.team_name
+						if game['home_score'] > game['away_score']:
+							outcome = 'L'
+						elif game['home_score'] < game['away_score']:
+							outcome = 'W'
+						else:
+							outcome = 'T'
+					strGameTime = gameTime.strftime("%m-%d-%Y %I:%M %p")
+					pair = {'gameTime': strGameTime, 'vs':vs, 'outcome':outcome,
+						'home_score': home_score, 'away_score': away_score}
+					game_data.append(pair)
+			pair = {'team_name': team_name, 'league_name':league_name, 'game_data': game_data}
+			upcoming_games.append(pair)
+				
+	return Response(upcoming_games)
+
+
+@api_view(['GET'])
 def getTeamsByLeague(request,leagueId):
 	team_data = Team.objects.filter(league=leagueId)
 	team_data = sorted(team_data)[::-1]
@@ -478,7 +670,7 @@ def getGamesByTeam(request, teamId):
 
 	team_data = Team.objects.all()
 	team_serializer = TeamSerializer(team_data, context={'request': request}, many=True)
-
+	
 	for i in range(len(team_serializer.data)):
 		for j in range(len(game_serializer.data)):
 			if team_serializer.data[i]['id'] == game_serializer.data[j]['home_team']:
@@ -493,8 +685,38 @@ def getGamesByTeam(request, teamId):
 
 	return Response(game_serializer.data)
 
+
+@api_view(['DELETE'])
+def deletePost(request, postId):
+	post = Post.objects.get(id=postId)
+	post.delete()
+	return HttpResponse('deleted')
+
+@api_view(['PUT'])
+def editPost(request, postId):
+	post = Post.objects.get(id=postId)
+	serializer = PostSerializer(post, data=request.data)
+	if serializer.is_valid():
+		serializer.save()
+
+	return HttpResponse('updated')
+
 @api_view(['DELETE'])
 def deleteTeam(request, teamId):
 	team = Team.objects.get(id=teamId)
 	team.delete()
 	return HttpResponse('deleted')
+
+@api_view(['PUT'])
+def editPlayers(request, teamId):
+	team = Team.objects.get(id=teamId)
+	serializer = TeamSerializer(team, data=request.data)
+	if serializer.is_valid():
+		serializer.save()
+
+	return HttpResponse('updated')
+@api_view(['GET']) 
+def getWinLossByUser (request, userId):
+	user = Account.objects.get(id=userId)
+	pair = {'wins': user.wins, 'losses':user.losses, 'ties': user.ties}
+	return Response(pair)

@@ -10,6 +10,11 @@ urlpatterns = [
     path('getEventsByLeague/<str:leagueId>', views.getEventsByLeague, name='getEventsByLeague'),
     path('getEventsByUser/<str:userId>/', views.getEventsByUser, name='getEventsByUser'),
     path('getAccountByEmail/<str:email>/', views.getAccountByEmail, name='getAccountByEmail'),
+    path('getWinLossByUser/<str:userId>/', views.getWinLossByUser, name='getWinLossByUser'),
+    # path('getTeamsByUser/<str:userId>/', views.getTeamsByUser, name='getTeamsByUser'),
+    path('getProfileInfoByUser/<str:userId>/', views.getProfileInfoByUser, name='getProfileInfoByUser'),
+    path('getProfilePastInfoByUser/<str:userId>/', views.getProfilePastInfoByUser, name='getProfilePastInfoByUser'),
+    # path('joinTeam/', views.join_team, name='join_team'),
     path('joinTeam/', views.join_team, name='join_team'),
     path('leaveTeam/', views.leave_team, name='leave_team'),
     path('createAccount/', views.createAccount, name='createAccount'),
@@ -28,6 +33,7 @@ urlpatterns = [
     path('getTeamById/<str:teamId>/', views.getTeamById, name='getTeamById'),
     path('getGamesByTeam/<str:teamId>/', views.getGamesByTeam, name='getGamesByTeam'),
     path('deleteTeam/<str:teamId>/', views.deleteTeam, name='deleteTeam'),
-    path('updateScores/<str:leagueId>', views.updateScores, name='updateScores')
+    path('updateScores/<str:leagueId>', views.updateScores, name='updateScores'),
+    path('editPlayers/<str:teamId>/', views.editPlayers, name='editPlayers'),
 
 ]

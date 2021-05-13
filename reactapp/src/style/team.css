@@ -16,6 +16,12 @@
     font-size: 25px;
 }
 
+.teamPasswordTitle {
+    padding-left:100px;
+    color: #444444;
+    font-size: 20px;
+}
+
 .team_card{
     padding-top:20px;
     padding-left:100px;
@@ -55,7 +61,7 @@
 
 .captain-view {
     float: right;
-    padding-right: 35px;
+    padding-right: 20px;
 }
 
 .delete-team {
@@ -72,8 +78,30 @@
     border-bottom-style: hidden;
 }
 
-.record {
+.delete-player {
+    border-radius: 20px;
+    font-size: 15px;
+    padding: 5px;
+    color: white;
+    font-weight: bolder;
+    background-color: #e50000;
+    float: right;
+
+    outline: none;
+    border-top-style: hidden;
+    border-right-style: hidden;
+    border-left-style: hidden;
+    border-bottom-style: hidden;
+}
+
+.record-team {
     float: right;
     padding-right: 40px;
     font-size: 18px;
+}
+
+.addPlayer {
+    float: right;
+    padding-right: 35px;
+    padding-bottom: 50px;
 }

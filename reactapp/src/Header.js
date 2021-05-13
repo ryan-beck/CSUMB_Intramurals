@@ -30,15 +30,15 @@ class Header extends Component {
 				                    <label>{this.state.user.display_name}</label>
 			                    </Dropdown.Toggle>
 			                    <Dropdown.Menu>
-			                        <Dropdown.Item onClick={authInstance.signOut}>Sign out</Dropdown.Item>
+									<Dropdown.Item href="/profile">Profile</Dropdown.Item>
+									<Dropdown.Item onClick={authInstance.signOut}>Sign out</Dropdown.Item>
 			                    </Dropdown.Menu>
 			                </Dropdown>
 		                </span>
 					</div>
 					<div className="navigation">
 						<a className="navigation-button" href="/">Home</a>
-						<a className="navigation-button" href="/sports">Sports</a>
-					</div>
+						<a className="navigation-button" href="/sports">Sports</a>					</div>
 				</div>
 
 			</Fragment>
