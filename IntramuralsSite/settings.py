@@ -64,7 +64,7 @@ MIDDLEWARE = [
 CORS_ORIGIN_WHITELIST = (
   'http://localhost:3000', 
   'http://127.0.0.1:3000',
-  'https://csumb-intramurals.herokuapp.com',
+  'https://csumb-intramurals-react.herokuapp.com',
 )
 
 CORS_ORIGIN_ALLOW_ALL = True
@@ -98,10 +98,10 @@ WSGI_APPLICATION = 'IntramuralsSite.wsgi.application'
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': BASE_DIR / 'db.sqlite3',
-    # }
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
     # 'default': dj_database_url.config()
     # 'default': {
     #     'ENGINE': 'django.db.backends.postgresql',
