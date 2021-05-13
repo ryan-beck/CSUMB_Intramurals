@@ -1,7 +1,7 @@
 import React from "react";
 import { Component, useState, useEffect } from 'react';
 import {Accordion, Card, Button, Table} from 'react-bootstrap'
-
+import "../../style/profile.css"
 
 class ProfilePastSports extends Component {
 	constructor(props) {
@@ -15,13 +15,12 @@ class ProfilePastSports extends Component {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     fetch("http://localhost:8000/api/getProfilePastInfoByUser/"+this.state.user.id).then(res => res.json()).then(
       (result) => {
         this.setState({
           eventsArray: result
         });
-        console.log(this.state.eventsArray)
       },
       (error) => {
         console.log("Error in database call")
@@ -29,21 +28,16 @@ class ProfilePastSports extends Component {
     )
   }
 
-	// handleSearchChange(evt)  {
-		
-	// };
-
-
 	render() {
 		return (
 			<div>
 			<Accordion>
 			{this.state.eventsArray.map((team, index) => (
-				<div>
+				<div key={index}>
 					<Card>
 						<Card.Header>
 						<Accordion.Toggle as={Card.Header} variant="link" eventKey={"profile"+index}>
-							{team.league_name  + " " + team.team_name}
+							<label><b>{team.league_name}</b>: {team.team_name}</label>
 						</Accordion.Toggle>
 						</Card.Header>
 						<Accordion.Collapse eventKey={"profile"+index}>
@@ -58,9 +52,20 @@ class ProfilePastSports extends Component {
 									</tr>
 								</thead>
 								<tbody>
+									{(() => {
+										if (team.game_data.length == 0) {
+											return (
+												<tr> 
+													<td>
+														You do not have any previous games to display.
+													</td>
+												</tr>
+											);
+										}
+									})()}
 									{team.game_data.map((game, indexj) => (
 										
-											<tr>
+											<tr key={indexj}>
 												<td>{game.vs} </td>
 												<td>{game.gameTime}</td>
                                                 <td>{game.outcome}</td>

@@ -59,7 +59,6 @@ class ProfilePage extends Component {
         this.setState({
           outcomes: result
         });
-        console.log(this.state.outcomes)
       },
       (error) => {
         console.log("Error in database call")
@@ -78,11 +77,19 @@ class ProfilePage extends Component {
   render() {
     const { classes } = this.props;
 		return (
-      <div class = "title">
+      <div className = "beginning">
         <div>
-          <h1>{this.state.user.display_name}</h1>
-          <h6><i>Overall Record: {this.state.outcomes.wins} - {this.state.outcomes.losses} - {this.state.outcomes.ties}</i></h6>
+          <span className="userTitle">
+            <img className="userImage" src={this.state.user.photo_url} alt="UserImage"/>
+            <label className="nameTitle">{this.state.user.display_name}</label>
+            <br/><br/>
+          </span>
+          <div>
+            <label className="record"><i>Overall Record: {this.state.outcomes.wins} - {this.state.outcomes.losses} - {this.state.outcomes.ties}</i></label>
+          </div>
+          <br/><br/>
         </div>
+
         <Paper className={classes.root}>
           <Tabs
             value={this.state.value}
@@ -95,10 +102,10 @@ class ProfilePage extends Component {
             <Tab label="Past Teams" />
           </Tabs>
           <TabPanel value={this.state.value} index={0}>
-            <CurrentProfile  user = {this.state.user} ></CurrentProfile>
+            <CurrentProfile  user = {this.state.user} />
           </TabPanel>
           <TabPanel value={this.state.value} index={1}>
-          <PastProfile user = {this.state.user} ></PastProfile>
+            <PastProfile user = {this.state.user} />
           </TabPanel>
         </Paper>
       </div>

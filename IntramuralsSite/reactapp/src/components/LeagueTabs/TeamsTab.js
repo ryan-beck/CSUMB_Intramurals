@@ -3,7 +3,7 @@ import { Component, Fragment } from 'react';
 import Box from '@material-ui/core/Box';
 import Button from 'react-bootstrap/Button';
 
-
+import JoinPasswordFormModal from '../Forms/JoinPasswordFormModal';
 import axios from "axios";
 
 import "../../style/teamstab.css"
@@ -32,7 +32,6 @@ class TeamsTab extends Component {
 	this.handleLeaveTeam = this.handleLeaveTeam.bind(this);
 	this.hasLeagueBegun = this.hasLeagueBegun.bind(this);
 	this.deleteHandler = this.deleteHandler.bind(this);
-	this.handleJoinWithPassword = this.handleJoinWithPassword(this);
 
   }
 
@@ -86,10 +85,6 @@ class TeamsTab extends Component {
 			}
 			
 		}
-	}
-
-	handleJoinWithPassword(event) {
-		
 	}
 
 	checkTeam(teamID) {
@@ -195,7 +190,9 @@ class TeamsTab extends Component {
 										)
 									} else if(!team.is_open) {
 										return(
-										<div className="closedTag"> <Button  size="sm" onClick={this.handleJoinWithPassword} value={team.id} > Join With Password </Button></div>
+										<div className="closedTag">
+											<JoinPasswordFormModal user={this.state.user} teamId={team.id} teamFull={team.players.length == this.state.league.player_limit}/>
+										</div>
 										)
 									} else  {
 										return (

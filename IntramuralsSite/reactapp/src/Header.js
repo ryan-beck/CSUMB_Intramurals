@@ -36,9 +36,9 @@ class Header extends Component {
 			                </Dropdown>
 		                </span>
 					</div>
-					<div class="navigation">
-						<a class="navigation-button" href="/">Home</a>
-						<a class="navigation-button" href="/sports">Sports</a>					</div>
+					<div className="navigation">
+						<a className="navigation-button" href="/">Home</a>
+						<a className="navigation-button" href="/sports">Sports</a>					</div>
 				</div>
 
 			</Fragment>
