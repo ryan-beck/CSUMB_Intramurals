@@ -81,7 +81,7 @@ class ProfilePage extends Component {
         <div>
           <span className="userTitle">
             <img className="userImage" src={this.state.user.photo_url} alt="UserImage"/>
-            <label className="primaryTitle">{this.state.user.display_name}</label>
+            <label className="nameTitle">{this.state.user.display_name}</label>
             <br/><br/>
           </span>
           <div>

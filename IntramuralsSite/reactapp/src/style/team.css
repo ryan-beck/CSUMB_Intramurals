@@ -16,6 +16,12 @@
     font-size: 25px;
 }
 
+.teamPasswordTitle {
+    padding-left:100px;
+    color: #444444;
+    font-size: 20px;
+}
+
 .team_card{
     padding-top:20px;
     padding-left:100px;
@@ -88,7 +94,7 @@
     border-bottom-style: hidden;
 }
 
-.record {
+.record-team {
     float: right;
     padding-right: 40px;
     font-size: 18px;
@@ -97,5 +103,5 @@
 .addPlayer {
     float: right;
     padding-right: 35px;
-    padding-bottom: 20px;
+    padding-bottom: 50px;
 }

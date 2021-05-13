@@ -49,11 +49,10 @@ class CreateTeamForm extends Component {
     submitHandler(event) {
         event.preventDefault();
         var isTeamPrivate = document.getElementById("isPrivate").checked;
+        var teamPassword = "";
         if(this.state.checked) {
-            var teamPassword = document.CreateTeamForm.teamPassword.value
-        } else {
-            var teamPassword = ""
-        }
+            teamPassword = document.CreateTeamForm.teamPassword.value
+        } 
         let teamData = {
             team_name: this.state.teamName,
             league: this.state.leagueId,
@@ -89,10 +88,9 @@ class CreateTeamForm extends Component {
                         return(
                             <div>
                                 <h2 className="modalText">Add a New Team</h2>
-                                <form onSubmit={this.submitHandler}>
+                                <form name="CreateTeamForm" onSubmit={this.submitHandler}>
                                     <label className="modalText checkboxSpace">Team Name</label>
                                     <input type="text" maxLength="16" name="teamName" value={this.state.teamName} onChange={this.onChangeHandler} required/> <br/><br/>
-                                    <label className="modalText checkboxSpace">Would you like this team to be invite only?</label>
                                     <label className="modalText checkboxSpace">Would you like this team to be invite only?</label>
                                     <input type="checkbox" id="isPrivate" checked={this.state.checked} onChange={this.checkBoxHandler}/> <br/><br/>
                                     {this.state.checked ? <div><label className="modalText">Password:</label><input type="text" name="teamPassword" defaultValue={this.state.password} onChange={this.onChangeHandler} required/> </div>  : null}

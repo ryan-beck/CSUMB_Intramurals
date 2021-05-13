@@ -135,16 +135,30 @@ class TeamPage extends Component {
 		return (
 			<Box className="beginning">
 			<div>
-				<label className="record"><b>Wins:</b> {this.state.team.wins}<br/> <b>Losses:</b> {this.state.team.losses}<br/> <b>Ties:</b> {this.state.team.ties}</label>
+				<label className="record-team"><b>Wins:</b> {this.state.team.wins}<br/> <b>Losses:</b> {this.state.team.losses}<br/> <b>Ties:</b> {this.state.team.ties}</label>
 				<h1 className="primaryTitle"> {this.props.props.match.params.team} </h1>
 				<label className="secondaryTitle"> {this.state.sportName}: {this.state.leagueName} </label>
 				</div>
 				{(() => {
+					if((this.state.user.id == this.state.captainId || this.state.user.is_admin) && !this.state.team.is_open) {
+						return (
+							<Fragment>
+								<div className="teamPasswordTitle">
+									<label><b>Team Password:</b> {this.state.team.password}</label>
+								</div>
+							</Fragment>
+						)
+					}
+				})()}
+				{(() => {
 					if(this.state.user.is_admin) {
 						return (
-							<div className="addPlayer">
-								<AddPlayerFormModal leagueId={this.state.leagueId} teamId={this.state.teamId} teamFull={this.state.playerCapacity == this.state.players.length}/>
-							</div>
+							<Fragment>
+								<div className="addPlayer">
+									<AddPlayerFormModal leagueId={this.state.leagueId} teamId={this.state.teamId} teamFull={this.state.playerCapacity == this.state.players.length}/>
+								</div>
+								{this.state.user.id != this.state.captainId ? <div><br/><br/></div> : null}
+							</Fragment>
 						)
 					}
 				})()}
