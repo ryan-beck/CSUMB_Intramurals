@@ -478,7 +478,7 @@ def getProfileInfoByUser(request, userId):
 						strGameTime = gameTime.strftime("%m-%d-%Y %I:%M %p")
 						pair = {'gameTime': strGameTime, 'vs':vs}
 						upcoming_game_data.append(pair)
-					elif gameTime < dt.today():
+					elif gameTime < dt.today() and game['home_score'] and game['away_score']:
 						if game['home_team'] == team['id']:
 							other_team = Team.objects.get(pk=game['away_team'])
 							vs = other_team.team_name
