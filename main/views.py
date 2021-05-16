@@ -173,7 +173,7 @@ def generateGameSchedule(request):
 	if leagueStart.weekday() < gameDay:
 		leagueStart += datetime.timedelta(days=gameDay)
 	elif leagueStart.weekday() > gameDay:
-		leagueStart += 7-leagueStart.weekday() + datetime.timedelta(days=gameDay)
+		leagueStart += datetime.timedelta(days=7-leagueStart.weekday()) + datetime.timedelta(days=gameDay)
 
 	
 	leagueStart = datetime.datetime(leagueStart.year, leagueStart.month, leagueStart.day) + datetime.timedelta(minutes=startTime)

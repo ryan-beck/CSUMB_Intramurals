@@ -58,7 +58,7 @@ class CreateTeamFormModal extends Component {
                             onPress={() => this.setModalVisible(true)}
                         >
                             
-                            <Text style={styles.textStyle}>Add New Team</Text>
+                            <Text style={styles.textStyle}>Start a Team</Text>
                     </Pressable>
                 </span>
 		    </View>
